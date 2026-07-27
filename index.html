@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Propósito 120 dias — Nayane</title>
+<style>
+  :root{
+    --bg:#fdf4f8;--card:#ffffff;--card2:#fcecf3;--line:#f5dce8;
+    --txt:#3d2430;--mut:#a988a0;--ring:#f5dce8;
+    --acc:#e86ba3;--acc-soft:#fce4ef;
+    --gym:#e06a9e;--gym-soft:#fce4ef;
+    --ok:#3ab87a;--water:#3aa8e0;--run:#e07a4f;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;
+    background:var(--bg);color:var(--txt);padding:0 0 90px;max-width:520px;margin:0 auto;min-height:100vh}
+  header{padding:22px 20px 12px;position:sticky;top:0;background:linear-gradient(var(--bg) 80%,transparent);z-index:5}
+  .kicker{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--mut);font-weight:600}
+  h1{font-size:23px;font-weight:800;margin-top:3px;letter-spacing:-.01em}
+  .wrap{padding:6px 20px}
+  .hidden{display:none!important}
+
+  .quote{background:var(--acc-soft);border-radius:18px;padding:18px;margin-top:6px;border:1px solid var(--line)}
+  .quote .qk{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--acc);font-weight:700;margin-bottom:8px}
+  .quote .q{font-size:16px;font-weight:600;line-height:1.5;font-style:italic}
+  .quote .ref{font-size:12px;color:var(--mut);margin-top:8px;font-weight:600}
+  .quote .phrase{font-size:14px;line-height:1.5;margin-top:12px;padding-top:12px;border-top:1px solid var(--line)}
+
+  .card{background:var(--card);border-radius:18px;padding:18px;margin-top:14px;border:1px solid var(--line)}
+  .lbl{font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--mut);font-weight:700;margin-bottom:12px}
+
+  .water-count{font-size:26px;font-weight:800;margin-bottom:2px}
+  .water-count small{font-size:15px;color:var(--mut);font-weight:600}
+  .water-sub{font-size:13px;color:var(--mut);margin-bottom:14px}
+  .bottles{display:flex;gap:7px;margin-bottom:14px;flex-wrap:wrap}
+  .bottle{width:calc((100% - 42px)/7);height:40px;border-radius:8px;border:2px solid var(--line);background:var(--card2);position:relative;overflow:hidden}
+  .bottle.full{border-color:var(--water)}
+  .bottle.full::after{content:"";position:absolute;inset:0;background:var(--water);opacity:.85}
+  .water-btns{display:flex;gap:10px}
+  .water-btns button{flex:1;padding:13px;border-radius:12px;border:1.5px solid var(--line);background:var(--card2);color:var(--txt);font-size:15px;font-weight:700;cursor:pointer}
+  .water-btns .add{background:var(--water);color:#04222f;border-color:var(--water)}
+
+  .checkbtn{width:100%;padding:18px;border:none;border-radius:16px;background:var(--acc);color:#fff;font-size:18px;font-weight:800;cursor:pointer;transition:.15s}
+  .checkbtn.done{background:var(--card2);color:var(--ok);border:1.5px solid var(--ok)}
+  .checkbtn:active{transform:scale(.98)}
+  .check-sub{text-align:center;color:var(--mut);font-size:13px;margin-top:10px}
+
+  .commit{display:flex;align-items:center;gap:14px;padding:14px 4px;cursor:pointer;border-bottom:1px solid var(--line)}
+  .commit:last-child{border-bottom:none}
+  .commit .cchk{width:28px;height:28px;border-radius:9px;border:2px solid var(--line);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:16px;color:transparent;transition:.15s}
+  .commit.done .cchk{background:var(--ok);border-color:var(--ok);color:#04220f}
+  .commit .cinfo{flex:1}
+  .commit .cname{font-size:16px;font-weight:700}
+  .commit.done .cname{color:var(--mut)}
+  .commit .cstreak{font-size:12px;color:var(--mut);margin-top:2px}
+  .gymbtn{background:var(--gym)}
+  .gymbtn.done{background:var(--card2);color:var(--gym);border:1.5px solid var(--gym)}
+
+  .ringcard{display:flex;align-items:center;gap:18px;background:var(--card);border-radius:20px;padding:18px;margin-top:14px;border:1px solid var(--line)}
+  .ring{position:relative;width:92px;height:92px;flex-shrink:0}
+  .ring svg{transform:rotate(-90deg)}
+  .ring .num{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+  .ring .num b{font-size:26px;font-weight:800;line-height:1}
+  .ring .num span{font-size:10px;color:var(--mut)}
+  .ringinfo .big{font-size:15px;font-weight:700}
+  .ringinfo .sub{font-size:13px;color:var(--mut);margin-top:4px;line-height:1.5}
+
+  .grid-title{display:flex;justify-content:space-between;align-items:baseline;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--mut);font-weight:700;margin:24px 4px 12px}
+  .grid-title span{color:var(--acc);font-size:16px}
+  .grid{display:grid;grid-template-columns:repeat(10,1fr);gap:5px}
+  .cell{aspect-ratio:1;border-radius:6px;background:var(--card2);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--mut)}
+  .cell.done{background:var(--acc);border-color:var(--acc);color:#0e1116;font-weight:700}
+  .cell.today{box-shadow:0 0 0 2px var(--bg),0 0 0 4px var(--acc)}
+
+  .datebar{background:var(--card);border-radius:16px;padding:14px 16px;margin-top:4px;border:1px solid var(--line)}
+  .datebar-lbl{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--mut);font-weight:700;margin-bottom:8px}
+  .datebar-row{display:flex;gap:10px}
+  .datebar-row input{flex:1;padding:11px;border-radius:11px;border:1.5px solid var(--line);background:var(--card2);color:var(--txt);font-size:15px;font-weight:600}
+  .datebar-row input:focus{outline:none;border-color:var(--gym)}
+  .datebar-row button{padding:11px 16px;border-radius:11px;border:1.5px solid var(--gym);background:transparent;color:var(--gym);font-size:14px;font-weight:700;cursor:pointer}
+  .datebar-hint{font-size:12px;color:var(--run);margin-top:8px;font-weight:600}
+  .wsel{display:flex;gap:8px;overflow-x:auto;padding:2px 0 6px;margin-top:12px;-webkit-overflow-scrolling:touch}
+  .wsel button{flex:0 0 auto;padding:10px 14px;border-radius:12px;border:1.5px solid var(--line);background:var(--card);color:var(--mut);font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap}
+  .wsel button.active{background:var(--gym);border-color:var(--gym);color:#fff}
+
+  .timer{background:var(--card);border-radius:18px;padding:20px;margin-top:12px;border:1px solid var(--line);text-align:center}
+  .timer .tlabel{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--mut);font-weight:700}
+  .timer .tclock{font-size:44px;font-weight:800;font-variant-numeric:tabular-nums;margin:8px 0;letter-spacing:.02em}
+  .timer .tbtns{display:flex;gap:10px}
+  .timer .tbtns button{flex:1;padding:15px;border-radius:14px;border:none;font-size:16px;font-weight:800;cursor:pointer}
+  .tstart{background:var(--ok);color:#04220f}
+  .tstop{background:var(--run);color:#2a0e02}
+  .tsaved{font-size:13px;color:var(--ok);margin-top:12px}
+  .tsaved.empty{color:var(--mut)}
+
+  .exlist{margin-top:14px}
+  .ex{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:11px 13px;margin-top:8px;cursor:pointer}
+  .exthumb{width:60px;height:60px;flex-shrink:0;border-radius:12px;background:var(--card2);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;overflow:hidden}
+  .exthumb svg{width:56px;height:56px}
+  .ex.cardio .exthumb{background:#33241c;border-color:#5a3a28}
+  .ex .exchk{width:24px;height:24px;border-radius:7px;border:2px solid var(--line);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:14px;color:transparent}
+  .ex.done .exchk{background:var(--ok);border-color:var(--ok);color:#04220f}
+  .ex .exinfo{flex:1;min-width:0}
+  .ex .exname{font-size:14px;font-weight:700;line-height:1.3}
+  .ex.done .exname{color:var(--mut);text-decoration:line-through}
+  .ex .exmeta{font-size:12px;color:var(--mut);margin-top:2px}
+  .ex.cardio .exname{color:var(--run)}
+  .doneall{width:100%;margin-top:16px;padding:15px;border-radius:14px;border:none;background:var(--gym);color:#fff;font-size:15px;font-weight:800;cursor:pointer}
+  .clearday{width:100%;margin-top:10px;padding:13px;border-radius:14px;border:1.5px solid var(--line);background:transparent;color:var(--run);font-size:14px;font-weight:700;cursor:pointer}
+  .clearday:active{transform:scale(.98)}
+  .addpast{width:100%;margin-top:22px;padding:13px;border-radius:14px;border:1.5px dashed var(--line);background:transparent;color:var(--mut);font-size:14px;font-weight:700;cursor:pointer}
+  .addpast:active{transform:scale(.98)}
+
+  .modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;z-index:50;padding:24px}
+  .modal{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:22px;width:100%;max-width:400px}
+  .modal-title{font-size:18px;font-weight:800;margin-bottom:18px}
+  .modal-field{margin-bottom:14px}
+  .modal-field label{display:block;font-size:12px;color:var(--mut);font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:7px}
+  .modal-field input,.modal-field select{width:100%;padding:13px;border-radius:12px;border:1.5px solid var(--line);background:var(--card2);color:var(--txt);font-size:16px;font-weight:600}
+  .modal-field input:focus,.modal-field select:focus{outline:none;border-color:var(--gym)}
+  .modal-btns{display:flex;gap:10px;margin-top:22px}
+  .modal-btns button{flex:1;padding:14px;border-radius:12px;border:none;font-size:15px;font-weight:800;cursor:pointer}
+  .modal-cancel{background:var(--card2);color:var(--txt);border:1.5px solid var(--line)!important}
+  .modal-save{background:var(--gym);color:#fff}
+
+  .cardio-panel{margin-top:14px}
+  .ctipos{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+  .ctipos button{flex:1 0 auto;padding:11px 12px;border-radius:12px;border:1.5px solid var(--line);background:var(--card);color:var(--mut);font-size:13px;font-weight:700;cursor:pointer;min-width:80px}
+  .ctipos button.active{background:var(--run);border-color:var(--run);color:#2a0e02}
+  .ckm{background:var(--card);border-radius:16px;padding:18px;border:1px solid var(--line)}
+  .ckm label{font-size:13px;color:var(--mut);font-weight:600;display:block;margin-bottom:8px}
+  .ckm .kmrow{display:flex;gap:10px;align-items:center}
+  .ckm input{flex:1;padding:14px;border-radius:12px;border:1.5px solid var(--line);background:var(--card2);color:var(--txt);font-size:20px;font-weight:700;text-align:center}
+  .ckm input:focus{outline:none;border-color:var(--run)}
+  .ckm .unit{font-size:15px;color:var(--mut);font-weight:700}
+  .clog{margin-top:14px}
+  .clog-item{display:flex;justify-content:space-between;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-top:8px;font-size:14px}
+  .clog-item .cl-t{font-weight:700}
+  .clog-item .cl-d{color:var(--mut);font-size:13px}
+  .clog-item .cl-del{background:none;border:none;color:var(--run);font-size:13px;cursor:pointer;font-weight:700}
+  .clog-empty{text-align:center;color:var(--mut);font-size:13px;margin-top:10px}
+
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:4px}
+  .stat{background:var(--card);border-radius:14px;padding:14px 8px;text-align:center;border:1px solid var(--line)}
+  .stat b{display:block;font-size:24px;font-weight:800;color:var(--gym)}
+  .stat span{font-size:11px;color:var(--mut);font-weight:600;text-transform:uppercase}
+  .weekstrip{display:flex;gap:6px;margin-top:14px}
+  .wday{flex:1;text-align:center}
+  .wday .dn{font-size:10px;color:var(--mut);font-weight:700;text-transform:uppercase;margin-bottom:5px}
+  .wday .dot{aspect-ratio:1;border-radius:10px;background:var(--card2);border:1.5px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--mut)}
+  .wday .dot.on{background:var(--gym);border-color:var(--gym);color:#fff}
+  .wday .dot.today{box-shadow:0 0 0 2px var(--bg),0 0 0 4px var(--gym)}
+  .week-goal{text-align:center;font-size:13px;color:var(--mut);margin-top:12px}
+  .week-goal b{color:var(--txt)}
+  .monthnav{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+  .monthnav button{background:var(--card2);border:1px solid var(--line);color:var(--txt);width:38px;height:38px;border-radius:11px;font-size:18px;cursor:pointer}
+  .monthnav .mtitle{font-size:16px;font-weight:800}
+  .caldow{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin-bottom:5px}
+  .caldow div{text-align:center;font-size:10px;color:var(--mut);font-weight:700}
+  .calgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
+  .cday{aspect-ratio:1;border-radius:9px;background:var(--card2);border:1px solid var(--line);display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:13px;color:var(--txt);cursor:pointer}
+  .cday.empty{background:transparent;border:none;cursor:default}
+  .cday.on{background:var(--gym);border-color:var(--gym);color:#fff;font-weight:700}
+  .cday.today{box-shadow:0 0 0 2px var(--bg),0 0 0 4px var(--gym)}
+  .cday .mins{font-size:8px;opacity:.85;margin-top:1px}
+  .cal-help{text-align:center;font-size:12px;color:var(--mut);margin-top:12px;line-height:1.5}
+  .yeargrid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:4px}
+  .ymonth{background:var(--card);border-radius:14px;padding:12px 10px;border:1px solid var(--line);cursor:pointer}
+  .ymonth.cur{border-color:var(--gym)}
+  .ymonth .ymhead{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px}
+  .ymonth .ym{font-size:12px;color:var(--txt);font-weight:800;text-transform:uppercase;letter-spacing:.03em}
+  .ymonth .yc{font-size:12px;color:var(--gym);font-weight:800}
+  .minical-dow{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;margin-bottom:2px}
+  .minical-dow div{text-align:center;font-size:7px;font-weight:700;color:var(--mut);text-transform:uppercase}
+  .minical{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
+  .minical .mc{aspect-ratio:1;border-radius:3px;background:var(--card2);display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;color:var(--mut);line-height:1}
+  .minical .mc.empty{background:transparent;color:transparent}
+  .minical .mc.on{background:var(--gym);color:#fff}
+  .minical .mc.today{outline:1.5px solid var(--acc);outline-offset:-1px}
+  .yeartotal{text-align:center;margin-top:16px;font-size:14px;color:var(--mut)}
+  .yeartotal b{color:var(--gym);font-size:20px}
+
+  .verbadge{position:fixed;bottom:calc(72px + env(safe-area-inset-bottom));right:12px;font-size:10px;color:var(--mut);opacity:.6;background:var(--card2);border:1px solid var(--line);padding:3px 8px;border-radius:20px;z-index:6;pointer-events:none;font-weight:700;letter-spacing:.03em}
+  .nav{position:fixed;bottom:0;left:0;right:0;max-width:520px;margin:0 auto;display:flex;background:var(--card);border-top:1px solid var(--line);padding:8px 8px calc(8px + env(safe-area-inset-bottom))}
+  .nav button{flex:1;background:none;border:none;color:var(--mut);font-size:11px;font-weight:700;padding:6px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px}
+  .nav button .ic{font-size:20px}
+  .nav button.active{color:var(--acc)}
+  .footer-note{text-align:center;color:var(--mut);font-size:12px;margin-top:22px;line-height:1.6}
+  .reset{display:block;margin:16px auto 0;background:none;border:none;color:var(--mut);font-size:12px;text-decoration:underline;cursor:pointer}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="kicker">Propósito · 120 dias</div>
+  <h1 id="hTitle">Início</h1>
+</header>
+
+<div class="wrap" id="viewStart">
+  <div class="quote">
+    <div class="qk">Palavra do dia</div>
+    <div class="q" id="verse">—</div>
+    <div class="ref" id="verseRef"></div>
+    <div class="phrase" id="phrase"></div>
+  </div>
+
+  <div class="card">
+    <div class="lbl">Água — meta 4L</div>
+    <div class="water-count"><b id="waterL">0,0L</b> <small>/ 4,0L</small></div>
+    <div class="water-sub" id="waterSub">0 de 7 garrafas (600ml cada)</div>
+    <div class="bottles" id="bottles"></div>
+    <div class="water-btns">
+      <button class="add" id="waterAdd">+ 1 garrafa</button>
+      <button id="waterSub1">− 1</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="lbl">Compromissos de hoje</div>
+    <div class="commit" id="cAlcool"><div class="cchk">✓</div><div class="cinfo"><div class="cname">Sem álcool</div><div class="cstreak" id="sAlcool"></div></div></div>
+    <div class="commit" id="cDoce"><div class="cchk">✓</div><div class="cinfo"><div class="cname">Sem doce</div><div class="cstreak" id="sDoce"></div></div></div>
+    <div class="commit" id="cAcad"><div class="cchk">✓</div><div class="cinfo"><div class="cname">Academia</div><div class="cstreak" id="sAcad"></div></div></div>
+    <div class="commit hidden" id="cMissa"><div class="cchk">✓</div><div class="cinfo"><div class="cname">Missa</div><div class="cstreak">Aos domingos</div></div></div>
+  </div>
+
+  <div class="ringcard">
+    <div class="ring">
+      <svg width="92" height="92" viewBox="0 0 92 92">
+        <circle cx="46" cy="46" r="40" fill="none" stroke="var(--ring)" stroke-width="8"/>
+        <circle id="ringProg" cx="46" cy="46" r="40" fill="none" stroke="var(--acc)" stroke-width="8" stroke-linecap="round" stroke-dasharray="251" stroke-dashoffset="251"/>
+      </svg>
+      <div class="num"><b id="dayNum">0</b><span>de 120</span></div>
+    </div>
+    <div class="ringinfo">
+      <div class="big" id="ringBig">Ainda não começou</div>
+      <div class="sub" id="ringSub">Marque um compromisso no dia 03/08 pra começar.</div>
+    </div>
+  </div>
+
+  <div class="grid-title">Sua jornada <span id="pct">0%</span></div>
+  <div class="grid" id="grid"></div>
+  <div class="footer-note" id="footer">Dia 1 = segunda, 03/08/2026 · Meta: 30/11/2026</div>
+  <button class="reset" id="resetProp">Zerar dados do propósito</button>
+</div>
+
+<div class="wrap hidden" id="viewWorkout">
+  <div class="wsel" id="wsel"></div>
+  <div class="timer">
+    <div class="tlabel">Cronômetro do treino</div>
+    <div class="tclock" id="clock">00:00:00</div>
+    <div class="tbtns">
+      <button class="tstart" id="startBtn">Iniciar treino</button>
+      <button class="tstop hidden" id="stopBtn">Finalizar</button>
+    </div>
+    <div class="tsaved empty" id="tsaved">Nenhum treino cronometrado hoje</div>
+  </div>
+  <div class="exlist" id="exlist"></div>
+  <div class="cardio-panel hidden" id="cardioPanel">
+    <div class="ctipos" id="ctipos"></div>
+    <div class="ckm">
+      <label>Distância percorrida</label>
+      <div class="kmrow">
+        <input id="ckmInput" type="number" inputmode="decimal" placeholder="0,0" step="0.1">
+        <span class="unit">km</span>
+      </div>
+    </div>
+    <div class="clog" id="clog"></div>
+  </div>
+  <button class="doneall" id="doneAll">Marcar treino do dia como feito</button>
+  <button class="clearday" id="clearDay">Zerar treino de hoje</button>
+
+  <button class="addpast" id="addPast">+ Registrar treino de outro dia</button>
+</div>
+
+<div class="modal-bg hidden" id="pastModal">
+  <div class="modal">
+    <div class="modal-title">Registrar treino anterior</div>
+    <div class="modal-field">
+      <label>Data</label>
+      <input type="date" id="pastDate">
+    </div>
+    <div class="modal-field">
+      <label>Treino</label>
+      <select id="pastWorkout"></select>
+    </div>
+    <div class="modal-field">
+      <label>Duração (minutos)</label>
+      <input type="number" id="pastMin" inputmode="numeric" placeholder="ex: 45">
+    </div>
+    <div class="modal-btns">
+      <button class="modal-cancel" id="pastCancel">Cancelar</button>
+      <button class="modal-save" id="pastSave">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<div class="wrap hidden" id="viewFreq">
+  <div class="stats">
+    <div class="stat"><b id="stWeek">0</b><span>Semana</span></div>
+    <div class="stat"><b id="stMonth">0</b><span>Mês</span></div>
+    <div class="stat"><b id="stYear">0</b><span>Ano</span></div>
+  </div>
+  <div class="card">
+    <div class="lbl">Esta semana · meta 7x</div>
+    <div class="weekstrip" id="weekstrip"></div>
+    <div class="week-goal" id="weekGoal"></div>
+  </div>
+  <div class="card">
+    <div class="lbl">Ano de 2026 — toque num mês pra ampliar</div>
+    <div class="yeargrid" id="yeargrid"></div>
+    <div class="yeartotal">Total no ano: <b id="yTotal">0</b> treinos</div>
+  </div>
+</div>
+
+<div class="verbadge" id="verBadge">v1.0</div>
+
+<div class="nav">
+  <button class="active" id="navStart"><span class="ic">🏠</span>Início</button>
+  <button id="navWorkout"><span class="ic">🏋️</span>Treinos</button>
+  <button id="navFreq"><span class="ic">📅</span>Frequência</button>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+<script>
+// ===== Firebase (nuvem) =====
+const firebaseConfig={
+  apiKey:"AIzaSyD2S7rnz72gV_i38vKsbGvdPSENOJ_G2oU",
+  authDomain:"desafio-160-dias.firebaseapp.com",
+  databaseURL:"https://desafio-160-dias-default-rtdb.firebaseio.com",
+  projectId:"desafio-160-dias",
+  storageBucket:"desafio-160-dias.firebasestorage.app",
+  messagingSenderId:"168059093372",
+  appId:"1:168059093372:web:f66fe03c4a9ca559b024f9"
+};
+const USER_KEY="nayane"; // gaveta desta pessoa (Nayane terá "nayane")
+let fbDB=null, fbReady=false;
+try{ firebase.initializeApp(firebaseConfig); fbDB=firebase.database(); fbReady=true; }catch(e){ console.warn("Firebase off:",e); }
+</script>
+
+<script>
+const APP_VERSION="v1.0";
+const USER_NAME="Nayane";
+function greeting(){
+  const h=new Date().getHours();
+  if(h<12)return "Bom dia, "+USER_NAME;
+  if(h<18)return "Boa tarde, "+USER_NAME;
+  return "Boa noite, "+USER_NAME;
+}
+const TOTAL=120, BOTTLE=0.6, BOTTLES=7, WEEK_GOAL=7, YEAR=2026;
+const MESES=["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
+const MES_ABR=["Jan","Fev","Mar","Abr","Mai","Jun","Jul","Ago","Set","Out","Nov","Dez"];
+
+const WORKOUTS=[
+ {id:"gluteo",nome:"Glúteo e posterior",ex:[
+   {n:"Agachamento no TRX",m:"3x30 · sem carga",ic:"trx"},
+   {n:"Afundo TRX",m:"3x15 · sem carga",ic:"lunge"},
+   {n:"Agachamento Smith",m:"4x10+10\"+10 · 0kg",ic:"squat"},
+   {n:"Stiff no Smith",m:"3x12 · 5kg",ic:"barbell"},
+   {n:"Cadeira Flexora",m:"3x12 · 30kg · int. 60s",ic:"machine"},
+   {n:"Glúteos Coice na Polia",m:"3x10 · 10kg",ic:"cable"},
+   {n:"Elevação de Quadril com Barra",m:"3x30+30\" · 10kg",ic:"hip"}
+ ]},
+ {id:"sup1",nome:"Superior e cardio I",ex:[
+   {n:"Esteira Trote",m:"vel. 6/7 · 2 min",cardio:true,ic:"run"},
+   {n:"Elevação Frontal Polia Baixa (supinada)",m:"3x12 · 2kg",ic:"cable"},
+   {n:"Desenvolvimento com Halteres Sentado",m:"3x12 · 5kg",ic:"dumbbell"},
+   {n:"Esteira Trote",m:"vel. 7/8 · 2 min · int. 60s",cardio:true,ic:"run"},
+   {n:"Supino Reto com Halteres",m:"3x12 · 8kg",ic:"bench"},
+   {n:"Tríceps Testa com Halteres",m:"3x4+6+8 · 8/7/6kg · int. 90s",ic:"dumbbell"},
+   {n:"Esteira Trote",m:"vel. 7/8 · 2 min",cardio:true,ic:"run"},
+   {n:"Tríceps Banco Pernas Dobradas",m:"3x máx · sem carga · int. 90s",ic:"bench"},
+   {n:"Elevação Frontal Isométrica (pronada)",m:"3x30\" · 2kg",ic:"dumbbell"},
+   {n:"Esteira Trote",m:"vel. 7/8 · 2 min",cardio:true,ic:"run"}
+ ]},
+ {id:"quad",nome:"Quadríceps e adutores",ex:[
+   {n:"Agachamento Livre Barra no Suporte",m:"3x12 · 10kg (só a barra)",ic:"barbell"},
+   {n:"Cadeira Extensora Unilateral",m:"3x10 · 20kg · (combinado)",ic:"machine"},
+   {n:"Cadeira Extensora",m:"3x10+10\" · 3/5 · int. 90s · (combinado)",ic:"machine"},
+   {n:"Stiff Sumô com Barra",m:"3x12 · 16kg · (combinado)",ic:"barbell"},
+   {n:"Adução de Quadril Máquina",m:"3x10+10\"+10 · 6kg · int. 90s · (combinado)",ic:"machine"},
+   {n:"Leg Press 45",m:"4x12 · 30kg cada lado · (combinado)",ic:"legpress"},
+   {n:"Agachamento Isométrico na Parede",m:"4x até a falha · int. 90s · (combinado)",ic:"wall"}
+ ]},
+ {id:"sup2",nome:"Superior e cardio II",ex:[
+   {n:"Esteira Trote",m:"vel. 6/7 · 2 min · int. 60s",cardio:true,ic:"run"},
+   {n:"Puxada Aberta Barra Reta",m:"3x12 · 8kg · int. 60s",ic:"pulldown"},
+   {n:"Esteira Trote",m:"vel. 6/7 · 2 min · int. 60s",cardio:true,ic:"run"},
+   {n:"Pulldown Barra Reta",m:"3x12 · 4kg · int. 60s",ic:"pulldown"},
+   {n:"Face Pull",m:"3x12 · 5kg · int. 60s",ic:"cable"},
+   {n:"Esteira Trote",m:"vel. 7/8 · 2 min",cardio:true,ic:"run"},
+   {n:"Rosca Direta 21 com Barra Reta",m:"3x21 · 6kg · int. 60s",ic:"curl"},
+   {n:"Remada Baixa Triângulo",m:"3x12 · 7kg",ic:"cable"},
+   {n:"Esteira Trote",m:"vel. 7/8 · 2 min",cardio:true,ic:"run"},
+   {n:"Rosca Concentrada",m:"3x12 · 4/5kg · int. 60s",ic:"curl"},
+   {n:"Abdominal Remador",m:"3x15 · int. 60s",ic:"abs"}
+ ]},
+ {id:"cardio",nome:"Cardio",isCardio:true,tipos:["Esteira","Bike","Elíptico","Escada","Corrida ao ar livre"]}
+];
+
+/* Ilustrações de movimento (figura fazendo o exercício), embutidas — nunca quebram */
+const G="#e6b450",R="#e0774f",P="#7f77dd",SK="#c9d2df";
+function fig(parts,color){return '<svg viewBox="0 0 64 64" fill="none" stroke="'+color+'" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">'+parts+'</svg>';}
+const ICONS={
+ /* halteres — sentada fazendo desenvolvimento */
+ dumbbell:fig('<circle cx="32" cy="15" r="5" fill="'+G+'" stroke="none"/><path d="M32 20v14"/><path d="M32 24l-9-4M32 24l9-4"/><path d="M18 18v6M23 19v4M41 19v4M46 18v6" stroke="'+SK+'"/><path d="M32 34l-6 10M32 34l6 10"/>',G),
+ /* barra — stiff/agachamento com barra nas costas */
+ barbell:fig('<circle cx="32" cy="13" r="5" fill="'+G+'" stroke="none"/><path d="M20 21h24" stroke="'+SK+'"/><path d="M21 17v8M25 18v6M39 18v6M43 17v8" stroke="'+SK+'"/><path d="M32 18v16"/><path d="M32 34l-6 11M32 34l6 11"/>',G),
+ /* rosca — em pé fazendo rosca */
+ curl:fig('<circle cx="32" cy="13" r="5" fill="'+G+'" stroke="none"/><path d="M32 18v16"/><path d="M32 22l-8 5 3 6"/><path d="M25 31l7 3" stroke="'+SK+'"/><path d="M32 34l-5 12M32 34l5 12"/>',G),
+ /* supino — deitada no banco */
+ bench:fig('<path d="M12 40h34" stroke="'+SK+'"/><path d="M16 40v6M42 40v6" stroke="'+SK+'"/><circle cx="18" cy="34" r="5" fill="'+G+'" stroke="none"/><path d="M23 36h16"/><path d="M28 36l3-8M36 36l3-8"/><path d="M25 24h20" stroke="'+SK+'"/>',G),
+ /* máquina — cadeira extensora/flexora */
+ machine:fig('<path d="M14 12v40" stroke="'+SK+'"/><path d="M14 44h10v-14h-10" stroke="'+SK+'"/><circle cx="30" cy="26" r="5" fill="'+P+'" stroke="none"/><path d="M30 31v9h-6"/><path d="M30 40l14 4"/><path d="M44 44l4-2" stroke="'+SK+'"/>',P),
+ /* polia/cabo */
+ cable:fig('<path d="M32 8v10" stroke="'+SK+'"/><path d="M24 18h16" stroke="'+SK+'"/><circle cx="32" cy="27" r="5" fill="'+P+'" stroke="none"/><path d="M32 20l0 4" stroke="'+P+'"/><path d="M32 32v10"/><path d="M32 34l-6 8M32 34l6 8"/><path d="M32 24l-7 4M32 24l7 4"/>',P),
+ /* pulldown — puxada sentada */
+ pulldown:fig('<path d="M18 10h28" stroke="'+SK+'"/><path d="M24 10v6M40 10v6" stroke="'+SK+'"/><circle cx="32" cy="27" r="5" fill="'+P+'" stroke="none"/><path d="M32 20l-8-4M32 20l8-4"/><path d="M32 32v8"/><path d="M26 44h12" stroke="'+SK+'"/><path d="M32 40l-4 4M32 40l4 4"/>',P),
+ /* leg press */
+ legpress:fig('<path d="M12 46h10l10-6 14-10" stroke="'+SK+'"/><path d="M46 30v-6h-10" stroke="'+SK+'"/><circle cx="18" cy="40" r="5" fill="'+P+'" stroke="none"/><path d="M23 41l9-5" stroke="'+P+'"/>',P),
+ /* agachamento livre */
+ squat:fig('<circle cx="32" cy="12" r="5" fill="'+G+'" stroke="none"/><path d="M32 17v11"/><path d="M32 20l-8 3M32 20l8 3"/><path d="M32 28l-7 6v10M32 28l7 6v10"/>',G),
+ /* afundo */
+ lunge:fig('<circle cx="28" cy="12" r="5" fill="'+G+'" stroke="none"/><path d="M28 17v12"/><path d="M28 21l-6 4M28 21l6 4"/><path d="M28 29l-11 8M28 29l8 6v9M17 37v7"/>',G),
+ /* elevação de quadril */
+ hip:fig('<path d="M12 42h10l10-12 10 12h10" stroke="'+SK+'"/><circle cx="32" cy="20" r="5" fill="'+G+'" stroke="none"/><path d="M28 24l-6 6M36 24l6 6"/><path d="M10 48h44" stroke="'+SK+'"/>',G),
+ /* TRX */
+ trx:fig('<path d="M32 6v8" stroke="'+SK+'"/><path d="M24 14h16" stroke="'+SK+'"/><path d="M27 14l-1 12M37 14l1 12" stroke="'+SK+'"/><circle cx="32" cy="30" r="5" fill="'+G+'" stroke="none"/><path d="M32 24v-4" stroke="'+G+'"/><path d="M32 35v9M28 44h8"/>',G),
+ /* parede — agachamento isométrico */
+ wall:fig('<path d="M14 8v48" stroke="'+SK+'"/><circle cx="26" cy="18" r="5" fill="'+P+'" stroke="none"/><path d="M18 23h16" stroke="'+P+'"/><path d="M26 23v10h12"/><path d="M26 33l-8 8M38 33v8"/>',P),
+ /* abdominal remador */
+ abs:fig('<path d="M12 44h32" stroke="'+SK+'"/><circle cx="20" cy="24" r="5" fill="'+P+'" stroke="none"/><path d="M20 29l8 8 12-2"/><path d="M28 37l-6 6" /><path d="M40 35l4-1" stroke="'+SK+'"/>',P),
+ /* esteira — correndo */
+ run:fig('<circle cx="34" cy="12" r="5" fill="'+R+'" stroke="none"/><path d="M34 17l-4 10 6 6v10"/><path d="M30 27l-8 3M36 33l9 2"/><path d="M12 48h14l6-6 6 6h14" stroke="'+SK+'"/>',R)
+};
+function exIcon(t){return ICONS[t]||ICONS.dumbbell;}
+
+const DAILY=[
+ ["Tudo posso naquele que me fortalece.","Filipenses 4:13","Comece confiando: sua força não vem só de você."],
+ ["O Senhor é o meu pastor, nada me faltará.","Salmo 23:1","Você tem tudo o que precisa pra hoje."],
+ ["Esforçai-vos, e ele fortalecerá o vosso coração.","Salmo 31:24","Coragem é decidir de novo, todo dia."],
+ ["Alegrai-vos sempre no Senhor.","Filipenses 4:4","A alegria também é uma escolha diária."],
+ ["Aquietai-vos e sabei que eu sou Deus.","Salmo 46:10","Respire. O controle não precisa ser barulhento."],
+ ["O que semeia com lágrimas, com alegria colherá.","Salmo 126:5","O esforço de hoje vira colheita depois."],
+ ["Buscai primeiro o Reino de Deus.","Mateus 6:33","Prioridade certa organiza o resto."],
+ ["Este é o dia que fez o Senhor; alegremo-nos.","Salmo 118:24","Um novo dia, uma nova chance de vencer."],
+ ["Não temas, porque eu sou contigo.","Isaías 41:10","Você não caminha sozinha."],
+ ["A fé é o firme fundamento das coisas que se esperam.","Hebreus 11:1","Continue mesmo sem ver o fim ainda."],
+ ["Os que esperam no Senhor renovam as forças.","Isaías 40:31","Cansou? A força se renova quando você persiste."],
+ ["Entrega o teu caminho ao Senhor.","Salmo 37:5","Confie o plano e faça a sua parte hoje."],
+ ["O coração alegre é bom remédio.","Provérbios 17:22","Cuidar de si também é cuidar da alma."],
+ ["Sede fortes e corajosos.","Josué 1:9","Firmeza hoje, orgulho amanhã."],
+ ["Tudo tem o seu tempo determinado.","Eclesiastes 3:1","Hoje é o tempo de resistir. Resista."],
+ ["Bem-aventurados os que têm fome de justiça.","Mateus 5:6","Seus bons desejos serão saciados."],
+ ["O Senhor é a minha luz e a minha salvação.","Salmo 27:1","Sem medo do que a vontade tenta te dizer."],
+ ["Deleita-te no Senhor, e ele te concederá.","Salmo 37:4","Alinhe seu desejo ao bem e siga leve."],
+ ["A tua palavra é lâmpada para os meus pés.","Salmo 119:105","Um passo iluminado de cada vez basta."],
+ ["Lançando sobre ele toda a vossa ansiedade.","1 Pedro 5:7","Entregue o peso. Fique só com o dia de hoje."],
+ ["Combati o bom combate, guardei a fé.","2 Timóteo 4:7","Cada dia guardado é uma vitória silenciosa."],
+ ["O Senhor pelejará por vós.","Êxodo 14:14","Você não luta sozinha contra a vontade."],
+ ["Confia no Senhor de todo o teu coração.","Provérbios 3:5","Confie mais no seu propósito que no impulso."],
+ ["Renovai-vos no espírito da vossa mente.","Efésios 4:23","Mente renovada muda a rotina inteira."],
+ ["A alegria do Senhor é a vossa força.","Neemias 8:10","Vá com alegria, não só com disciplina."],
+ ["Não vos canseis de fazer o bem.","Gálatas 6:9","No tempo certo, você colhe. Não desista."],
+ ["Grandes coisas fez o Senhor por nós.","Salmo 126:3","Olhe o quanto você já caminhou."],
+ ["Em paz me deito e logo pego no sono.","Salmo 4:8","Cuidar do corpo é também descansar bem."],
+ ["Vinde a mim os que estais cansados.","Mateus 11:28","No cansaço, encontre descanso e recomece."],
+ ["Aquele que começou a boa obra a completará.","Filipenses 1:6","O que Deus começou em você, Ele termina."],
+ ["O justo florescerá como a palmeira.","Salmo 92:12","Constância te faz crescer, mesmo devagar."],
+ ["Não andeis ansiosos por coisa alguma.","Filipenses 4:6","Um dia de cada vez tira o peso do amanhã."],
+ ["O Senhor guardará a tua saída e a tua entrada.","Salmo 121:8","Você é guardada em cada passo do dia."],
+ ["Provai e vede como o Senhor é bom.","Salmo 34:8","O bem que você escolhe hoje tem sabor de vitória."],
+ ["Sê tu forte, e faze-te homem.","1 Reis 2:2","Maturidade é manter o combinado consigo mesma."],
+ ["A esperança não traz confusão.","Romanos 5:5","Continue esperando o melhor de você."],
+ ["Melhor é o fim das coisas do que o princípio.","Eclesiastes 7:8","O difícil já passou. O melhor está adiante."],
+ ["Corramos com perseverança a corrida.","Hebreus 12:1","É uma maratona, não uma corrida de um dia."],
+ ["Deus é o nosso refúgio e fortaleza.","Salmo 46:1","Onde você se apoia é mais firme que a vontade."],
+ ["Cria em mim um coração puro, ó Deus.","Salmo 51:10","Cada dia limpo renova você por dentro."],
+ ["O Senhor está perto dos que têm o coração quebrantado.","Salmo 34:18","Nos dias difíceis, você não está sozinha."],
+ ["Sê firme e corajoso; não temas.","Deuteronômio 31:6","Firmeza é escolher de novo, mesmo com medo."],
+ ["Como a corça anseia pelas águas.","Salmo 42:1","Sede de água, sede de vida. Beba bem hoje."],
+ ["O que persevera até o fim será salvo.","Mateus 24:13","Perseverar é o segredo de tudo que dura."],
+ ["Alegra-te, ó jovem, na tua mocidade.","Eclesiastes 11:9","Cuidar de si agora é presente pro seu futuro."],
+ ["Deus não nos deu espírito de covardia.","2 Timóteo 1:7","Você tem força, amor e domínio próprio."],
+ ["Bendize, ó minha alma, ao Senhor.","Salmo 103:1","Gratidão pelo corpo que te leva tão longe."],
+ ["A palavra de Deus é viva e eficaz.","Hebreus 4:12","Deixe a boa palavra guiar suas escolhas."],
+ ["Não te deixes vencer do mal, mas vence o mal com o bem.","Romanos 12:21","Vença o impulso com uma escolha melhor."],
+ ["O Senhor dá força ao cansado.","Isaías 40:29","Sem energia? Ele multiplica a que você tem."],
+ ["Tudo quanto fizerdes, fazei de coração.","Colossenses 3:23","Faça o dia com capricho, por você."],
+ ["Ele restaura a minha alma.","Salmo 23:3","Descanso e cuidado também restauram você."],
+ ["A vossa fé não se apoie em sabedoria humana.","1 Coríntios 2:5","Confie no processo, mesmo sem entender tudo."],
+ ["Ainda que eu ande pelo vale.","Salmo 23:4","Mesmo nos dias baixos, você segue firme."],
+ ["Fostes comprados por bom preço.","1 Coríntios 6:20","Seu corpo é valioso. Trate-o assim hoje."],
+ ["O fruto do Espírito é domínio próprio.","Gálatas 5:23","Domínio próprio é liberdade, não prisão."],
+ ["Sara-me, Senhor, e sararei.","Jeremias 17:14","Cada bom hábito é um passo de cura."],
+ ["Não olheis cada um para o que é seu.","Filipenses 2:4","Cuidar de você também abençoa quem te ama."],
+ ["Tu és digna, ó Senhor.","Apocalipse 4:11","Você é digna do cuidado que dá a si mesma."],
+ ["Onde está o teu tesouro, aí está o teu coração.","Mateus 6:21","Invista no que realmente importa pra você."],
+ ["Sê exemplo dos fiéis na tua conduta.","1 Timóteo 4:12","Sua constância inspira mais gente do que imagina."],
+ ["O sono do trabalhador é doce.","Eclesiastes 5:12","Esforço honesto rende bom descanso."],
+ ["Alegrai-vos na esperança.","Romanos 12:12","Esperança é combustível pra continuar."],
+ ["Buscai o Senhor enquanto se pode achar.","Isaías 55:6","O melhor momento de recomeçar é agora."],
+ ["Não te esqueças de nenhum dos seus benefícios.","Salmo 103:2","Lembre de tudo que você já conquistou."],
+ ["Quem é fiel no pouco, também é no muito.","Lucas 16:10","O pequeno hábito de hoje prepara o grande amanhã."],
+ ["O Senhor te abençoe e te guarde.","Números 6:24","Que seu dia seja guardado e abençoado."],
+ ["Não desanimeis.","2 Coríntios 4:16","Mesmo cansada por fora, você se renova por dentro."],
+ ["A minha graça te basta.","2 Coríntios 12:9","Nos dias fracos, a força vem de outro lugar."],
+ ["Regozijai-vos no Senhor sempre.","Filipenses 4:4","Ache um motivo pra sorrir hoje."],
+ ["Cada um receberá conforme o seu trabalho.","1 Coríntios 3:8","Seu esforço não passa em branco."],
+ ["Lâmpada para os meus pés é a tua palavra.","Salmo 119:105","Um passo de cada vez é suficiente."],
+ ["Deus é fiel.","1 Coríntios 1:9","O que Ele começou em você não fica pela metade."],
+ ["Bem-aventurado o que persevera.","Tiago 1:12","Persistir hoje te aproxima da recompensa."],
+ ["A tua fé te salvou; vai em paz.","Lucas 7:50","Confie e siga em paz, sem cobrança."],
+ ["Sede sóbrios e vigiai.","1 Pedro 5:8","Atenção às pequenas escolhas do dia."],
+ ["O amor tudo sofre, tudo suporta.","1 Coríntios 13:7","Tenha paciência e amor com você mesma."],
+ ["Vós sois a luz do mundo.","Mateus 5:14","Seu exemplo brilha mais do que você pensa."],
+ ["A esperança adiada deixa o coração enfermo.","Provérbios 13:12","Não adie o cuidado com você. Comece hoje."],
+ ["Deus opera em vós tanto o querer como o realizar.","Filipenses 2:13","Até a vontade de continuar é um presente."],
+ ["Espera no Senhor, anima-te.","Salmo 27:14","Coragem: o esforço de hoje vale a pena."],
+ ["A quem muito foi dado, muito se pedirá.","Lucas 12:48","Cuide bem do corpo e da vida que você tem."],
+ ["Melhor é confiar no Senhor.","Salmo 118:8","Confie mais no plano que no cansaço do dia."],
+ ["Renova os teus dias como antigamente.","Lamentações 5:21","Todo dia é uma chance de recomeçar."],
+ ["Andai como filhos da luz.","Efésios 5:8","Escolhas de luz iluminam sua rotina."],
+ ["A colheita é grande.","Mateus 9:37","Há muito bom fruto vindo do seu esforço."],
+ ["Guarda o teu coração.","Provérbios 4:23","Cuide do que entra: comida, pensamento, hábito."],
+ ["Achegai-vos a Deus, e ele se achegará a vós.","Tiago 4:8","Um passo em direção ao bem já muda o dia."],
+ ["Sê firme na esperança.","Hebreus 10:23","Segure firme no que você acredita."],
+ ["Fazei tudo para a glória de Deus.","1 Coríntios 10:31","Até um copo de água pode ser feito com propósito."],
+ ["O prudente considera bem os seus passos.","Provérbios 14:15","Pense antes; escolha o que te faz bem."],
+ ["Não te canses de fazer o bem a ti.","Gálatas 6:9","Cuidar de você é fazer o bem, não egoísmo."],
+ ["Deus enxugará dos olhos toda lágrima.","Apocalipse 21:4","Dias difíceis passam. Continue."],
+ ["O Senhor é a minha força e o meu cântico.","Salmo 118:14","Faça do esforço um motivo de alegria."],
+ ["A verdade vos libertará.","João 8:32","Ser sincera consigo é o primeiro passo."],
+ ["Ele te sustém.","Salmo 55:22","Quando pesar, lembre que você é sustentada."],
+ ["Levanta-te, resplandece.","Isaías 60:1","Comece o dia decidida a brilhar."],
+ ["A perseverança produz caráter.","Romanos 5:4","Cada dia firme forja quem você está se tornando."],
+ ["Não pela força, mas pelo meu Espírito.","Zacarias 4:6","Nem tudo depende de força bruta. Vá leve."],
+ ["Muitos são os planos no coração.","Provérbios 19:21","Faça sua parte hoje e confie o resto."],
+ ["O Senhor cumprirá o que a mim me concerne.","Salmo 138:8","Você não precisa carregar tudo sozinha."],
+ ["Bem-aventurados os limpos de coração.","Mateus 5:8","Dias limpos deixam a mente mais leve."],
+ ["Fica firme.","1 Coríntios 16:13","Só por hoje, mantenha o combinado."],
+ ["A tua misericórdia é melhor do que a vida.","Salmo 63:3","Seja gentil com você nos tropeços."],
+ ["Correi de tal maneira que o alcanceis.","1 Coríntios 9:24","Corra hoje como quem quer chegar."],
+ ["Deus é amor.","1 João 4:8","Faça suas escolhas de hoje com amor-próprio."],
+ ["Aquietai-vos.","Salmo 46:10","Descansar também faz parte do progresso."],
+ ["Novas são a cada manhã.","Lamentações 3:23","Errou ontem? Hoje as misericórdias são novas."],
+ ["O que buscardes, achareis.","Mateus 7:7","Busque saúde e disciplina; você vai achar."],
+ ["Dá-me entendimento.","Salmo 119:34","Entenda seu porquê e a rotina flui."],
+ ["A alegria será plena.","João 16:24","O fim dessa jornada será cheio de alegria."],
+ ["Firmou os meus passos.","Salmo 40:2","Seus pés estão em terreno firme agora."],
+ ["Perseverai na oração.","Colossenses 4:2","Constância na fé, constância na rotina."],
+ ["O Senhor te guiará continuamente.","Isaías 58:11","Deixe-se guiar, um dia após o outro."],
+ ["Tende bom ânimo.","João 16:33","Ânimo! Você está mais perto do que pensa."],
+ ["A tua recompensa será grande.","Lucas 6:35","O que você planta hoje volta multiplicado."],
+ ["Consumado está.","João 19:30","Chegar ao fim é possível. Você vai chegar."],
+ ["O Senhor é bom para com os que nele esperam.","Lamentações 3:25","Esperar com fé sempre compensa."],
+ ["Portai-vos com dignidade.","Filipenses 1:27","Honre hoje o compromisso que fez consigo."],
+ ["Coroaste o ano com a tua bondade.","Salmo 65:11","Que este ano seja coroado com sua vitória."]
+];
+
+const K={prop:"iso_prop_v2",gym:"iso_gym_v2",ex:"iso_ex_v2",cardio:"iso_cardio_v2"};
+let prop={startDate:null,days:{}};
+let gym={};
+let exState={};
+let cardioState={};    // cardioState[YYYY-MM-DD] = {tipo, sessions:[{tipo,min,km}]}
+let curCardioTipo="Esteira";
+let activeDate=null; // data ativa da aba Treinos (null = hoje)
+let curWorkout=0;
+let calMonth=6;
+let tickHandle=null;
+
+function todayStr(){return new Date().toISOString().slice(0,10);}
+function wDate(){return activeDate||todayStr();}
+function dstr(d){return d.toISOString().slice(0,10);}
+function daysBetween(a,b){return Math.round((new Date(b)-new Date(a))/86400000);}
+
+// ===== Camada de armazenamento: localStorage (aparelho) + Firebase (nuvem) =====
+function lsKey(k){return "prop120_"+USER_KEY+"_"+k;}
+function localGet(k){try{const v=localStorage.getItem(lsKey(k));return v?JSON.parse(v):null;}catch(e){return null;}}
+function localSet(k,val){try{localStorage.setItem(lsKey(k),JSON.stringify(val));}catch(e){}}
+function cloudRef(k){return fbReady?fbDB.ref("usuarios/"+USER_KEY+"/"+k):null;}
+function cloudSet(k,val){if(!fbReady)return;try{cloudRef(k).set(val);}catch(e){}}
+async function cloudGet(k){
+  if(!fbReady)return null;
+  try{const snap=await cloudRef(k).once("value");return snap.exists()?snap.val():null;}catch(e){return null;}
+}
+
+let saveTimer=null;
+function saveAll(){
+  // grava local na hora
+  localSet("prop",prop);localSet("gym",gym);localSet("ex",exState);localSet("cardio",cardioState);
+  // grava nuvem com pequeno debounce
+  if(saveTimer)clearTimeout(saveTimer);
+  saveTimer=setTimeout(()=>{
+    cloudSet("prop",prop);cloudSet("gym",gym);cloudSet("ex",exState);cloudSet("cardio",cardioState);
+  },400);
+}
+async function saveProp(){saveAll();}
+async function saveGym(){saveAll();}
+async function saveEx(){saveAll();}
+async function saveCardio(){saveAll();}
+
+async function load(){
+  // 1) carrega do aparelho primeiro (rápido, funciona offline)
+  const lp=localGet("prop"),lg=localGet("gym"),le=localGet("ex"),lc=localGet("cardio");
+  if(lp)prop=lp; if(lg)gym=lg; if(le)exState=le; if(lc)cardioState=lc;
+  calMonth=new Date().getMonth();
+  const vb=document.getElementById("verBadge");if(vb)vb.textContent=APP_VERSION;
+  const ht=document.getElementById("hTitle");if(ht)ht.textContent=greeting();
+  buildWorkoutSelector();
+  renderStart();renderWorkout();renderFreq();
+  // 2) busca da nuvem e atualiza se houver
+  if(fbReady){
+    try{
+      const [cp,cg,ce,cc]=await Promise.all([cloudGet("prop"),cloudGet("gym"),cloudGet("ex"),cloudGet("cardio")]);
+      let changed=false;
+      if(cp){prop=cp;changed=true;} if(cg){gym=cg;changed=true;}
+      if(ce){exState=ce;changed=true;} if(cc){cardioState=cc;changed=true;}
+      if(changed){
+        // salva de volta no aparelho e re-renderiza
+        localSet("prop",prop);localSet("gym",gym);localSet("ex",exState);localSet("cardio",cardioState);
+        renderStart();renderWorkout();renderFreq();
+      }
+    }catch(e){console.warn("cloud load falhou",e);}
+  }
+}
+
+function currentDayIndex(){if(!prop.startDate)return 0;const n=daysBetween(prop.startDate,todayStr())+1;return Math.max(0,Math.min(TOTAL,n));}
+function isSunday(ds){return new Date(ds+"T00:00").getDay()===0;}
+function todayProp(){if(!prop.days[todayStr()])prop.days[todayStr()]={alcool:false,doce:false,missa:false,water:0};
+  const d=prop.days[todayStr()];
+  if(d.alcool===undefined)d.alcool=!!d.done; // migração do modelo antigo
+  if(d.doce===undefined)d.doce=!!d.done;
+  if(d.missa===undefined)d.missa=false;
+  return d;}
+/* um dia conta como cumprido se marcou qualquer compromisso (álcool, doce, missa) ou foi à academia */
+function dayFulfilled(ds){
+  const d=prop.days[ds];const g=gym[ds];
+  const anyProp=d&&(d.alcool||d.doce||d.missa);
+  const acad=g&&g.done;
+  return !!(anyProp||acad);
+}
+function completedCount(){
+  const set=new Set();
+  for(const ds in prop.days){if(dayFulfilled(ds))set.add(ds);}
+  for(const ds in gym){if(gym[ds].done)set.add(ds);}
+  return set.size;
+}
+/* contadores individuais (sequência) */
+function streakOf(field){
+  let n=0;
+  for(const ds in prop.days){if(field==="acad"){if(gym[ds]&&gym[ds].done)n++;}else if(prop.days[ds][field])n++;}
+  if(field==="acad"){n=0;for(const ds in gym){if(gym[ds].done)n++;}}
+  return n;
+}
+
+function renderStart(){
+  const td=todayProp();
+  const dayIdx=currentDayIndex();const done=completedCount();const pct=Math.min(1,done/TOTAL);
+  document.getElementById("ringProg").style.strokeDashoffset=251*(1-pct);
+  document.getElementById("dayNum").textContent=dayIdx;
+  document.getElementById("pct").textContent=Math.round(pct*100)+"%";
+  if(!prop.startDate){
+    document.getElementById("ringBig").textContent="Ainda não começou";
+    document.getElementById("ringSub").textContent="Marque um compromisso no dia 03/08 pra iniciar.";
+  }else{
+    document.getElementById("ringBig").textContent="Dia "+dayIdx+" de 120";
+    const end=new Date(prop.startDate);end.setDate(end.getDate()+TOTAL-1);
+    document.getElementById("ringSub").textContent=done+" dias cumpridos · meta "+end.toLocaleDateString("pt-BR");
+    document.getElementById("footer").textContent="Início: "+new Date(prop.startDate).toLocaleDateString("pt-BR")+" · Meta: "+end.toLocaleDateString("pt-BR");
+  }
+  const di=(dayIdx>0?dayIdx-1:(new Date().getDate()-1))%DAILY.length;
+  document.getElementById("verse").textContent="“"+DAILY[di][0]+"”";
+  document.getElementById("verseRef").textContent=DAILY[di][1];
+  document.getElementById("phrase").textContent=DAILY[di][2];
+
+  // compromissos
+  const g=gym[todayStr()];
+  setCommit("cAlcool",td.alcool);
+  setCommit("cDoce",td.doce);
+  setCommit("cAcad",!!(g&&g.done));
+  document.getElementById("sAlcool").textContent=streakOf("alcool")+" dias no total";
+  document.getElementById("sDoce").textContent=streakOf("doce")+" dias no total";
+  document.getElementById("sAcad").textContent="marca presença · tempo vem da aba Treinos";
+  const missaCard=document.getElementById("cMissa");
+  if(isSunday(todayStr())){missaCard.classList.remove("hidden");setCommit("cMissa",td.missa);}
+  else missaCard.classList.add("hidden");
+
+  renderWater(td.water);
+  const grid=document.getElementById("grid");grid.innerHTML="";
+  for(let i=0;i<TOTAL;i++){const c=document.createElement("div");c.className="cell";c.textContent=i+1;
+    if(prop.startDate){const d=new Date(prop.startDate);d.setDate(d.getDate()+i);const ds=dstr(d);
+      if(dayFulfilled(ds))c.classList.add("done");
+      if(ds===todayStr())c.classList.add("today");}
+    grid.appendChild(c);}
+}
+function setCommit(id,on){const el=document.getElementById(id);el.classList.toggle("done",!!on);}
+function renderWater(count){
+  document.getElementById("waterL").textContent=(count*BOTTLE).toFixed(1).replace(".",",")+"L";
+  document.getElementById("waterSub").textContent=count+" de "+BOTTLES+" garrafas (600ml cada)";
+  const b=document.getElementById("bottles");b.innerHTML="";
+  for(let i=0;i<BOTTLES;i++){const el=document.createElement("div");el.className="bottle"+(i<count?" full":"");b.appendChild(el);}
+}
+
+function buildWorkoutSelector(){
+  const s=document.getElementById("wsel");s.innerHTML="";
+  WORKOUTS.forEach((w,i)=>{
+    const btn=document.createElement("button");btn.textContent=w.nome;
+    if(i===curWorkout)btn.classList.add("active");
+    btn.addEventListener("click",()=>{curWorkout=i;buildWorkoutSelector();renderWorkout();});
+    s.appendChild(btn);
+  });
+}
+function isCardioWorkout(){return !!WORKOUTS[curWorkout].isCardio;}
+function exToday(){
+  const t=wDate();if(!exState[t])exState[t]={};
+  const w=WORKOUTS[curWorkout];
+  if(w.isCardio){
+    if(!exState[t][w.id])exState[t][w.id]={timer:{start:null,elapsed:0,running:false}};
+    return exState[t][w.id];
+  }
+  if(!exState[t][w.id])exState[t][w.id]={done:w.ex.map(()=>false),timer:{start:null,elapsed:0,running:false}};
+  return exState[t][w.id];
+}
+function cardioToday(){const t=wDate();if(!cardioState[t])cardioState[t]={sessions:[]};return cardioState[t];}
+function fmt(ms){const s=Math.floor(ms/1000);const h=Math.floor(s/3600),m=Math.floor((s%3600)/60),ss=s%60;
+  return String(h).padStart(2,"0")+":"+String(m).padStart(2,"0")+":"+String(ss).padStart(2,"0");}
+
+function renderWorkout(){
+  const st=exToday();const w=WORKOUTS[curWorkout];const cardio=w.isCardio;
+  const isToday=true;
+  updateClock();
+  const startB=document.getElementById("startBtn"),stopB=document.getElementById("stopBtn");
+  if(st.timer.running){startB.classList.add("hidden");stopB.classList.remove("hidden");}
+  else{startB.classList.remove("hidden");stopB.classList.add("hidden");
+    startB.textContent=st.timer.elapsed>0?(cardio?"Retomar cardio":"Retomar treino"):(cardio?"Iniciar cardio":"Iniciar treino");}
+  const ts=document.getElementById("tsaved");
+  if(st.timer.running){ts.classList.add("empty");ts.textContent=cardio?("Cronometrando "+curCardioTipo+"…"):"Cronometrando…";}
+  else if(st.timer.elapsed>0){ts.classList.remove("empty");ts.textContent="⏱ Duração: "+fmt(st.timer.elapsed)+(cardio?" · digite os km e finalize":"");}
+  else{ts.classList.add("empty");ts.textContent=cardio?"Escolha o tipo e inicie o cardio":(isToday?"Nenhum treino cronometrado hoje":"Nenhum treino cronometrado neste dia");}
+
+  const list=document.getElementById("exlist");
+  const panel=document.getElementById("cardioPanel");
+  const doneBtn=document.getElementById("doneAll");
+  if(cardio){
+    list.classList.add("hidden");panel.classList.remove("hidden");doneBtn.classList.add("hidden");
+    renderCardioPanel();
+  }else{
+    list.classList.remove("hidden");panel.classList.add("hidden");doneBtn.classList.remove("hidden");
+    list.innerHTML="";
+    w.ex.forEach((e,i)=>{
+      const row=document.createElement("div");row.className="ex"+(st.done[i]?" done":"")+(e.cardio?" cardio":"");
+      row.innerHTML='<div class="exthumb">'+exIcon(e.ic)+'</div><div class="exinfo"><div class="exname">'+e.n+'</div><div class="exmeta">'+e.m+'</div></div><div class="exchk">✓</div>';
+      row.addEventListener("click",()=>{st.done[i]=!st.done[i];saveEx();renderWorkout();});
+      list.appendChild(row);
+    });
+  }
+}
+
+function renderCardioPanel(){
+  const w=WORKOUTS[curWorkout];
+  const tp=document.getElementById("ctipos");tp.innerHTML="";
+  w.tipos.forEach(t=>{
+    const b=document.createElement("button");b.textContent=t;
+    if(t===curCardioTipo)b.classList.add("active");
+    b.addEventListener("click",()=>{curCardioTipo=t;renderCardioPanel();});
+    tp.appendChild(b);
+  });
+  const cd=cardioToday();
+  const log=document.getElementById("clog");log.innerHTML="";
+  if(cd.sessions.length===0){
+    log.innerHTML='<div class="clog-empty">Nenhum cardio registrado hoje</div>';
+  }else{
+    cd.sessions.forEach((s,i)=>{
+      const item=document.createElement("div");item.className="clog-item";
+      item.innerHTML='<div><div class="cl-t">'+s.tipo+'</div><div class="cl-d">'+s.min+' min'+(s.km?' · '+String(s.km).replace(".",",")+' km':'')+'</div></div><button class="cl-del">remover</button>';
+      item.querySelector(".cl-del").addEventListener("click",()=>{cd.sessions.splice(i,1);recalcCardioDay();saveCardio();renderCardioPanel();renderFreq();});
+      log.appendChild(item);
+    });
+  }
+}
+function updateClock(){
+  const st=exToday();let ms=st.timer.elapsed;
+  if(st.timer.running&&st.timer.start)ms+=Date.now()-st.timer.start;
+  document.getElementById("clock").textContent=fmt(ms);
+}
+function startTimer(){
+  const st=exToday();st.timer.running=true;st.timer.start=Date.now();saveEx();renderWorkout();
+  if(tickHandle)clearInterval(tickHandle);tickHandle=setInterval(updateClock,1000);
+}
+function stopTimer(){
+  const st=exToday();const w=WORKOUTS[curWorkout];
+  if(st.timer.running&&st.timer.start){st.timer.elapsed+=Date.now()-st.timer.start;}
+  st.timer.running=false;st.timer.start=null;
+  if(tickHandle){clearInterval(tickHandle);tickHandle=null;}
+  const mins=Math.max(1,Math.round(st.timer.elapsed/60000));
+  if(w.isCardio){
+    const kmVal=document.getElementById("ckmInput").value;
+    const cd=cardioToday();
+    cd.sessions.push({tipo:curCardioTipo,min:mins,km:kmVal?Number(kmVal):null});
+    st.timer.elapsed=0;  // zera pra próxima sessão de cardio
+    document.getElementById("ckmInput").value="";
+    recalcCardioDay();
+    saveEx();saveCardio();renderWorkout();renderFreq();renderStart();
+    return;
+  }
+  gym[wDate()]={done:true,min:mins};
+  saveEx();saveGym();renderWorkout();renderFreq();renderStart();
+}
+/* soma os minutos de cardio do dia e marca presença */
+function recalcCardioDay(){
+  const t=wDate();const cd=cardioState[t];
+  if(cd&&cd.sessions.length>0){
+    const totalMin=cd.sessions.reduce((a,s)=>a+(s.min||0),0);
+    const prev=gym[t]||{};
+    gym[t]={done:true,min:(prev.min&&prev.fromWorkout)?prev.min:totalMin,fromCardio:true};
+  }
+}
+
+function weekDates(){const now=new Date();const dow=now.getDay();const sun=new Date(now);sun.setDate(now.getDate()-dow);
+  const arr=[];for(let i=0;i<7;i++){const d=new Date(sun);d.setDate(sun.getDate()+i);arr.push(d);}return arr;}
+function countGymInMonth(m){let n=0;for(const k in gym){if(gym[k].done){const d=new Date(k+"T00:00");if(d.getFullYear()===YEAR&&d.getMonth()===m)n++;}}return n;}
+function countGymInYear(){let n=0;for(const k in gym){if(gym[k].done&&k.startsWith(YEAR+"-"))n++;}return n;}
+function renderFreq(){
+  const wd=weekDates();let wc=0;wd.forEach(d=>{if(gym[dstr(d)]&&gym[dstr(d)].done)wc++;});
+  document.getElementById("stWeek").textContent=wc;
+  document.getElementById("stMonth").textContent=countGymInMonth(new Date().getMonth());
+  document.getElementById("stYear").textContent=countGymInYear();
+  const DN=["Dom","Seg","Ter","Qua","Qui","Sex","Sáb"];
+  const ws=document.getElementById("weekstrip");ws.innerHTML="";
+  wd.forEach((d,i)=>{const on=gym[dstr(d)]&&gym[dstr(d)].done;
+    const el=document.createElement("div");el.className="wday";
+    el.innerHTML='<div class="dn">'+DN[i]+'</div><div class="dot'+(on?" on":"")+(dstr(d)===todayStr()?" today":"")+'">'+d.getDate()+'</div>';
+    ws.appendChild(el);});
+  document.getElementById("weekGoal").innerHTML="<b>"+wc+"</b> de "+WEEK_GOAL+" treinos esta semana";
+  const yg=document.getElementById("yeargrid");yg.innerHTML="";
+  for(let m=0;m<12;m++){
+    const c=countGymInMonth(m);
+    const el=document.createElement("div");el.className="ymonth";
+    let mini='<div class="minical-dow"><div>D</div><div>S</div><div>T</div><div>Q</div><div>Q</div><div>S</div><div>S</div></div><div class="minical">';
+    const startDow=new Date(YEAR,m,1).getDay();
+    const daysIn=new Date(YEAR,m+1,0).getDate();
+    for(let i=0;i<startDow;i++)mini+='<div class="mc empty"></div>';
+    for(let d=1;d<=daysIn;d++){
+      const ds=YEAR+"-"+String(m+1).padStart(2,"0")+"-"+String(d).padStart(2,"0");
+      const on=gym[ds]&&gym[ds].done;
+      mini+='<div class="mc'+(on?" on":"")+(ds===todayStr()?" today":"")+'">'+d+'</div>';
+    }
+    mini+='</div>';
+    el.innerHTML='<div class="ymhead"><span class="ym">'+MES_ABR[m]+'</span><span class="yc">'+c+'</span></div>'+mini;
+    yg.appendChild(el);
+  }
+  document.getElementById("yTotal").textContent=countGymInYear();
+}
+function toggleGym(ds){
+  const rec=gym[ds];
+  if(rec&&rec.done){
+    const m=prompt("Treino em "+ds.split("-").reverse().join("/")+"\nMinutos (OK mantém; digite 0 pra desmarcar):",rec.min||"");
+    if(m===null)return;
+    if(m.trim()==="0")delete gym[ds];
+    else if(m.trim()!=="")gym[ds]={done:true,min:Number(m)};
+  }else gym[ds]={done:true,min:null};
+  saveGym();renderFreq();renderStart();
+}
+
+function ensureStart(){if(!prop.startDate)prop.startDate=todayStr();}
+document.getElementById("cAlcool").addEventListener("click",()=>{const td=todayProp();td.alcool=!td.alcool;ensureStart();renderStart();saveProp();});
+document.getElementById("cDoce").addEventListener("click",()=>{const td=todayProp();td.doce=!td.doce;ensureStart();renderStart();saveProp();});
+document.getElementById("cMissa").addEventListener("click",()=>{const td=todayProp();td.missa=!td.missa;ensureStart();renderStart();saveProp();});
+document.getElementById("cAcad").addEventListener("click",()=>{const t=todayStr();if(gym[t]&&gym[t].done)delete gym[t];else gym[t]={done:true,min:(gym[t]&&gym[t].min)||null};ensureStart();renderStart();saveGym();saveProp();renderFreq();});
+document.getElementById("waterAdd").addEventListener("click",()=>{const td=todayProp();if(td.water<BOTTLES)td.water++;renderWater(td.water);saveProp();});
+document.getElementById("waterSub1").addEventListener("click",()=>{const td=todayProp();if(td.water>0)td.water--;renderWater(td.water);saveProp();});
+document.getElementById("startBtn").addEventListener("click",startTimer);
+document.getElementById("stopBtn").addEventListener("click",stopTimer);
+document.getElementById("doneAll").addEventListener("click",()=>{const st=exToday();st.done=st.done.map(()=>true);const t=wDate();if(!gym[t]||!gym[t].done)gym[t]={done:true,min:(gym[t]&&gym[t].min)||null};saveEx();saveGym();renderWorkout();renderFreq();renderStart();});
+document.getElementById("clearDay").addEventListener("click",()=>{
+  const w=WORKOUTS[curWorkout];const t=wDate();
+  const quando=(t===todayStr())?"de hoje":"de "+t.split("-").reverse().join("/");
+  const nome=w.isCardio?"o cardio ":"o treino ";
+  if(!confirm("Zerar "+nome+quando+"? Isso desmarca os exercícios, o cronômetro e a presença do dia.\n(O histórico de outros dias não é afetado.)"))return;
+  if(tickHandle){clearInterval(tickHandle);tickHandle=null;}
+  if(w.isCardio){
+    if(cardioState[t])cardioState[t]={sessions:[]};
+    if(exState[t]&&exState[t][w.id])exState[t][w.id]={timer:{start:null,elapsed:0,running:false}};
+    delete gym[t];
+    saveCardio();
+  }else{
+    if(exState[t]&&exState[t][w.id])exState[t][w.id]={done:w.ex.map(()=>false),timer:{start:null,elapsed:0,running:false}};
+    delete gym[t];
+  }
+  saveEx();saveGym();renderWorkout();renderFreq();renderStart();
+});
+// seletor de data
+// ===== Modal registrar treino anterior =====
+function openPastModal(){
+  const sel=document.getElementById("pastWorkout");sel.innerHTML="";
+  WORKOUTS.forEach((w,i)=>{const o=document.createElement("option");o.value=i;o.textContent=w.nome;sel.appendChild(o);});
+  document.getElementById("pastDate").value=todayStr();
+  document.getElementById("pastMin").value="";
+  document.getElementById("pastModal").classList.remove("hidden");
+}
+function closePastModal(){document.getElementById("pastModal").classList.add("hidden");}
+document.getElementById("addPast").addEventListener("click",openPastModal);
+document.getElementById("pastCancel").addEventListener("click",closePastModal);
+document.getElementById("pastModal").addEventListener("click",e=>{if(e.target.id==="pastModal")closePastModal();});
+document.getElementById("pastSave").addEventListener("click",()=>{
+  const ds=document.getElementById("pastDate").value;
+  const wi=Number(document.getElementById("pastWorkout").value);
+  const minV=document.getElementById("pastMin").value;
+  if(!ds){alert("Escolha a data.");return;}
+  if(!minV||Number(minV)<=0){alert("Digite a duração em minutos.");return;}
+  const w=WORKOUTS[wi];
+  gym[ds]={done:true,min:Number(minV)};
+  // marca também os exercícios do treino escolhido como feitos naquele dia (registro histórico)
+  if(!exState[ds])exState[ds]={};
+  if(w.isCardio){
+    if(!cardioState[ds])cardioState[ds]={sessions:[]};
+    cardioState[ds].sessions.push({tipo:"Registro retroativo",min:Number(minV),km:null});
+    saveCardio();
+  }else{
+    exState[ds][w.id]={done:w.ex.map(()=>true),timer:{start:null,elapsed:Number(minV)*60000,running:false}};
+    saveEx();
+  }
+  saveGym();renderFreq();renderStart();closePastModal();
+  alert("Treino de "+ds.split("-").reverse().join("/")+" registrado ("+minV+" min).");
+});
+
+document.getElementById("resetProp").addEventListener("click",()=>{if(confirm("Zerar dados do propósito? (treinos e frequência são mantidos)")){prop={startDate:null,days:{}};renderStart();saveProp();}});
+
+document.getElementById("navStart").addEventListener("click",()=>switchView("start"));
+document.getElementById("navWorkout").addEventListener("click",()=>switchView("workout"));
+document.getElementById("navFreq").addEventListener("click",()=>switchView("freq"));
+function switchView(v){
+  document.getElementById("viewStart").classList.toggle("hidden",v!=="start");
+  document.getElementById("viewWorkout").classList.toggle("hidden",v!=="workout");
+  document.getElementById("viewFreq").classList.toggle("hidden",v!=="freq");
+  document.getElementById("navStart").classList.toggle("active",v==="start");
+  document.getElementById("navWorkout").classList.toggle("active",v==="workout");
+  document.getElementById("navFreq").classList.toggle("active",v==="freq");
+  document.getElementById("hTitle").textContent=v==="start"?greeting():v==="workout"?"Treinos":"Frequência";
+  if(v==="workout"){renderWorkout();const st=exToday();if(st.timer.running&&!tickHandle)tickHandle=setInterval(updateClock,1000);}
+  window.scrollTo(0,0);
+}
+
+load();
+</script>
+</body>
+</html>
