@@ -166,6 +166,8 @@
   .cday.on{background:var(--gym);border-color:var(--gym);color:#fff;font-weight:700}
   .cday.today{box-shadow:0 0 0 2px var(--bg),0 0 0 4px var(--gym)}
   .cday .mins{font-size:8px;opacity:.85;margin-top:1px}
+  .mm-total{text-align:center;font-size:14px;color:var(--mut);margin-top:16px}
+  .mm-total b{color:var(--gym);font-size:18px}
   .cal-help{text-align:center;font-size:12px;color:var(--mut);margin-top:12px;line-height:1.5}
   .yeargrid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:4px}
   .ymonth{background:var(--card);border-radius:14px;padding:12px 10px;border:1px solid var(--line);cursor:pointer}
@@ -297,6 +299,18 @@
   </div>
 </div>
 
+<div class="modal-bg hidden" id="monthModal">
+  <div class="modal">
+    <div class="modal-title" id="mmTitle">—</div>
+    <div class="caldow"><div>D</div><div>S</div><div>T</div><div>Q</div><div>Q</div><div>S</div><div>S</div></div>
+    <div class="calgrid" id="mmGrid"></div>
+    <div class="mm-total" id="mmTotal"></div>
+    <div class="modal-btns">
+      <button class="modal-save" id="mmClose">Fechar</button>
+    </div>
+  </div>
+</div>
+
 <div class="wrap hidden" id="viewFreq">
   <div class="stats">
     <div class="stat"><b id="stWeek">0</b><span>Semana</span></div>
@@ -309,13 +323,13 @@
     <div class="week-goal" id="weekGoal"></div>
   </div>
   <div class="card">
-    <div class="lbl">Ano de 2026 — toque num mês pra ampliar</div>
+    <div class="lbl">Ano de 2026 — toque num mês pra ver os dias</div>
     <div class="yeargrid" id="yeargrid"></div>
     <div class="yeartotal">Total no ano: <b id="yTotal">0</b> treinos</div>
   </div>
 </div>
 
-<div class="verbadge" id="verBadge">v1.0</div>
+<div class="verbadge" id="verBadge">v1.1</div>
 
 <div class="nav">
   <button class="active" id="navStart"><span class="ic">🏠</span>Início</button>
@@ -342,7 +356,7 @@ try{ firebase.initializeApp(firebaseConfig); fbDB=firebase.database(); fbReady=t
 </script>
 
 <script>
-const APP_VERSION="v1.0";
+const APP_VERSION="v1.1";
 const USER_NAME="Nayane";
 function greeting(){
   const h=new Date().getHours();
@@ -851,9 +865,27 @@ function renderFreq(){
     }
     mini+='</div>';
     el.innerHTML='<div class="ymhead"><span class="ym">'+MES_ABR[m]+'</span><span class="yc">'+c+'</span></div>'+mini;
+    el.style.cursor="pointer";
+    el.addEventListener("click",()=>openMonthModal(m));
     yg.appendChild(el);
   }
   document.getElementById("yTotal").textContent=countGymInYear();
+}
+function openMonthModal(m){
+  document.getElementById("mmTitle").textContent=MESES[m]+" "+YEAR;
+  const startDow=new Date(YEAR,m,1).getDay();
+  const daysIn=new Date(YEAR,m+1,0).getDate();
+  const g=document.getElementById("mmGrid");g.innerHTML="";
+  for(let i=0;i<startDow;i++){const e=document.createElement("div");e.className="cday empty";g.appendChild(e);}
+  for(let d=1;d<=daysIn;d++){
+    const ds=YEAR+"-"+String(m+1).padStart(2,"0")+"-"+String(d).padStart(2,"0");
+    const rec=gym[ds];const on=rec&&rec.done;
+    const e=document.createElement("div");e.className="cday"+(on?" on":"")+(ds===todayStr()?" today":"");
+    e.innerHTML=d+(on&&rec.min?'<div class="mins">'+rec.min+'m</div>':"");
+    g.appendChild(e);
+  }
+  document.getElementById("mmTotal").innerHTML="<b>"+countGymInMonth(m)+"</b> treinos em "+MESES[m];
+  document.getElementById("monthModal").classList.remove("hidden");
 }
 function toggleGym(ds){
   const rec=gym[ds];
@@ -906,6 +938,8 @@ function closePastModal(){document.getElementById("pastModal").classList.add("hi
 document.getElementById("addPast").addEventListener("click",openPastModal);
 document.getElementById("pastCancel").addEventListener("click",closePastModal);
 document.getElementById("pastModal").addEventListener("click",e=>{if(e.target.id==="pastModal")closePastModal();});
+document.getElementById("mmClose").addEventListener("click",()=>document.getElementById("monthModal").classList.add("hidden"));
+document.getElementById("monthModal").addEventListener("click",e=>{if(e.target.id==="monthModal")document.getElementById("monthModal").classList.add("hidden");});
 document.getElementById("pastSave").addEventListener("click",()=>{
   const ds=document.getElementById("pastDate").value;
   const wi=Number(document.getElementById("pastWorkout").value);
