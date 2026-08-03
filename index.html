@@ -168,6 +168,8 @@
   .cday .mins{font-size:8px;opacity:.85;margin-top:1px}
   .mm-total{text-align:center;font-size:14px;color:var(--mut);margin-top:16px}
   .mm-total b{color:var(--gym);font-size:18px}
+  .toast{position:fixed;left:50%;bottom:100px;transform:translateX(-50%) translateY(20px);background:var(--ok);color:#fff;padding:14px 22px;border-radius:14px;font-size:15px;font-weight:800;z-index:100;opacity:0;transition:opacity .25s,transform .25s;box-shadow:0 8px 24px rgba(0,0,0,.2);max-width:90%;text-align:center;pointer-events:none}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
   .cal-help{text-align:center;font-size:12px;color:var(--mut);margin-top:12px;line-height:1.5}
   .yeargrid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:4px}
   .ymonth{background:var(--card);border-radius:14px;padding:12px 10px;border:1px solid var(--line);cursor:pointer}
@@ -271,7 +273,6 @@
     </div>
     <div class="clog" id="clog"></div>
   </div>
-  <button class="doneall" id="doneAll">Marcar treino do dia como feito</button>
   <button class="clearday" id="clearDay">Zerar treino de hoje</button>
 
   <button class="addpast" id="addPast">+ Registrar treino de outro dia</button>
@@ -305,6 +306,7 @@
     <div class="caldow"><div>D</div><div>S</div><div>T</div><div>Q</div><div>Q</div><div>S</div><div>S</div></div>
     <div class="calgrid" id="mmGrid"></div>
     <div class="mm-total" id="mmTotal"></div>
+    <div class="cal-help" id="mmHint"></div>
     <div class="modal-btns">
       <button class="modal-save" id="mmClose">Fechar</button>
     </div>
@@ -329,7 +331,8 @@
   </div>
 </div>
 
-<div class="verbadge" id="verBadge">v1.1</div>
+<div class="verbadge" id="verBadge">v1.5</div>
+<div class="toast" id="toast"></div>
 
 <div class="nav">
   <button class="active" id="navStart"><span class="ic">🏠</span>Início</button>
@@ -356,13 +359,20 @@ try{ firebase.initializeApp(firebaseConfig); fbDB=firebase.database(); fbReady=t
 </script>
 
 <script>
-const APP_VERSION="v1.1";
+const APP_VERSION="v1.5";
 const USER_NAME="Nayane";
 function greeting(){
   const h=new Date().getHours();
   if(h<12)return "Bom dia, "+USER_NAME;
   if(h<18)return "Boa tarde, "+USER_NAME;
   return "Boa noite, "+USER_NAME;
+}
+let toastTimer=null;
+function showToast(msg){
+  const t=document.getElementById("toast");if(!t)return;
+  t.textContent=msg;t.classList.add("show");
+  if(toastTimer)clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>t.classList.remove("show"),2200);
 }
 const TOTAL=120, BOTTLE=0.6, BOTTLES=7, WEEK_GOAL=7, YEAR=2026;
 const MESES=["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
@@ -586,10 +596,13 @@ let curWorkout=0;
 let calMonth=6;
 let tickHandle=null;
 
-function todayStr(){return new Date().toISOString().slice(0,10);}
+function pad2(n){return String(n).padStart(2,"0");}
+function localStr(d){return d.getFullYear()+"-"+pad2(d.getMonth()+1)+"-"+pad2(d.getDate());}
+function parseLocal(s){const p=s.split("-");return new Date(Number(p[0]),Number(p[1])-1,Number(p[2]));}
+function todayStr(){return localStr(new Date());}
 function wDate(){return activeDate||todayStr();}
-function dstr(d){return d.toISOString().slice(0,10);}
-function daysBetween(a,b){return Math.round((new Date(b)-new Date(a))/86400000);}
+function dstr(d){return localStr(d);}
+function daysBetween(a,b){return Math.round((parseLocal(b)-parseLocal(a))/86400000);}
 
 // ===== Camada de armazenamento: localStorage (aparelho) + Firebase (nuvem) =====
 function lsKey(k){return "prop120_"+USER_KEY+"_"+k;}
@@ -682,9 +695,9 @@ function renderStart(){
     document.getElementById("ringSub").textContent="Marque um compromisso no dia 03/08 pra iniciar.";
   }else{
     document.getElementById("ringBig").textContent="Dia "+dayIdx+" de 120";
-    const end=new Date(prop.startDate);end.setDate(end.getDate()+TOTAL-1);
+    const end=parseLocal(prop.startDate);end.setDate(end.getDate()+TOTAL-1);
     document.getElementById("ringSub").textContent=done+" dias cumpridos · meta "+end.toLocaleDateString("pt-BR");
-    document.getElementById("footer").textContent="Início: "+new Date(prop.startDate).toLocaleDateString("pt-BR")+" · Meta: "+end.toLocaleDateString("pt-BR");
+    document.getElementById("footer").textContent="Início: "+parseLocal(prop.startDate).toLocaleDateString("pt-BR")+" · Meta: "+end.toLocaleDateString("pt-BR");
   }
   const di=(dayIdx>0?dayIdx-1:(new Date().getDate()-1))%DAILY.length;
   document.getElementById("verse").textContent="“"+DAILY[di][0]+"”";
@@ -706,7 +719,7 @@ function renderStart(){
   renderWater(td.water);
   const grid=document.getElementById("grid");grid.innerHTML="";
   for(let i=0;i<TOTAL;i++){const c=document.createElement("div");c.className="cell";c.textContent=i+1;
-    if(prop.startDate){const d=new Date(prop.startDate);d.setDate(d.getDate()+i);const ds=dstr(d);
+    if(prop.startDate){const d=parseLocal(prop.startDate);d.setDate(d.getDate()+i);const ds=dstr(d);
       if(dayFulfilled(ds))c.classList.add("done");
       if(ds===todayStr())c.classList.add("today");}
     grid.appendChild(c);}
@@ -748,22 +761,29 @@ function renderWorkout(){
   const isToday=true;
   updateClock();
   const startB=document.getElementById("startBtn"),stopB=document.getElementById("stopBtn");
-  if(st.timer.running){startB.classList.add("hidden");stopB.classList.remove("hidden");}
-  else{startB.classList.remove("hidden");stopB.classList.add("hidden");
-    startB.textContent=st.timer.elapsed>0?(cardio?"Retomar cardio":"Retomar treino"):(cardio?"Iniciar cardio":"Iniciar treino");}
+  if(st.timer.running){
+    startB.classList.add("hidden");stopB.classList.remove("hidden");
+    stopB.textContent=cardio?"Finalizar cardio":"Finalizar treino";
+  }else if(st.timer.elapsed>0){
+    startB.classList.remove("hidden");stopB.classList.remove("hidden");
+    startB.textContent=cardio?"Recomeçar cardio":"Recomeçar";
+    stopB.textContent="Finalizar ("+fmt(st.timer.elapsed)+")";
+  }else{
+    startB.classList.remove("hidden");stopB.classList.add("hidden");
+    startB.textContent=cardio?"Iniciar cardio":"Iniciar treino";
+  }
   const ts=document.getElementById("tsaved");
   if(st.timer.running){ts.classList.add("empty");ts.textContent=cardio?("Cronometrando "+curCardioTipo+"…"):"Cronometrando…";}
-  else if(st.timer.elapsed>0){ts.classList.remove("empty");ts.textContent="⏱ Duração: "+fmt(st.timer.elapsed)+(cardio?" · digite os km e finalize":"");}
+  else if(st.timer.elapsed>0){ts.classList.remove("empty");ts.textContent="⏱ Tempo cronometrado: "+fmt(st.timer.elapsed);}
   else{ts.classList.add("empty");ts.textContent=cardio?"Escolha o tipo e inicie o cardio":(isToday?"Nenhum treino cronometrado hoje":"Nenhum treino cronometrado neste dia");}
 
   const list=document.getElementById("exlist");
   const panel=document.getElementById("cardioPanel");
-  const doneBtn=document.getElementById("doneAll");
   if(cardio){
-    list.classList.add("hidden");panel.classList.remove("hidden");doneBtn.classList.add("hidden");
+    list.classList.add("hidden");panel.classList.remove("hidden");
     renderCardioPanel();
   }else{
-    list.classList.remove("hidden");panel.classList.add("hidden");doneBtn.classList.remove("hidden");
+    list.classList.remove("hidden");panel.classList.add("hidden");
     list.innerHTML="";
     w.ex.forEach((e,i)=>{
       const row=document.createElement("div");row.className="ex"+(st.done[i]?" done":"")+(e.cardio?" cardio":"");
@@ -802,7 +822,9 @@ function updateClock(){
   document.getElementById("clock").textContent=fmt(ms);
 }
 function startTimer(){
-  const st=exToday();st.timer.running=true;st.timer.start=Date.now();saveEx();renderWorkout();
+  const st=exToday();
+  st.timer.elapsed=0;
+  st.timer.running=true;st.timer.start=Date.now();saveEx();renderWorkout();
   if(tickHandle)clearInterval(tickHandle);tickHandle=setInterval(updateClock,1000);
 }
 function stopTimer(){
@@ -819,10 +841,14 @@ function stopTimer(){
     document.getElementById("ckmInput").value="";
     recalcCardioDay();
     saveEx();saveCardio();renderWorkout();renderFreq();renderStart();
+    showToast("Cardio registrado! "+mins+" min ✓");
     return;
   }
   gym[wDate()]={done:true,min:mins};
+  st.done=st.done.map(()=>true);
+  st.timer.elapsed=0;
   saveEx();saveGym();renderWorkout();renderFreq();renderStart();
+  showToast("Treino finalizado! "+mins+" min registrados ✓");
 }
 /* soma os minutos de cardio do dia e marca presença */
 function recalcCardioDay(){
@@ -872,6 +898,7 @@ function renderFreq(){
   document.getElementById("yTotal").textContent=countGymInYear();
 }
 function openMonthModal(m){
+  currentModalMonth=m;
   document.getElementById("mmTitle").textContent=MESES[m]+" "+YEAR;
   const startDow=new Date(YEAR,m,1).getDay();
   const daysIn=new Date(YEAR,m+1,0).getDate();
@@ -882,10 +909,27 @@ function openMonthModal(m){
     const rec=gym[ds];const on=rec&&rec.done;
     const e=document.createElement("div");e.className="cday"+(on?" on":"")+(ds===todayStr()?" today":"");
     e.innerHTML=d+(on&&rec.min?'<div class="mins">'+rec.min+'m</div>':"");
+    e.style.cursor="pointer";
+    e.addEventListener("click",()=>{editMonthDay(ds);});
     g.appendChild(e);
   }
   document.getElementById("mmTotal").innerHTML="<b>"+countGymInMonth(m)+"</b> treinos em "+MESES[m];
+  document.getElementById("mmHint").textContent="Toque num dia marcado para apagar ou editar.";
   document.getElementById("monthModal").classList.remove("hidden");
+}
+let currentModalMonth=null;
+function editMonthDay(ds){
+  const rec=gym[ds];const br=ds.split("-").reverse().join("/");
+  if(rec&&rec.done){
+    const r=confirm("Dia "+br+" — "+(rec.min?rec.min+" min":"treino marcado")+"\n\nOK = apagar este dia\nCancelar = manter");
+    if(r){ delete gym[ds]; saveGym(); }
+    else return;
+  }else{
+    if(!confirm("Dia "+br+" não tem treino.\nMarcar treino neste dia?"))return;
+    gym[ds]={done:true,min:null};saveGym();
+  }
+  renderFreq();renderStart();
+  if(currentModalMonth!==null)openMonthModal(currentModalMonth);
 }
 function toggleGym(ds){
   const rec=gym[ds];
@@ -907,7 +951,6 @@ document.getElementById("waterAdd").addEventListener("click",()=>{const td=today
 document.getElementById("waterSub1").addEventListener("click",()=>{const td=todayProp();if(td.water>0)td.water--;renderWater(td.water);saveProp();});
 document.getElementById("startBtn").addEventListener("click",startTimer);
 document.getElementById("stopBtn").addEventListener("click",stopTimer);
-document.getElementById("doneAll").addEventListener("click",()=>{const st=exToday();st.done=st.done.map(()=>true);const t=wDate();if(!gym[t]||!gym[t].done)gym[t]={done:true,min:(gym[t]&&gym[t].min)||null};saveEx();saveGym();renderWorkout();renderFreq();renderStart();});
 document.getElementById("clearDay").addEventListener("click",()=>{
   const w=WORKOUTS[curWorkout];const t=wDate();
   const quando=(t===todayStr())?"de hoje":"de "+t.split("-").reverse().join("/");
