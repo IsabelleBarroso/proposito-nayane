@@ -246,6 +246,7 @@
 
   <div class="grid-title">Sua jornada <span id="pct">0%</span></div>
   <div class="grid" id="grid"></div>
+  <div style="text-align:center;font-size:12px;color:var(--mut);margin-top:10px">Toque num dia para marcar/editar</div>
   <div class="footer-note" id="footer">Dia 1 = segunda, 03/08/2026 · Meta: 30/11/2026</div>
   <button class="reset" id="resetProp">Zerar dados do propósito</button>
 </div>
@@ -300,6 +301,19 @@
   </div>
 </div>
 
+<div class="modal-bg hidden" id="dayModal">
+  <div class="modal">
+    <div class="modal-title" id="dmTitle">—</div>
+    <div class="commit" id="dmAlcool"><div class="cchk">✓</div><div class="cinfo"><div class="cname">Sem álcool</div></div></div>
+    <div class="commit" id="dmDoce"><div class="cchk">✓</div><div class="cinfo"><div class="cname">Sem doce</div></div></div>
+    <div class="commit" id="dmAcad"><div class="cchk">✓</div><div class="cinfo"><div class="cname">Academia</div></div></div>
+    <div class="commit hidden" id="dmMissa"><div class="cchk">✓</div><div class="cinfo"><div class="cname">Missa</div></div></div>
+    <div class="modal-btns">
+      <button class="modal-save" id="dmClose">Fechar</button>
+    </div>
+  </div>
+</div>
+
 <div class="modal-bg hidden" id="monthModal">
   <div class="modal">
     <div class="modal-title" id="mmTitle">—</div>
@@ -331,7 +345,7 @@
   </div>
 </div>
 
-<div class="verbadge" id="verBadge">v1.5</div>
+<div class="verbadge" id="verBadge">v1.6</div>
 <div class="toast" id="toast"></div>
 
 <div class="nav">
@@ -359,7 +373,7 @@ try{ firebase.initializeApp(firebaseConfig); fbDB=firebase.database(); fbReady=t
 </script>
 
 <script>
-const APP_VERSION="v1.5";
+const APP_VERSION="v1.6";
 const USER_NAME="Nayane";
 function greeting(){
   const h=new Date().getHours();
@@ -721,10 +735,37 @@ function renderStart(){
   for(let i=0;i<TOTAL;i++){const c=document.createElement("div");c.className="cell";c.textContent=i+1;
     if(prop.startDate){const d=parseLocal(prop.startDate);d.setDate(d.getDate()+i);const ds=dstr(d);
       if(dayFulfilled(ds))c.classList.add("done");
-      if(ds===todayStr())c.classList.add("today");}
+      if(ds===todayStr())c.classList.add("today");
+      if(ds<=todayStr()){c.style.cursor="pointer";c.addEventListener("click",()=>openDayModal(ds));}
+    }
     grid.appendChild(c);}
 }
 function setCommit(id,on){const el=document.getElementById(id);el.classList.toggle("done",!!on);}
+
+let dayModalDate=null;
+function dayData(ds){
+  if(!prop.days[ds])prop.days[ds]={alcool:false,doce:false,missa:false,water:0};
+  const d=prop.days[ds];
+  if(d.alcool===undefined)d.alcool=!!d.done;
+  if(d.doce===undefined)d.doce=!!d.done;
+  if(d.missa===undefined)d.missa=false;
+  return d;
+}
+function openDayModal(ds){
+  dayModalDate=ds;
+  const d=dayData(ds);
+  const g=gym[ds];
+  const isHoje=(ds===todayStr());
+  document.getElementById("dmTitle").textContent=(isHoje?"Hoje · ":"")+parseLocal(ds).toLocaleDateString("pt-BR");
+  setCommit("dmAlcool",d.alcool);
+  setCommit("dmDoce",d.doce);
+  setCommit("dmAcad",!!(g&&g.done));
+  const missa=document.getElementById("dmMissa");
+  if(isSunday(ds)){missa.classList.remove("hidden");setCommit("dmMissa",d.missa);}
+  else missa.classList.add("hidden");
+  document.getElementById("dayModal").classList.remove("hidden");
+}
+function closeDayModal(){document.getElementById("dayModal").classList.add("hidden");dayModalDate=null;}
 function renderWater(count){
   document.getElementById("waterL").textContent=(count*BOTTLE).toFixed(1).replace(".",",")+"L";
   document.getElementById("waterSub").textContent=count+" de "+BOTTLES+" garrafas (600ml cada)";
@@ -947,6 +988,13 @@ document.getElementById("cAlcool").addEventListener("click",()=>{const td=todayP
 document.getElementById("cDoce").addEventListener("click",()=>{const td=todayProp();td.doce=!td.doce;ensureStart();renderStart();saveProp();});
 document.getElementById("cMissa").addEventListener("click",()=>{const td=todayProp();td.missa=!td.missa;ensureStart();renderStart();saveProp();});
 document.getElementById("cAcad").addEventListener("click",()=>{const t=todayStr();if(gym[t]&&gym[t].done)delete gym[t];else gym[t]={done:true,min:(gym[t]&&gym[t].min)||null};ensureStart();renderStart();saveGym();saveProp();renderFreq();});
+
+document.getElementById("dmAlcool").addEventListener("click",()=>{if(!dayModalDate)return;const d=dayData(dayModalDate);d.alcool=!d.alcool;setCommit("dmAlcool",d.alcool);renderStart();saveProp();});
+document.getElementById("dmDoce").addEventListener("click",()=>{if(!dayModalDate)return;const d=dayData(dayModalDate);d.doce=!d.doce;setCommit("dmDoce",d.doce);renderStart();saveProp();});
+document.getElementById("dmMissa").addEventListener("click",()=>{if(!dayModalDate)return;const d=dayData(dayModalDate);d.missa=!d.missa;setCommit("dmMissa",d.missa);renderStart();saveProp();});
+document.getElementById("dmAcad").addEventListener("click",()=>{if(!dayModalDate)return;const ds=dayModalDate;if(gym[ds]&&gym[ds].done)delete gym[ds];else gym[ds]={done:true,min:(gym[ds]&&gym[ds].min)||null};setCommit("dmAcad",!!(gym[ds]&&gym[ds].done));renderStart();renderFreq();saveGym();});
+document.getElementById("dmClose").addEventListener("click",closeDayModal);
+document.getElementById("dayModal").addEventListener("click",e=>{if(e.target.id==="dayModal")closeDayModal();});
 document.getElementById("waterAdd").addEventListener("click",()=>{const td=todayProp();if(td.water<BOTTLES)td.water++;renderWater(td.water);saveProp();});
 document.getElementById("waterSub1").addEventListener("click",()=>{const td=todayProp();if(td.water>0)td.water--;renderWater(td.water);saveProp();});
 document.getElementById("startBtn").addEventListener("click",startTimer);
