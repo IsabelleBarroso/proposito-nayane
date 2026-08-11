@@ -203,6 +203,10 @@
   .prem{border:none;background:transparent;color:var(--mut);font-size:18px;cursor:pointer}
   .prop-add{width:100%;padding:13px;border-radius:14px;border:1.5px dashed var(--line);background:transparent;color:var(--mut);font-size:14px;font-weight:700;cursor:pointer}
   .prop-empty{text-align:center;color:var(--mut);font-size:13px;padding:16px;font-style:italic}
+  .qgoal{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px 18px;margin-bottom:8px}
+  .qgoal-text{font-size:14px;line-height:1.6;white-space:pre-line;margin-bottom:10px}
+  .qgoal-text:empty{display:none}
+  .qgoal-edit{width:100%;padding:11px;border-radius:12px;border:1.5px dashed var(--line);background:transparent;color:var(--mut);font-size:13px;font-weight:700;cursor:pointer}
   .cal-help{text-align:center;font-size:12px;color:var(--mut);margin-top:12px;line-height:1.5}
   .yeargrid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:4px}
   .ymonth{background:var(--card);border-radius:14px;padding:12px 10px;border:1px solid var(--line);cursor:pointer}
@@ -394,12 +398,17 @@
   <div class="qgrid-help">Toque num dia para marcar/desmarcar</div>
   <div class="sec-title">🙏 Orações</div>
   <div id="qPrayers"></div>
-  <div class="sec-title">📝 Meus propósitos da Quaresma</div>
+  <div class="sec-title">🎯 Meu objetivo / intenção</div>
+  <div class="qgoal" id="qGoalBox">
+    <div class="qgoal-text" id="qGoalText"></div>
+    <button class="qgoal-edit" id="qGoalEdit">Escrever minha intenção</button>
+  </div>
+  <div class="sec-title">📝 Meus sacrifícios</div>
   <div id="qPropList"></div>
-  <button class="prop-add" id="qAddProp">+ Adicionar propósito</button>
+  <button class="prop-add" id="qAddProp">+ Adicionar sacrifício</button>
 </div>
 
-<div class="verbadge" id="verBadge">v1.7</div>
+<div class="verbadge" id="verBadge">v1.8</div>
 <div class="toast" id="toast"></div>
 
 <div class="nav">
@@ -428,7 +437,7 @@ try{ firebase.initializeApp(firebaseConfig); fbDB=firebase.database(); fbReady=t
 </script>
 
 <script>
-const APP_VERSION="v1.7";
+const APP_VERSION="v1.8";
 const USER_NAME="Nayane";
 function greeting(){
   const h=new Date().getHours();
@@ -463,7 +472,9 @@ const ORACOES=[
 function escLent(s){return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));}
 let lentDays=null;
 let lentProps=null;
-function initLent(){if(lentDays===null)lentDays={};if(lentProps===null)lentProps=[];}
+let lentGoal="";
+function initLent(){if(lentDays===null)lentDays={};if(lentProps===null)lentProps=[];
+  if(lentGoal===null)lentGoal="";}
 function lentDayStr(i){const d=parseLocal(QUARESMA_INICIO);d.setDate(d.getDate()+i);return dstr(d);}
 function lentCurrentDay(){const today=todayStr();if(today<QUARESMA_INICIO)return 0;if(today>QUARESMA_FIM)return QUARESMA_DIAS;return daysBetween(QUARESMA_INICIO,today)+1;}
 function lentDoneCount(){let n=0;for(let i=0;i<QUARESMA_DIAS;i++){if(lentDays[lentDayStr(i)])n++;}return n;}
@@ -499,8 +510,12 @@ function renderLent(){
     });
     pr.dataset.built="1";
   }
+  // objetivo/intenção
+  const gt=document.getElementById("qGoalText");
+  gt.textContent=lentGoal||"";
+  document.getElementById("qGoalEdit").textContent=lentGoal?"Editar minha intenção":"Escrever minha intenção";
   const pl=document.getElementById("qPropList");pl.innerHTML="";
-  if(lentProps.length===0){pl.innerHTML='<div class="prop-empty">Nenhum propósito ainda. Toque em "Adicionar" para escrever do que você vai abrir mão.</div>';}
+  if(lentProps.length===0){pl.innerHTML='<div class="prop-empty">Nenhum sacrifício ainda. Toque em &quot;Adicionar&quot; para escrever do que você vai abrir mão.</div>';}
   lentProps.forEach((p,i)=>{
     const el=document.createElement("div");el.className="prop-item"+(p.done?" done":"");
     el.innerHTML='<div class="pchk">✓</div><div class="pname">'+escLent(p.t)+'</div><button class="prem">✕</button>';
@@ -510,6 +525,11 @@ function renderLent(){
   });
 }
 function addLentProp(){const t=prompt("Do que você vai abrir mão / seu propósito:");if(!t||!t.trim())return;lentProps.push({t:t.trim(),done:false});saveLent();renderLent();}
+function editLentGoal(){
+  const t=prompt("Escreva o objetivo/intenção da sua Quaresma:",lentGoal||"");
+  if(t===null)return;
+  lentGoal=t.trim();saveLent();renderLent();
+}
 async function saveLent(){saveAll();}
 
 
@@ -754,12 +774,12 @@ let saveTimer=null;
 function saveAll(){
   // grava local na hora
   localSet("prop",prop);localSet("gym",gym);localSet("ex",exState);localSet("cardio",cardioState);
-  localSet("lentDays",lentDays);localSet("lentProps",lentProps);
+  localSet("lentDays",lentDays);localSet("lentProps",lentProps);localSet("lentGoal",lentGoal);
   // grava nuvem com pequeno debounce
   if(saveTimer)clearTimeout(saveTimer);
   saveTimer=setTimeout(()=>{
     cloudSet("prop",prop);cloudSet("gym",gym);cloudSet("ex",exState);cloudSet("cardio",cardioState);
-    cloudSet("lentDays",lentDays);cloudSet("lentProps",lentProps);
+    cloudSet("lentDays",lentDays);cloudSet("lentProps",lentProps);cloudSet("lentGoal",lentGoal);
   },400);
 }
 async function saveProp(){saveAll();}
@@ -771,8 +791,8 @@ async function load(){
   // 1) carrega do aparelho primeiro (rápido, funciona offline)
   const lp=localGet("prop"),lg=localGet("gym"),le=localGet("ex"),lc=localGet("cardio");
   if(lp)prop=lp; if(lg)gym=lg; if(le)exState=le; if(lc)cardioState=lc;
-  const lld=localGet("lentDays"),llp=localGet("lentProps");
-  if(lld)lentDays=lld; if(llp)lentProps=llp;
+  const lld=localGet("lentDays"),llp=localGet("lentProps"),llg=localGet("lentGoal");
+  if(lld)lentDays=lld; if(llp)lentProps=llp; if(llg!==null)lentGoal=llg;
   initLent();
   calMonth=new Date().getMonth();
   const vb=document.getElementById("verBadge");if(vb)vb.textContent=APP_VERSION;
@@ -782,15 +802,15 @@ async function load(){
   // 2) busca da nuvem e atualiza se houver
   if(fbReady){
     try{
-      const [cp,cg,ce,cc,cld,clp]=await Promise.all([cloudGet("prop"),cloudGet("gym"),cloudGet("ex"),cloudGet("cardio"),cloudGet("lentDays"),cloudGet("lentProps")]);
+      const [cp,cg,ce,cc,cld,clp,clg]=await Promise.all([cloudGet("prop"),cloudGet("gym"),cloudGet("ex"),cloudGet("cardio"),cloudGet("lentDays"),cloudGet("lentProps"),cloudGet("lentGoal")]);
       let changed=false;
       if(cp){prop=cp;changed=true;} if(cg){gym=cg;changed=true;}
       if(ce){exState=ce;changed=true;} if(cc){cardioState=cc;changed=true;}
-      if(cld){lentDays=cld;changed=true;} if(clp){lentProps=clp;changed=true;}
+      if(cld){lentDays=cld;changed=true;} if(clp){lentProps=clp;changed=true;} if(clg!==null&&clg!==undefined){lentGoal=clg;changed=true;}
       if(changed){
         // salva de volta no aparelho e re-renderiza
         localSet("prop",prop);localSet("gym",gym);localSet("ex",exState);localSet("cardio",cardioState);
-        localSet("lentDays",lentDays);localSet("lentProps",lentProps);
+        localSet("lentDays",lentDays);localSet("lentProps",lentProps);localSet("lentGoal",lentGoal);
         renderStart();renderWorkout();renderFreq();
       }
     }catch(e){console.warn("cloud load falhou",e);}
@@ -1188,6 +1208,7 @@ document.getElementById("navWorkout").addEventListener("click",()=>switchView("w
 document.getElementById("navFreq").addEventListener("click",()=>switchView("freq"));
  document.getElementById("navLent").addEventListener("click",()=>switchView("lent"));
  document.getElementById("qAddProp").addEventListener("click",addLentProp);
+ document.getElementById("qGoalEdit").addEventListener("click",editLentGoal);
 function switchView(v){
   document.getElementById("viewStart").classList.toggle("hidden",v!=="start");
   document.getElementById("viewWorkout").classList.toggle("hidden",v!=="workout");
