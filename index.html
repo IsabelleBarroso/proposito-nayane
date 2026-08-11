@@ -170,6 +170,39 @@
   .mm-total b{color:var(--gym);font-size:18px}
   .toast{position:fixed;left:50%;bottom:100px;transform:translateX(-50%) translateY(20px);background:var(--ok);color:#fff;padding:14px 22px;border-radius:14px;font-size:15px;font-weight:800;z-index:100;opacity:0;transition:opacity .25s,transform .25s;box-shadow:0 8px 24px rgba(0,0,0,.2);max-width:90%;text-align:center;pointer-events:none}
   .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  .sec-title{font-size:16px;font-weight:800;margin:24px 4px 12px}
+  .qhero{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px;margin-top:8px}
+  .qhero .qtitle{font-size:19px;font-weight:800;line-height:1.25;margin-bottom:8px}
+  .qhero .qdates{display:inline-block;background:var(--acc-soft);color:var(--acc);font-size:13px;font-weight:800;padding:5px 12px;border-radius:20px;margin-bottom:12px}
+  .qhero .qtext{font-size:14px;line-height:1.6;color:var(--txt)}
+  .qhero .qday{margin-top:16px;padding-top:16px;border-top:1px solid var(--line);display:flex;align-items:center;gap:14px}
+  .qring{width:64px;height:64px;border-radius:50%;border:5px solid var(--acc-soft);display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0}
+  .qring b{font-size:22px;line-height:1;color:var(--acc)}
+  .qring span{font-size:9px;color:var(--mut)}
+  .qday-info b{font-size:15px}
+  .qday-info div{font-size:13px;color:var(--mut);margin-top:2px}
+  .qbar{height:8px;background:var(--card2);border-radius:20px;overflow:hidden;margin:0 4px 14px}
+  .qbar-fill{height:100%;background:var(--acc);border-radius:20px;width:0;transition:width .3s}
+  .qgrid{display:grid;grid-template-columns:repeat(8,1fr);gap:7px}
+  .qcell{aspect-ratio:1;border-radius:9px;background:var(--card2);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--mut);cursor:pointer}
+  .qcell.done{background:var(--acc);color:#fff}
+  .qcell.today{outline:2px solid var(--acc);outline-offset:-2px}
+  .qgrid-help{text-align:center;font-size:12px;color:var(--mut);margin-top:10px}
+  .prayer{background:var(--card);border:1px solid var(--line);border-radius:16px;margin-bottom:12px;overflow:hidden}
+  .prayer-head{padding:16px 18px;font-size:15px;font-weight:800;color:var(--acc);cursor:pointer;display:flex;justify-content:space-between;align-items:center}
+  .prayer-head .arrow{transition:transform .2s;font-size:13px}
+  .prayer.open .prayer-head .arrow{transform:rotate(180deg)}
+  .prayer-body{padding:0 18px;max-height:0;overflow:hidden;transition:max-height .3s,padding .3s}
+  .prayer.open .prayer-body{padding:0 18px 18px;max-height:3000px}
+  .prayer-body p{font-size:14px;line-height:1.7;white-space:pre-line}
+  .prop-item{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:13px;margin-bottom:10px}
+  .prop-item .pchk{width:24px;height:24px;border-radius:7px;border:2px solid var(--line);flex-shrink:0;display:flex;align-items:center;justify-content:center;color:transparent;font-size:14px;cursor:pointer}
+  .prop-item.done .pchk{background:var(--ok);border-color:var(--ok);color:#fff}
+  .prop-item.done .pname{text-decoration:line-through;opacity:.6}
+  .pname{flex:1;font-size:14px;font-weight:600}
+  .prem{border:none;background:transparent;color:var(--mut);font-size:18px;cursor:pointer}
+  .prop-add{width:100%;padding:13px;border-radius:14px;border:1.5px dashed var(--line);background:transparent;color:var(--mut);font-size:14px;font-weight:700;cursor:pointer}
+  .prop-empty{text-align:center;color:var(--mut);font-size:13px;padding:16px;font-style:italic}
   .cal-help{text-align:center;font-size:12px;color:var(--mut);margin-top:12px;line-height:1.5}
   .yeargrid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:4px}
   .ymonth{background:var(--card);border-radius:14px;padding:12px 10px;border:1px solid var(--line);cursor:pointer}
@@ -345,13 +378,35 @@
   </div>
 </div>
 
-<div class="verbadge" id="verBadge">v1.6</div>
+<div class="wrap hidden" id="viewLent">
+  <div class="qhero">
+    <div class="qtitle">Quaresma de São Miguel Arcanjo</div>
+    <div class="qdates" id="qDates">—</div>
+    <div class="qtext" id="qText"></div>
+    <div class="qday">
+      <div class="qring"><b id="qDayNum">0</b><span>de 40</span></div>
+      <div class="qday-info" id="qDayInfo"></div>
+    </div>
+  </div>
+  <div class="sec-title">Os 40 dias</div>
+  <div class="qbar"><div class="qbar-fill" id="qBar"></div></div>
+  <div class="qgrid" id="qGrid"></div>
+  <div class="qgrid-help">Toque num dia para marcar/desmarcar</div>
+  <div class="sec-title">🙏 Orações</div>
+  <div id="qPrayers"></div>
+  <div class="sec-title">📝 Meus propósitos da Quaresma</div>
+  <div id="qPropList"></div>
+  <button class="prop-add" id="qAddProp">+ Adicionar propósito</button>
+</div>
+
+<div class="verbadge" id="verBadge">v1.7</div>
 <div class="toast" id="toast"></div>
 
 <div class="nav">
   <button class="active" id="navStart"><span class="ic">🏠</span>Início</button>
   <button id="navWorkout"><span class="ic">🏋️</span>Treinos</button>
   <button id="navFreq"><span class="ic">📅</span>Frequência</button>
+  <button id="navLent"><span class="ic">✝️</span>Quaresma</button>
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
@@ -373,7 +428,7 @@ try{ firebase.initializeApp(firebaseConfig); fbDB=firebase.database(); fbReady=t
 </script>
 
 <script>
-const APP_VERSION="v1.6";
+const APP_VERSION="v1.7";
 const USER_NAME="Nayane";
 function greeting(){
   const h=new Date().getHours();
@@ -391,6 +446,72 @@ function showToast(msg){
 const TOTAL=120, BOTTLE=0.6, BOTTLES=7, WEEK_GOAL=7, YEAR=2026;
 const MESES=["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
 const MES_ABR=["Jan","Fev","Mar","Abr","Mai","Jun","Jul","Ago","Set","Out","Nov","Dez"];
+
+const QUARESMA_INICIO="2026-08-15";
+const QUARESMA_FIM="2026-09-29";
+const QUARESMA_DIAS=40;
+const QUARESMA_TEXTO="A Igreja se une em oração na Quaresma de São Miguel Arcanjo, o grande protetor contra o mal. Durante 40 dias, somos convidados a um período intenso de oração e jejum, preparando-nos para a grande celebração dos Santos Arcanjos Miguel, Gabriel e Rafael.";
+const ORACOES=[
+{titulo:"Preparação",texto:"Para preparar-se para a Quaresma de São Miguel é necessário:\n\n• Acender uma vela abençoada diante de uma imagem ou estampa de São Miguel Arcanjo;\n• Oferecer uma penitência durante os 40 dias;\n• Fazer o sinal da cruz;\n• Rezar essas orações todos os dias."},
+{titulo:"Oração inicial",texto:"São Miguel Arcanjo, defendei-nos no combate, sede o nosso refúgio contra as maldades e ciladas do demônio. Ordene-lhe, Deus, instantemente o pedimos. E vós, príncipe da milícia celeste, pela virtude divina, precipitai ao inferno satanás e os outros espíritos malignos, que andam pelo mundo para perder as almas. Amém.\n\nSacratíssimo Coração de Jesus (3x)."},
+{titulo:"Ladainha de São Miguel Arcanjo",texto:"Senhor, tende piedade de nós.\nJesus Cristo, tende piedade de nós.\nSenhor, tende piedade de nós.\nJesus Cristo, ouvi-nos.\nJesus Cristo, atendei-nos.\nPai Celeste, que sois Deus, tende piedade de nós.\nFilho Redentor do Mundo, que sois Deus, tende piedade de nós.\nEspírito Santo, que sois Deus, tende piedade de nós.\nTrindade Santa, que sois um único Deus, tende piedade de nós.\n\nSanta Maria, Rainha dos Anjos, rogai por nós.\nSão Miguel, rogai por nós.\nSão Miguel, cheio da graça de Deus, rogai por nós.\nSão Miguel, perfeito adorador do Verbo Divino, rogai por nós.\nSão Miguel, coroado de honra e de glória, rogai por nós.\nSão Miguel, poderosíssimo príncipe dos exércitos do Senhor, rogai por nós.\nSão Miguel, porta-estandarte da Santíssima Trindade, rogai por nós.\nSão Miguel, guardião do Paraíso, rogai por nós.\nSão Miguel, guia e consolador do povo israelita, rogai por nós.\nSão Miguel, esplendor e fortaleza da Igreja militante, rogai por nós.\nSão Miguel, honra e alegria da Igreja triunfante, rogai por nós.\nSão Miguel, luz dos anjos, rogai por nós.\nSão Miguel, baluarte dos cristãos, rogai por nós.\nSão Miguel, força daqueles que combatem pelo estandarte da cruz, rogai por nós.\nSão Miguel, luz e confiança das almas no último momento da vida, rogai por nós.\nSão Miguel, socorro muito certo, rogai por nós.\nSão Miguel, nosso auxílio em todas as adversidades, rogai por nós.\nSão Miguel, arauto da sentença eterna, rogai por nós.\nSão Miguel, consolador das almas que estão no Purgatório, rogai por nós.\nSão Miguel, a quem o Senhor incumbiu de receber as almas que estão no Purgatório, rogai por nós.\nSão Miguel, nosso príncipe, rogai por nós.\nSão Miguel, nosso advogado, rogai por nós.\n\nCordeiro de Deus, que tirais o pecado do mundo, perdoai-nos, Senhor.\nCordeiro de Deus, que tirais o pecado do mundo, ouvi-nos, Senhor.\nCordeiro de Deus, que tirais o pecado do mundo, tende piedade de nós, Senhor.\n\nRogai por nós, ó glorioso São Miguel, príncipe da Igreja de Cristo, para que sejamos dignos de Suas promessas.\n\nOração: Senhor Jesus, santificai-nos por uma bênção sempre nova e concedei-nos, pela intercessão de São Miguel, essa sabedoria que nos ensina a ajuntar riquezas do céu e a trocar os bens do tempo presente pelos da eternidade. Vós que viveis e reinais em todos os séculos dos séculos. Amém."},
+{titulo:"Consagração",texto:"Ó Príncipe nobilíssimo dos Anjos, valoroso guerreiro do Altíssimo, zeloso defensor da glória do Senhor, terror dos espíritos rebeldes, amor e delícia de todos os Anjos justos, meu diletíssimo Arcanjo São Miguel, desejando eu fazer parte do número dos vossos devotos e servos, a vós, hoje, me consagro, me dou e ofereço, e ponho-me a mim próprio, a minha família e tudo o que me pertence debaixo da vossa poderosíssima proteção.\n\nÉ pequena a oferta do meu serviço, sendo como sou um miserável pecador, mas vós engrandecereis o afeto do meu coração; recordai-vos que, de hoje em diante, estou debaixo do vosso sustento, e deveis assistir-me em toda a minha vida e obter-me o perdão dos meus muitos e graves pecados, a graça de amar a Deus de todo coração, ao meu querido Salvador Jesus Cristo e a minha Mãe Maria Santíssima. Amém."}
+];
+
+
+// ===== Quaresma de São Miguel =====
+function escLent(s){return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));}
+let lentDays=null;
+let lentProps=null;
+function initLent(){if(lentDays===null)lentDays={};if(lentProps===null)lentProps=[];}
+function lentDayStr(i){const d=parseLocal(QUARESMA_INICIO);d.setDate(d.getDate()+i);return dstr(d);}
+function lentCurrentDay(){const today=todayStr();if(today<QUARESMA_INICIO)return 0;if(today>QUARESMA_FIM)return QUARESMA_DIAS;return daysBetween(QUARESMA_INICIO,today)+1;}
+function lentDoneCount(){let n=0;for(let i=0;i<QUARESMA_DIAS;i++){if(lentDays[lentDayStr(i)])n++;}return n;}
+function renderLent(){
+  initLent();
+  document.getElementById("qDates").textContent="15/08 a 29/09/2026 · 40 dias";
+  document.getElementById("qText").textContent=QUARESMA_TEXTO;
+  const cur=lentCurrentDay();const done=lentDoneCount();
+  document.getElementById("qDayNum").textContent=cur;
+  let info;
+  if(todayStr()<QUARESMA_INICIO)info="<b>Ainda não começou</b><div>Começa em 15/08/2026</div>";
+  else if(todayStr()>QUARESMA_FIM)info="<b>Quaresma concluída</b><div>"+done+" de 40 dias cumpridos</div>";
+  else info="<b>Dia "+cur+" de 40</b><div>"+done+" dias cumpridos · faltam "+(40-done)+"</div>";
+  document.getElementById("qDayInfo").innerHTML=info;
+  document.getElementById("qBar").style.width=(done/QUARESMA_DIAS*100)+"%";
+  const g=document.getElementById("qGrid");g.innerHTML="";
+  const today=todayStr();
+  for(let i=0;i<QUARESMA_DIAS;i++){
+    const ds=lentDayStr(i);
+    const c=document.createElement("div");
+    c.className="qcell"+(lentDays[ds]?" done":"")+(ds===today?" today":"");
+    c.textContent=i+1;
+    if(ds<=today){c.addEventListener("click",()=>{if(lentDays[ds])delete lentDays[ds];else lentDays[ds]=true;saveLent();renderLent();});}
+    g.appendChild(c);
+  }
+  const pr=document.getElementById("qPrayers");
+  if(!pr.dataset.built){
+    ORACOES.forEach((o,idx)=>{
+      const card=document.createElement("div");card.className="prayer"+(idx===0?" open":"");
+      card.innerHTML='<div class="prayer-head">'+escLent(o.titulo)+'<span class="arrow">▼</span></div><div class="prayer-body"><p>'+escLent(o.texto)+'</p></div>';
+      card.querySelector(".prayer-head").addEventListener("click",()=>card.classList.toggle("open"));
+      pr.appendChild(card);
+    });
+    pr.dataset.built="1";
+  }
+  const pl=document.getElementById("qPropList");pl.innerHTML="";
+  if(lentProps.length===0){pl.innerHTML='<div class="prop-empty">Nenhum propósito ainda. Toque em "Adicionar" para escrever do que você vai abrir mão.</div>';}
+  lentProps.forEach((p,i)=>{
+    const el=document.createElement("div");el.className="prop-item"+(p.done?" done":"");
+    el.innerHTML='<div class="pchk">✓</div><div class="pname">'+escLent(p.t)+'</div><button class="prem">✕</button>';
+    el.querySelector(".pchk").addEventListener("click",()=>{p.done=!p.done;saveLent();renderLent();});
+    el.querySelector(".prem").addEventListener("click",()=>{if(confirm("Remover \""+p.t+"\"?")){lentProps.splice(i,1);saveLent();renderLent();}});
+    pl.appendChild(el);
+  });
+}
+function addLentProp(){const t=prompt("Do que você vai abrir mão / seu propósito:");if(!t||!t.trim())return;lentProps.push({t:t.trim(),done:false});saveLent();renderLent();}
+async function saveLent(){saveAll();}
+
 
 const WORKOUTS=[
  {id:"gluteo",nome:"Glúteo e posterior",ex:[
@@ -633,10 +754,12 @@ let saveTimer=null;
 function saveAll(){
   // grava local na hora
   localSet("prop",prop);localSet("gym",gym);localSet("ex",exState);localSet("cardio",cardioState);
+  localSet("lentDays",lentDays);localSet("lentProps",lentProps);
   // grava nuvem com pequeno debounce
   if(saveTimer)clearTimeout(saveTimer);
   saveTimer=setTimeout(()=>{
     cloudSet("prop",prop);cloudSet("gym",gym);cloudSet("ex",exState);cloudSet("cardio",cardioState);
+    cloudSet("lentDays",lentDays);cloudSet("lentProps",lentProps);
   },400);
 }
 async function saveProp(){saveAll();}
@@ -648,6 +771,9 @@ async function load(){
   // 1) carrega do aparelho primeiro (rápido, funciona offline)
   const lp=localGet("prop"),lg=localGet("gym"),le=localGet("ex"),lc=localGet("cardio");
   if(lp)prop=lp; if(lg)gym=lg; if(le)exState=le; if(lc)cardioState=lc;
+  const lld=localGet("lentDays"),llp=localGet("lentProps");
+  if(lld)lentDays=lld; if(llp)lentProps=llp;
+  initLent();
   calMonth=new Date().getMonth();
   const vb=document.getElementById("verBadge");if(vb)vb.textContent=APP_VERSION;
   const ht=document.getElementById("hTitle");if(ht)ht.textContent=greeting();
@@ -656,13 +782,15 @@ async function load(){
   // 2) busca da nuvem e atualiza se houver
   if(fbReady){
     try{
-      const [cp,cg,ce,cc]=await Promise.all([cloudGet("prop"),cloudGet("gym"),cloudGet("ex"),cloudGet("cardio")]);
+      const [cp,cg,ce,cc,cld,clp]=await Promise.all([cloudGet("prop"),cloudGet("gym"),cloudGet("ex"),cloudGet("cardio"),cloudGet("lentDays"),cloudGet("lentProps")]);
       let changed=false;
       if(cp){prop=cp;changed=true;} if(cg){gym=cg;changed=true;}
       if(ce){exState=ce;changed=true;} if(cc){cardioState=cc;changed=true;}
+      if(cld){lentDays=cld;changed=true;} if(clp){lentProps=clp;changed=true;}
       if(changed){
         // salva de volta no aparelho e re-renderiza
         localSet("prop",prop);localSet("gym",gym);localSet("ex",exState);localSet("cardio",cardioState);
+        localSet("lentDays",lentDays);localSet("lentProps",lentProps);
         renderStart();renderWorkout();renderFreq();
       }
     }catch(e){console.warn("cloud load falhou",e);}
@@ -1058,15 +1186,20 @@ document.getElementById("resetProp").addEventListener("click",()=>{if(confirm("Z
 document.getElementById("navStart").addEventListener("click",()=>switchView("start"));
 document.getElementById("navWorkout").addEventListener("click",()=>switchView("workout"));
 document.getElementById("navFreq").addEventListener("click",()=>switchView("freq"));
+ document.getElementById("navLent").addEventListener("click",()=>switchView("lent"));
+ document.getElementById("qAddProp").addEventListener("click",addLentProp);
 function switchView(v){
   document.getElementById("viewStart").classList.toggle("hidden",v!=="start");
   document.getElementById("viewWorkout").classList.toggle("hidden",v!=="workout");
   document.getElementById("viewFreq").classList.toggle("hidden",v!=="freq");
+  document.getElementById("viewLent").classList.toggle("hidden",v!=="lent");
   document.getElementById("navStart").classList.toggle("active",v==="start");
   document.getElementById("navWorkout").classList.toggle("active",v==="workout");
   document.getElementById("navFreq").classList.toggle("active",v==="freq");
-  document.getElementById("hTitle").textContent=v==="start"?greeting():v==="workout"?"Treinos":"Frequência";
+  document.getElementById("navLent").classList.toggle("active",v==="lent");
+  document.getElementById("hTitle").textContent=v==="start"?greeting():v==="workout"?"Treinos":v==="freq"?"Frequência":"Quaresma";
   if(v==="workout"){renderWorkout();const st=exToday();if(st.timer.running&&!tickHandle)tickHandle=setInterval(updateClock,1000);}
+  if(v==="lent")renderLent();
   window.scrollTo(0,0);
 }
 
