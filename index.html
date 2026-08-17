@@ -171,6 +171,15 @@
   .mm-total b{color:var(--gym);font-size:18px}
   .toast{position:fixed;left:50%;bottom:100px;transform:translateX(-50%) translateY(20px);background:var(--ok);color:#fff;padding:14px 22px;border-radius:14px;font-size:15px;font-weight:800;z-index:100;opacity:0;transition:opacity .25s,transform .25s;box-shadow:0 8px 24px rgba(0,0,0,.2);max-width:90%;text-align:center;pointer-events:none}
   .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  .rest-timer{position:fixed;right:14px;bottom:86px;z-index:90;background:var(--card);border:1.5px solid var(--acc);border-radius:16px;padding:10px 12px;box-shadow:0 6px 20px rgba(0,0,0,.15);width:150px;text-align:center}
+  .rest-timer.hidden{display:none}
+  .rest-label{font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);font-weight:700;margin-bottom:2px}
+  .rest-display{font-size:26px;font-weight:800;color:var(--acc);font-variant-numeric:tabular-nums;margin-bottom:8px}
+  .rest-btns{display:flex;gap:5px}
+  .rest-btn{flex:1;border:none;border-radius:9px;padding:7px 0;font-size:11px;font-weight:700;cursor:pointer}
+  .rest-start{background:var(--acc);color:#fff}
+  .rest-pause{background:var(--card2);color:var(--txt)}
+  .rest-reset{background:var(--card2);color:var(--mut)}
   .sec-title{font-size:16px;font-weight:800;margin:24px 4px 12px}
   .qhero{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px;margin-top:8px}
   .qhero .qtitle{font-size:19px;font-weight:800;line-height:1.25;margin-bottom:8px}
@@ -225,7 +234,7 @@
   .yeartotal{text-align:center;margin-top:16px;font-size:14px;color:var(--mut)}
   .yeartotal b{color:var(--gym);font-size:20px}
 
-  .verbadge{position:fixed;bottom:calc(72px + env(safe-area-inset-bottom));right:12px;font-size:10px;color:var(--mut);opacity:.6;background:var(--card2);border:1px solid var(--line);padding:3px 8px;border-radius:20px;z-index:6;pointer-events:none;font-weight:700;letter-spacing:.03em}
+  .ver-inline{display:inline-block;font-size:10px;color:var(--acc);background:var(--acc-soft);border-radius:20px;padding:2px 8px;margin-left:6px;font-weight:700;letter-spacing:.03em;vertical-align:middle}
   .nav{position:fixed;bottom:0;left:0;right:0;max-width:520px;margin:0 auto;display:flex;background:var(--card);border-top:1px solid var(--line);padding:8px 8px calc(8px + env(safe-area-inset-bottom))}
   .nav button{flex:1;background:none;border:none;color:var(--mut);font-size:11px;font-weight:700;padding:6px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px}
   .nav button .ic{font-size:20px}
@@ -237,7 +246,7 @@
 <body>
 
 <header>
-  <div class="kicker">Propósito · 120 dias</div>
+  <div class="kicker">Propósito · 120 dias <span class="ver-inline" id="verBadge">v0.0</span></div>
   <h1 id="hTitle">Início</h1>
 </header>
 
@@ -409,7 +418,16 @@
   <button class="prop-add" id="qAddProp">+ Adicionar sacrifício</button>
 </div>
 
-<div class="verbadge" id="verBadge">v2.0</div>
+<div id="restTimer" class="rest-timer hidden">
+  <div class="rest-label">Descanso</div>
+  <div class="rest-display" id="restDisplay">00:00</div>
+  <div class="rest-btns">
+    <button id="restStart" class="rest-btn rest-start">Iniciar</button>
+    <button id="restPause" class="rest-btn rest-pause">Pausar</button>
+    <button id="restReset" class="rest-btn rest-reset">Zerar</button>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <div class="nav">
@@ -438,7 +456,7 @@ try{ firebase.initializeApp(firebaseConfig); fbDB=firebase.database(); fbReady=t
 </script>
 
 <script>
-const APP_VERSION="v2.0";
+const APP_VERSION="v2.2";
 const USER_NAME="Nayane";
 function greeting(){
   const h=new Date().getHours();
@@ -1232,6 +1250,22 @@ document.getElementById("navFreq").addEventListener("click",()=>switchView("freq
  document.getElementById("navLent").addEventListener("click",()=>switchView("lent"));
  document.getElementById("qAddProp").addEventListener("click",addLentProp);
  document.getElementById("qGoalEdit").addEventListener("click",editLentGoal);
+
+// ===== Cronômetro de descanso (flutuante na aba Treinos) =====
+let restSec=0, restRunning=false, restHandle=null;
+function restFormat(s){const m=Math.floor(s/60),ss=s%60;return String(m).padStart(2,"0")+":"+String(ss).padStart(2,"0");}
+function restRender(){const d=document.getElementById("restDisplay");if(d)d.textContent=restFormat(restSec);}
+function restTick(){restSec++;restRender();}
+function restStart(){if(restRunning)return;restRunning=true;restHandle=setInterval(restTick,1000);}
+function restPause(){restRunning=false;if(restHandle){clearInterval(restHandle);restHandle=null;}}
+function restReset(){restPause();restSec=0;restRender();}
+function restBindOnce(){
+  const s=document.getElementById("restStart"),p=document.getElementById("restPause"),r=document.getElementById("restReset");
+  if(s&&!s.dataset.b){s.addEventListener("click",restStart);s.dataset.b="1";}
+  if(p&&!p.dataset.b){p.addEventListener("click",restPause);p.dataset.b="1";}
+  if(r&&!r.dataset.b){r.addEventListener("click",restReset);r.dataset.b="1";}
+}
+
 function switchView(v){
   document.getElementById("viewStart").classList.toggle("hidden",v!=="start");
   document.getElementById("viewWorkout").classList.toggle("hidden",v!=="workout");
@@ -1242,6 +1276,7 @@ function switchView(v){
   document.getElementById("navFreq").classList.toggle("active",v==="freq");
   document.getElementById("navLent").classList.toggle("active",v==="lent");
   document.getElementById("hTitle").textContent=v==="start"?greeting():v==="workout"?"Treinos":v==="freq"?"Frequência":"Quaresma";
+  const rt=document.getElementById("restTimer");if(rt){rt.classList.toggle("hidden",v!=="workout");restBindOnce();}
   if(v==="workout"){renderWorkout();const st=exToday();if(st.timer.running&&!tickHandle)tickHandle=setInterval(updateClock,1000);}
   if(v==="lent")renderLent();
   window.scrollTo(0,0);
