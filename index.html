@@ -456,7 +456,7 @@ try{ firebase.initializeApp(firebaseConfig); fbDB=firebase.database(); fbReady=t
 </script>
 
 <script>
-const APP_VERSION="v2.2";
+const APP_VERSION="v2.3";
 const USER_NAME="Nayane";
 function greeting(){
   const h=new Date().getHours();
@@ -1252,13 +1252,13 @@ document.getElementById("navFreq").addEventListener("click",()=>switchView("freq
  document.getElementById("qGoalEdit").addEventListener("click",editLentGoal);
 
 // ===== Cronômetro de descanso (flutuante na aba Treinos) =====
-let restSec=0, restRunning=false, restHandle=null;
+let restBase=0, restStartTime=null, restRunning=false, restHandle=null;
 function restFormat(s){const m=Math.floor(s/60),ss=s%60;return String(m).padStart(2,"0")+":"+String(ss).padStart(2,"0");}
-function restRender(){const d=document.getElementById("restDisplay");if(d)d.textContent=restFormat(restSec);}
-function restTick(){restSec++;restRender();}
-function restStart(){if(restRunning)return;restRunning=true;restHandle=setInterval(restTick,1000);}
-function restPause(){restRunning=false;if(restHandle){clearInterval(restHandle);restHandle=null;}}
-function restReset(){restPause();restSec=0;restRender();}
+function restElapsed(){let ms=restBase;if(restRunning&&restStartTime)ms+=Date.now()-restStartTime;return Math.floor(ms/1000);}
+function restRender(){const d=document.getElementById("restDisplay");if(d)d.textContent=restFormat(restElapsed());}
+function restStart(){if(restRunning)return;restRunning=true;restStartTime=Date.now();if(restHandle)clearInterval(restHandle);restHandle=setInterval(restRender,250);restRender();}
+function restPause(){if(restRunning&&restStartTime){restBase+=Date.now()-restStartTime;}restRunning=false;restStartTime=null;if(restHandle){clearInterval(restHandle);restHandle=null;}restRender();}
+function restReset(){restRunning=false;restStartTime=null;restBase=0;if(restHandle){clearInterval(restHandle);restHandle=null;}restRender();}
 function restBindOnce(){
   const s=document.getElementById("restStart"),p=document.getElementById("restPause"),r=document.getElementById("restReset");
   if(s&&!s.dataset.b){s.addEventListener("click",restStart);s.dataset.b="1";}
@@ -1281,6 +1281,15 @@ function switchView(v){
   if(v==="lent")renderLent();
   window.scrollTo(0,0);
 }
+
+
+// quando o app volta a ficar visível (usuária voltou pra tela), atualiza os cronômetros na hora
+document.addEventListener("visibilitychange",()=>{
+  if(!document.hidden){
+    if(typeof restRender==="function")restRender();
+    if(typeof updateClock==="function"){const st=exToday();if(st&&st.timer&&st.timer.running)updateClock();}
+  }
+});
 
 load();
 </script>
