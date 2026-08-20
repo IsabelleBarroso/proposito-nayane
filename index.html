@@ -405,7 +405,7 @@
   <div class="sec-title">Os 40 dias</div>
   <div class="qbar"><div class="qbar-fill" id="qBar"></div></div>
   <div class="qgrid" id="qGrid"></div>
-  <div class="qgrid-help">Toque num dia para marcar/desmarcar</div>
+  <div class="qgrid-help">Toque no quadradinho para marcar cada dia cumprido (domingos não contam na Quaresma)</div>
   <div class="sec-title">🙏 Orações</div>
   <div id="qPrayers"></div>
   <div class="sec-title">🎯 Meu objetivo / intenção</div>
@@ -456,7 +456,7 @@ try{ firebase.initializeApp(firebaseConfig); fbDB=firebase.database(); fbReady=t
 </script>
 
 <script>
-const APP_VERSION="v2.3";
+const APP_VERSION="v2.4";
 const USER_NAME="Nayane";
 function greeting(){
   const h=new Date().getHours();
@@ -483,7 +483,7 @@ const ORACOES=[
 {titulo:"Preparação",texto:"Para preparar-se para a Quaresma de São Miguel é necessário:\n\n• Acender uma vela abençoada diante de uma imagem ou estampa de São Miguel Arcanjo;\n• Oferecer uma penitência durante os 40 dias;\n• Fazer o sinal da cruz;\n• Rezar essas orações todos os dias."},
 {titulo:"Oração inicial",texto:"São Miguel Arcanjo, defendei-nos no combate, sede o nosso refúgio contra as maldades e ciladas do demônio. Ordene-lhe, Deus, instantemente o pedimos. E vós, príncipe da milícia celeste, pela virtude divina, precipitai ao inferno satanás e os outros espíritos malignos, que andam pelo mundo para perder as almas. Amém.\n\nSacratíssimo Coração de Jesus (3x)."},
 {titulo:"Ladainha de São Miguel Arcanjo",texto:"Senhor, tende piedade de nós.\nJesus Cristo, tende piedade de nós.\nSenhor, tende piedade de nós.\nJesus Cristo, ouvi-nos.\nJesus Cristo, atendei-nos.\nPai Celeste, que sois Deus, tende piedade de nós.\nFilho Redentor do Mundo, que sois Deus, tende piedade de nós.\nEspírito Santo, que sois Deus, tende piedade de nós.\nTrindade Santa, que sois um único Deus, tende piedade de nós.\n\nSanta Maria, Rainha dos Anjos, rogai por nós.\nSão Miguel, rogai por nós.\nSão Miguel, cheio da graça de Deus, rogai por nós.\nSão Miguel, perfeito adorador do Verbo Divino, rogai por nós.\nSão Miguel, coroado de honra e de glória, rogai por nós.\nSão Miguel, poderosíssimo príncipe dos exércitos do Senhor, rogai por nós.\nSão Miguel, porta-estandarte da Santíssima Trindade, rogai por nós.\nSão Miguel, guardião do Paraíso, rogai por nós.\nSão Miguel, guia e consolador do povo israelita, rogai por nós.\nSão Miguel, esplendor e fortaleza da Igreja militante, rogai por nós.\nSão Miguel, honra e alegria da Igreja triunfante, rogai por nós.\nSão Miguel, luz dos anjos, rogai por nós.\nSão Miguel, baluarte dos cristãos, rogai por nós.\nSão Miguel, força daqueles que combatem pelo estandarte da cruz, rogai por nós.\nSão Miguel, luz e confiança das almas no último momento da vida, rogai por nós.\nSão Miguel, socorro muito certo, rogai por nós.\nSão Miguel, nosso auxílio em todas as adversidades, rogai por nós.\nSão Miguel, arauto da sentença eterna, rogai por nós.\nSão Miguel, consolador das almas que estão no Purgatório, rogai por nós.\nSão Miguel, a quem o Senhor incumbiu de receber as almas que estão no Purgatório, rogai por nós.\nSão Miguel, nosso príncipe, rogai por nós.\nSão Miguel, nosso advogado, rogai por nós.\n\nCordeiro de Deus, que tirais o pecado do mundo, perdoai-nos, Senhor.\nCordeiro de Deus, que tirais o pecado do mundo, ouvi-nos, Senhor.\nCordeiro de Deus, que tirais o pecado do mundo, tende piedade de nós, Senhor.\n\nRogai por nós, ó glorioso São Miguel, príncipe da Igreja de Cristo, para que sejamos dignos de Suas promessas.\n\nOração: Senhor Jesus, santificai-nos por uma bênção sempre nova e concedei-nos, pela intercessão de São Miguel, essa sabedoria que nos ensina a ajuntar riquezas do céu e a trocar os bens do tempo presente pelos da eternidade. Vós que viveis e reinais em todos os séculos dos séculos. Amém."},
-{titulo:"Consagração",texto:"Ó Príncipe nobilíssimo dos Anjos, valoroso guerreiro do Altíssimo, zeloso defensor da glória do Senhor, terror dos espíritos rebeldes, amor e delícia de todos os Anjos justos, meu diletíssimo Arcanjo São Miguel, desejando eu fazer parte do número dos vossos devotos e servos, a vós, hoje, me consagro, me dou e ofereço, e ponho-me a mim próprio, a minha família e tudo o que me pertence debaixo da vossa poderosíssima proteção.\n\nÉ pequena a oferta do meu serviço, sendo como sou um miserável pecador, mas vós engrandecereis o afeto do meu coração; recordai-vos que, de hoje em diante, estou debaixo do vosso sustento, e deveis assistir-me em toda a minha vida e obter-me o perdão dos meus muitos e graves pecados, a graça de amar a Deus de todo coração, ao meu querido Salvador Jesus Cristo e a minha Mãe Maria Santíssima. Amém."}
+{titulo:"Consagração",texto:"Ó Príncipe nobilíssimo dos Anjos, valoroso guerreiro do Altíssimo, zeloso defensor da glória do Senhor, terror dos espíritos rebeldes, amor e delícia de todos os Anjos justos, meu diletíssimo Arcanjo São Miguel, desejando eu fazer parte do número dos vossos devotos e servos, a vós hoje me consagro, me dou e me ofereço e ponho-me a mim próprio, a minha família e tudo o que me pertence, debaixo da vossa poderosíssima proteção.\n\nÉ pequena a oferta do meu serviço, sendo como sou um miserável pecador, mas vós engrandecereis o afeto do meu coração; recordai-vos que de hoje em diante estou debaixo do vosso sustento e deveis assistir-me em toda a minha vida e obter-me o perdão dos meus muitos e graves pecados, a graça de amar a Deus de todo coração, ao meu querido Salvador Jesus Cristo e a minha Mãe Maria Santíssima.\n\nObtende-me aqueles auxílios que me são necessários para obter a coroa da eterna glória. Defendei-me dos inimigos da alma, especialmente na hora da morte. Vinde, ó príncipe gloriosíssimo, assistir-me na última luta e com a vossa arma poderosa lançai para longe, precipitando nos abismos do inferno, aquele anjo quebrador de promessas e soberbo que um dia prostrastes no combate no Céu.\n\nSão Miguel Arcanjo, defendei-nos no combate para que não pereçamos no supremo juízo."}
 ];
 
 
@@ -493,30 +493,31 @@ let lentDays=null;
 let lentProps=null;
 let lentGoal="";
 function initLent(){if(lentDays===null)lentDays={};if(lentProps===null)lentProps=[];
+  const temAntigo=Object.keys(lentDays).some(k=>/^\d{4}-\d{2}-\d{2}$/.test(k));
+  if(temAntigo){for(const k of Object.keys(lentDays)){if(/^\d{4}-\d{2}-\d{2}$/.test(k)&&lentDays[k]){const dias=daysBetween(QUARESMA_INICIO,k);if(dias>=0&&dias<QUARESMA_DIAS){lentDays["d"+(dias+1)]=true;}delete lentDays[k];}}}
+  
   if(lentGoal===null)lentGoal="";}
-function lentDayStr(i){const d=parseLocal(QUARESMA_INICIO);d.setDate(d.getDate()+i);return dstr(d);}
-function lentCurrentDay(){const today=todayStr();if(today<QUARESMA_INICIO)return 0;if(today>QUARESMA_FIM)return QUARESMA_DIAS;return daysBetween(QUARESMA_INICIO,today)+1;}
+function lentDayStr(i){return "d"+(i+1);} // marcação por número do quadradinho (1..40), livre
 function lentDoneCount(){let n=0;for(let i=0;i<QUARESMA_DIAS;i++){if(lentDays[lentDayStr(i)])n++;}return n;}
 function renderLent(){
   initLent();
   document.getElementById("qDates").textContent="15/08 a 29/09/2026 · 40 dias";
   document.getElementById("qText").textContent=QUARESMA_TEXTO;
-  const cur=lentCurrentDay();const done=lentDoneCount();
-  document.getElementById("qDayNum").textContent=cur;
+  const done=lentDoneCount();
+  document.getElementById("qDayNum").textContent=done;
   let info;
-  if(todayStr()<QUARESMA_INICIO)info="<b>Ainda não começou</b><div>Começa em 15/08/2026</div>";
-  else if(todayStr()>QUARESMA_FIM)info="<b>Quaresma concluída</b><div>"+done+" de 40 dias cumpridos</div>";
-  else info="<b>Dia "+cur+" de 40</b><div>"+done+" dias cumpridos · faltam "+(40-done)+"</div>";
+  if(done>=QUARESMA_DIAS)info="<b>Quaresma concluída! 🎉</b><div>40 de 40 dias cumpridos</div>";
+  else info="<b>Dia "+done+" de 40</b><div>"+done+" dias cumpridos · faltam "+(QUARESMA_DIAS-done)+"</div>";
   document.getElementById("qDayInfo").innerHTML=info;
   document.getElementById("qBar").style.width=(done/QUARESMA_DIAS*100)+"%";
   const g=document.getElementById("qGrid");g.innerHTML="";
-  const today=todayStr();
+  const proximo=done;
   for(let i=0;i<QUARESMA_DIAS;i++){
     const ds=lentDayStr(i);
     const c=document.createElement("div");
-    c.className="qcell"+(lentDays[ds]?" done":"")+(ds===today?" today":"");
+    c.className="qcell"+(lentDays[ds]?" done":"")+((!lentDays[ds]&&i===proximo)?" today":"");
     c.textContent=i+1;
-    if(ds<=today){c.addEventListener("click",()=>{if(lentDays[ds])delete lentDays[ds];else lentDays[ds]=true;saveLent();renderLent();});}
+    c.addEventListener("click",()=>{if(lentDays[ds])delete lentDays[ds];else lentDays[ds]=true;saveLent();renderLent();});
     g.appendChild(c);
   }
   const pr=document.getElementById("qPrayers");
