@@ -217,6 +217,46 @@
   .qgoal-text{font-size:14px;line-height:1.6;white-space:pre-line;margin-bottom:10px}
   .qgoal-text:empty{display:none}
   .qgoal-edit{width:100%;padding:11px;border-radius:12px;border:1.5px dashed var(--line);background:transparent;color:var(--mut);font-size:13px;font-weight:700;cursor:pointer}
+  .prayer-head .nchk{width:26px;height:26px;border-radius:50%;border:2px solid var(--line);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:14px;color:transparent;margin-right:12px;transition:.15s}
+  .prayer.sdone .prayer-head .nchk{background:var(--ok);border-color:var(--ok);color:#fff}
+  .prayer-head .ntit{flex:1}
+  .prayer.sdone .prayer-head .ntit{opacity:.55}
+  .ngrid{display:grid;grid-template-columns:repeat(10,1fr);gap:6px}
+  .ncell{aspect-ratio:1;border-radius:8px;background:var(--card2);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--mut)}
+  .ncell.done{background:var(--acc);color:#fff}
+  .ncell.today{outline:2px solid var(--acc);outline-offset:-2px}
+  .verse-top{background:linear-gradient(135deg,var(--acc) 0%,#5b4bb8 100%);color:#fff;border-radius:18px;padding:18px 20px;margin-top:14px}
+  .verse-top .vt-lbl{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.09em;opacity:.75}
+  .verse-top .vt-ref{font-size:21px;font-weight:800;margin-top:5px}
+  .verse-top .vt-tema{font-size:14px;line-height:1.5;margin-top:6px;opacity:.95}
+  .prayer.bible .prayer-head .ntit{font-weight:800}
+  .bib-ref{font-size:19px;font-weight:800;color:var(--acc)}
+  .bib-tema{font-size:14px;line-height:1.6;margin-top:6px;margin-bottom:14px}
+  .bib-dia{font-size:13px;font-weight:800;color:var(--acc);margin-bottom:12px;line-height:1.4}
+  .bib-lin{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:9px 0;border-bottom:1px solid var(--line)}
+  .bib-lin .bl-rot{font-size:11px;font-weight:800;color:var(--mut);text-transform:uppercase;letter-spacing:.04em;flex-shrink:0}
+  .bib-lin .bl-ref{font-size:15px;font-weight:800;text-align:right}
+  .bib-abra{font-size:13px;color:var(--mut);font-style:italic;margin:12px 0}
+  .bib-lit{display:block;text-align:center;margin-top:12px;font-size:12px;color:var(--mut);text-decoration:none;font-weight:700}
+  .bib-nota{font-size:13px;line-height:1.6;padding:13px;border-radius:12px;border:1.5px dashed var(--line);white-space:pre-line;cursor:pointer}
+  .bib-nota.vazia{color:var(--mut);font-style:italic;text-align:center}
+  .prop-item .prem{background:none;border:none;color:var(--mut);font-size:16px;cursor:pointer;padding:0 4px}
+  .verse-top{background:linear-gradient(135deg,var(--acc) 0%,#5b4bb8 100%);color:#fff;border-radius:18px;padding:18px 20px;margin-top:14px}
+  .verse-top .vt-lbl{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.09em;opacity:.75}
+  .verse-top .vt-ref{font-size:21px;font-weight:800;margin-top:5px}
+  .verse-top .vt-tema{font-size:14px;line-height:1.5;margin-top:6px;opacity:.95}
+  .prayer.bible .prayer-head .ntit{font-weight:800}
+  .bib-ref{font-size:19px;font-weight:800;color:var(--acc)}
+  .bib-tema{font-size:14px;line-height:1.6;margin-top:6px;margin-bottom:14px}
+  .bib-dia{font-size:13px;font-weight:800;color:var(--acc);margin-bottom:12px;line-height:1.4}
+  .bib-lin{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:9px 0;border-bottom:1px solid var(--line)}
+  .bib-lin .bl-rot{font-size:11px;font-weight:800;color:var(--mut);text-transform:uppercase;letter-spacing:.04em;flex-shrink:0}
+  .bib-lin .bl-ref{font-size:15px;font-weight:800;text-align:right}
+  .bib-abra{font-size:13px;color:var(--mut);font-style:italic;margin:12px 0}
+  .bib-lit{display:block;text-align:center;margin-top:12px;font-size:12px;color:var(--mut);text-decoration:none;font-weight:700}
+  .bib-nota{font-size:13px;line-height:1.6;padding:13px;border-radius:12px;border:1.5px dashed var(--line);white-space:pre-line;cursor:pointer}
+  .bib-nota.vazia{color:var(--mut);font-style:italic;text-align:center}
+
   .cal-help{text-align:center;font-size:12px;color:var(--mut);margin-top:12px;line-height:1.5}
   .yeargrid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:4px}
   .ymonth{background:var(--card);border-radius:14px;padding:12px 10px;border:1px solid var(--line);cursor:pointer}
@@ -392,30 +432,27 @@
   </div>
 </div>
 
-<div class="wrap hidden" id="viewLent">
+<div class="wrap hidden" id="viewNight">
   <div class="qhero">
-    <div class="qtitle">Quaresma de São Miguel Arcanjo</div>
-    <div class="qdates" id="qDates">—</div>
-    <div class="qtext" id="qText"></div>
+    <div class="qtitle">Oração da Noite</div>
+    <div class="qdates" id="nDate">—</div>
+    <div class="qtext">Antes de dormir, oito passos para entregar o dia a Deus: abertura, a Palavra do dia, exame de consciência, contrição, as orações de sempre, São Miguel, o Anjo da Guarda e a entrega da noite. Toque no círculo de cada passo conforme for rezando.</div>
     <div class="qday">
-      <div class="qring"><b id="qDayNum">0</b><span>de 40</span></div>
-      <div class="qday-info" id="qDayInfo"></div>
+      <div class="qring"><b id="nDayNum">0</b><span>de 8</span></div>
+      <div class="qday-info" id="nDayInfo"></div>
     </div>
   </div>
-  <div class="sec-title">Os 40 dias</div>
-  <div class="qbar"><div class="qbar-fill" id="qBar"></div></div>
-  <div class="qgrid" id="qGrid"></div>
-  <div class="qgrid-help">Toque no quadradinho para marcar cada dia cumprido (domingos não contam na Quaresma)</div>
-  <div class="sec-title">🙏 Orações</div>
-  <div id="qPrayers"></div>
-  <div class="sec-title">🎯 Meu objetivo / intenção</div>
-  <div class="qgoal" id="qGoalBox">
-    <div class="qgoal-text" id="qGoalText"></div>
-    <button class="qgoal-edit" id="qGoalEdit">Escrever minha intenção</button>
-  </div>
-  <div class="sec-title">📝 Meus sacrifícios</div>
-  <div id="qPropList"></div>
-  <button class="prop-add" id="qAddProp">+ Adicionar sacrifício</button>
+  <div class="verse-top" id="nVerseTop"></div>
+  <div class="qbar"><div class="qbar-fill" id="nBar"></div></div>
+  <div class="sec-title">🙏 A rotina desta noite</div>
+  <div id="nSteps"></div>
+  <button class="prop-add" id="nReset">Recomeçar a rotina desta noite</button>
+  <div class="sec-title">🕯️ Minhas intenções</div>
+  <div id="nIntentList"></div>
+  <button class="prop-add" id="nAddIntent">+ Adicionar intenção</button>
+  <div class="sec-title">📆 Minhas últimas 30 noites</div>
+  <div class="ngrid" id="nGrid"></div>
+  <div class="qgrid-help" id="nStats"></div>
 </div>
 
 <div id="restTimer" class="rest-timer hidden">
@@ -434,7 +471,7 @@
   <button class="active" id="navStart"><span class="ic">🏠</span>Início</button>
   <button id="navWorkout"><span class="ic">🏋️</span>Treinos</button>
   <button id="navFreq"><span class="ic">📅</span>Frequência</button>
-  <button id="navLent"><span class="ic">✝️</span>Quaresma</button>
+  <button id="navNight"><span class="ic">🌙</span>Oração</button>
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
@@ -456,7 +493,7 @@ try{ firebase.initializeApp(firebaseConfig); fbDB=firebase.database(); fbReady=t
 </script>
 
 <script>
-const APP_VERSION="v2.5";
+const APP_VERSION="v3.0";
 const USER_NAME="Nayane";
 function greeting(){
   const h=new Date().getHours();
@@ -475,85 +512,286 @@ const TOTAL=120, BOTTLE=0.8, BOTTLES=5, WEEK_GOAL=7, YEAR=2026;
 const MESES=["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
 const MES_ABR=["Jan","Fev","Mar","Abr","Mai","Jun","Jul","Ago","Set","Out","Nov","Dez"];
 
-const QUARESMA_INICIO="2026-08-15";
-const QUARESMA_FIM="2026-09-29";
-const QUARESMA_DIAS=40;
-const QUARESMA_TEXTO="A Igreja se une em oração na Quaresma de São Miguel Arcanjo, o grande protetor contra o mal. Durante 40 dias, somos convidados a um período intenso de oração e jejum, preparando-nos para a grande celebração dos Santos Arcanjos Miguel, Gabriel e Rafael.";
-const ORACOES=[
-{titulo:"Preparação",texto:"Para preparar-se para a Quaresma de São Miguel é necessário:\n\n• Acender uma vela abençoada diante de uma imagem ou estampa de São Miguel Arcanjo;\n• Oferecer uma penitência durante os 40 dias;\n• Fazer o sinal da cruz;\n• Rezar essas orações todos os dias."},
-{titulo:"Oração inicial",texto:"São Miguel Arcanjo, defendei-nos no combate, sede o nosso refúgio contra as maldades e ciladas do demônio. Ordene-lhe, Deus, instantemente o pedimos. E vós, príncipe da milícia celeste, pela virtude divina, precipitai ao inferno satanás e os outros espíritos malignos, que andam pelo mundo para perder as almas. Amém.\n\nSacratíssimo Coração de Jesus (3x)."},
-{titulo:"Ladainha de São Miguel Arcanjo",texto:"Senhor, tende piedade de nós.\nJesus Cristo, tende piedade de nós.\nSenhor, tende piedade de nós.\nJesus Cristo, ouvi-nos.\nJesus Cristo, atendei-nos.\nPai Celeste, que sois Deus, tende piedade de nós.\nFilho Redentor do Mundo, que sois Deus, tende piedade de nós.\nEspírito Santo, que sois Deus, tende piedade de nós.\nTrindade Santa, que sois um único Deus, tende piedade de nós.\n\nSanta Maria, Rainha dos Anjos, rogai por nós.\nSão Miguel, rogai por nós.\nSão Miguel, cheio da graça de Deus, rogai por nós.\nSão Miguel, perfeito adorador do Verbo Divino, rogai por nós.\nSão Miguel, coroado de honra e de glória, rogai por nós.\nSão Miguel, poderosíssimo príncipe dos exércitos do Senhor, rogai por nós.\nSão Miguel, porta-estandarte da Santíssima Trindade, rogai por nós.\nSão Miguel, guardião do Paraíso, rogai por nós.\nSão Miguel, guia e consolador do povo israelita, rogai por nós.\nSão Miguel, esplendor e fortaleza da Igreja militante, rogai por nós.\nSão Miguel, honra e alegria da Igreja triunfante, rogai por nós.\nSão Miguel, luz dos anjos, rogai por nós.\nSão Miguel, baluarte dos cristãos, rogai por nós.\nSão Miguel, força daqueles que combatem pelo estandarte da cruz, rogai por nós.\nSão Miguel, luz e confiança das almas no último momento da vida, rogai por nós.\nSão Miguel, socorro muito certo, rogai por nós.\nSão Miguel, nosso auxílio em todas as adversidades, rogai por nós.\nSão Miguel, arauto da sentença eterna, rogai por nós.\nSão Miguel, consolador das almas que estão no Purgatório, rogai por nós.\nSão Miguel, a quem o Senhor incumbiu de receber as almas que estão no Purgatório, rogai por nós.\nSão Miguel, nosso príncipe, rogai por nós.\nSão Miguel, nosso advogado, rogai por nós.\n\nCordeiro de Deus, que tirais o pecado do mundo, perdoai-nos, Senhor.\nCordeiro de Deus, que tirais o pecado do mundo, ouvi-nos, Senhor.\nCordeiro de Deus, que tirais o pecado do mundo, tende piedade de nós, Senhor.\n\nRogai por nós, ó glorioso São Miguel, príncipe da Igreja de Cristo, para que sejamos dignos de Suas promessas.\n\nOração: Senhor Jesus, santificai-nos por uma bênção sempre nova e concedei-nos, pela intercessão de São Miguel, essa sabedoria que nos ensina a ajuntar riquezas do céu e a trocar os bens do tempo presente pelos da eternidade. Vós que viveis e reinais em todos os séculos dos séculos. Amém."},
-{titulo:"Oração de Libertação",texto:"Fiéis aos ensinamentos do Salvador, ousamos dizer:\n\nPai nosso que estais nos céus, santificado seja o vosso nome, venha a nós o vosso reino, seja feita a vossa vontade assim na terra como no céu. O pão nosso de cada dia nos dai hoje, perdoai-nos as nossas ofensas, assim como nós perdoamos a quem nos tem ofendido, e não nos deixeis cair em tentação, mas livrai-nos do mal.\n\nLivra-nos de todo mal e de toda a perturbação diabólica, vós, que pela morte e ressurreição de Jesus Cristo, vosso amado Filho, nos libertastes do poder das trevas e da morte, e nos transferistes para o vosso reino de luz e santidade.\n\nLibertai-nos agora de todo o domínio e ligação com Satanás e os seus anjos.\n\nLibertai-nos de todas as forças do mal, esmagai-as, destruí-as, para que possamos viver segundo a vossa santíssima vontade. Libertai-nos de todos os malefícios, das bruxarias, da magia negra, das missas negras, dos feitiços, das maldições, do mau-olhado, dos ritos satânicos, dos cultos satânicos, das consagrações a Satanás.\n\nDestruí qualquer ligação com Satanás e com todas as pessoas ligadas a Satanás, vivas ou defuntas.\n\nLibertai-nos de toda infestação diabólica, de toda possessão diabólica, de toda obsessão diabólica, e de tudo aquilo que é pecado ou consequência do pecado.\n\nDestruí todos estes males no inferno, para que nunca mais nos atormentem nem a qualquer outra criatura no mundo.\n\nDeus Pai Todo-Poderoso, peço-vos, em nome de Jesus Cristo Salvador, e pela intercessão da Virgem Imaculada, que ordeneis a todos os espíritos imundos, a todas as presenças que nos atormentam: a deixar-nos imediatamente, a deixar-nos definitivamente e a ir para o inferno eterno, encadeados por São Miguel Arcanjo, por São Gabriel, por São Rafael, pelos nossos Anjos da Guarda, esmagados debaixo do calcanhar da Santíssima Virgem Maria nossa Mãe Imaculada.\n\nVós que criastes o homem à vossa imagem e semelhança na santidade e na justiça, e depois do pecado não o abandonastes, mas com sábia providência cuidastes da sua salvação pelo mistério da Encarnação, Paixão, Morte e Ressurreição do vosso muito amado Filho: salvai-nos e libertai-nos do mal e da escravidão do inimigo.\n\nAfastai de nós o espírito de mentira, soberba, luxúria, avareza, ira, inveja, gula, preguiça e de toda a espécie de maldade. Recebei-nos em vosso reino.\n\nAbri o nosso coração para entendermos o vosso evangelho, para que vivamos sempre como filhos da luz, demos testemunho da verdade e pratiquemos obras de caridade, segundo os vossos mandamentos.\n\nCom o sopro da vossa boca expulsai, Senhor, os espíritos malignos: ordenai que se retirem, porque chegou o vosso reino. Por nosso Senhor Jesus Cristo, vosso Filho, que é Deus e convosco na unidade do Espírito Santo. Amém.\n\n• Senhor, ouvi minha oração.\n• E chegue até vós o meu clamor."},
-{titulo:"Oração de Santo Ambrósio",texto:"Ó Senhor Todo-Poderoso, Verbo de Deus Pai, Cristo Jesus, Deus e Senhor de toda a criação; que destes aos vossos Santos Apóstolos o poder de pisar sobre serpentes e escorpiões; que, entre as outras ordens de vossos prodígios, vos dignastes dizer: Expulsai os demônios; por cuja virtude vencido, Satanás caiu como um raio do céu: suplicante invoco vosso nome com temor e tremor, para que, perdoados todos os meus pecados, vos digneis conceder-me a mim, vosso indigníssimo servo, confiança e poder para enfrentar esse dragão cruel com fé e segurança, munido com o poder de vosso braço. Vós que sois Deus, e viveis e reinais com Deus Pai, na unidade do Espírito Santo, por todos os séculos dos séculos. Amém.\n\nOremos:\nQue Santa Maria, Virgem perpétua, Mãe de Deus, templo do Senhor, sacrário do Espírito Santo; e todos os Anjos e Arcanjos, Principados e Potestades, Virtudes e Dominações, Tronos, Querubins e Serafins; e todos os Santos Patriarcas, Profetas, Apóstolos, Mártires, Confessores, Doutores e Virgens; e todos os eleitos de Deus: se dignem interceder ao Senhor por nós, para que mereçamos ser plenamente libertos e protegidos de todos os espíritos imundos, das vexações da alma e do corpo, das perturbações dos sentidos, dos terrores e ilusões dos demônios, e conservados também na saúde da mente e do corpo.\n\nPor aquele que há de vir julgar vivos e mortos, e este mundo pelo fogo. Amém."},
-{titulo:"Augusta Rainha",texto:"Augusta Rainha dos céus, soberana mestra dos Anjos, vós que desde o princípio recebestes de Deus o poder e a missão de esmagar a cabeça de Satanás, nós vo-lo pedimos humildemente: enviai vossas legiões celestes, para que, sob vossas ordens, e por vosso poder, elas persigam os demônios, combatendo-os por toda a parte, reprimindo-lhes a insolência, e lançando-os no abismo.\n\nQuem é como Deus? Ó Mãe de bondade e ternura, vós sereis sempre o nosso Amor e a nossa esperança.\n\nÓ Mãe Divina, enviai os Santos Anjos para nos defenderem, e repelir para longe de nós o cruel inimigo. Santos Anjos e Arcanjos, defendei-nos e guardai-nos. Amém."},
-{titulo:"Consagração",texto:"Ó Príncipe nobilíssimo dos Anjos, valoroso guerreiro do Altíssimo, zeloso defensor da glória do Senhor, terror dos espíritos rebeldes, amor e delícia de todos os Anjos justos, meu diletíssimo Arcanjo São Miguel, desejando eu fazer parte do número dos vossos devotos e servos, a vós hoje me consagro, me dou e me ofereço e ponho-me a mim próprio, a minha família e tudo o que me pertence, debaixo da vossa poderosíssima proteção.\n\nÉ pequena a oferta do meu serviço, sendo como sou um miserável pecador, mas vós engrandecereis o afeto do meu coração; recordai-vos que de hoje em diante estou debaixo do vosso sustento e deveis assistir-me em toda a minha vida e obter-me o perdão dos meus muitos e graves pecados, a graça de amar a Deus de todo coração, ao meu querido Salvador Jesus Cristo e a minha Mãe Maria Santíssima.\n\nObtende-me aqueles auxílios que me são necessários para obter a coroa da eterna glória. Defendei-me dos inimigos da alma, especialmente na hora da morte. Vinde, ó príncipe gloriosíssimo, assistir-me na última luta e com a vossa arma poderosa lançai para longe, precipitando nos abismos do inferno, aquele anjo quebrador de promessas e soberbo que um dia prostrastes no combate no Céu.\n\nSão Miguel Arcanjo, defendei-nos no combate para que não pereçamos no supremo juízo."}
+// ===== Oração da Noite =====
+const LITURGIA={
+"2026-10-19":{t:"29ª Semana do Tempo Comum | Segunda-feira",a:"Ef 2,1-10",s:"Sl 99(100),2.3.4.5",b:null,e:"Lc 12,13-21"},
+"2026-10-20":{t:"29ª Semana do Tempo Comum | Terça-feira",a:"Ef 2,12-22",s:"Sl 84(85),9ab-10.11-12.13-14",b:null,e:"Lc 12,35-38"},
+"2026-10-21":{t:"29ª Semana do Tempo Comum | Quarta-feira",a:"Ef 3,2-12",s:"Is 12,2-3.4bcd.5-6",b:null,e:"Lc 12,39-48"},
+"2026-10-22":{t:"29ª Semana do Tempo Comum | Quinta-feira",a:"Ef 3,14-21",s:"Sl 32(33),1-2.4-5.11-12.18-19",b:null,e:"Lc 12,49-53"},
+"2026-10-23":{t:"29ª Semana do Tempo Comum | Sexta-feira",a:"Ef 4,1-6",s:"Sl 23(24),1-2.3-4ab.5-6",b:null,e:"Lc 12,54-59"},
+"2026-10-24":{t:"29ª Semana do Tempo Comum | Sábado",a:"Ef 4,7-16",s:"Sl 121(122),1-2.3-4a.4b-5",b:null,e:"Lc 13,1-9"},
+"2026-10-25":{t:"30º Domingo do Tempo Comum",a:"Ex 22,20-26",s:"Sl 17(18),2-3a.3bc-4.47.51ab",b:"1Ts 1,5c-10",e:"Mt 22,34-40"},
+"2026-10-26":{t:"30ª Semana do Tempo Comum | Segunda-feira",a:"Ef 4,32-5,8",s:"Sl 1,1-2.3.4 e 6",b:null,e:"Lc 13,10-17"},
+"2026-10-27":{t:"30ª Semana do Tempo Comum | Terça-feira",a:"Ef 5,21-33",s:"Sl 127(128),1-2.3.4-5",b:null,e:"Lc 13,18-21"},
+"2026-10-28":{t:"Santos Simão e Judas, Apóstolos - Festa | Quarta-feira",a:"Ef 2,19-22",s:"Sl 18(19A),2-3.4-5",b:null,e:"Lc 6,12-19"},
+"2026-10-29":{t:"30ª Semana do Tempo Comum | Quinta-feira",a:"Ef 6,10-20",s:"Sl 143(144),1.2.9-10",b:null,e:"Lc 13,31-35"},
+"2026-10-30":{t:"30ª Semana do Tempo Comum | Sexta-feira",a:"Fl 1,1-11",s:"Sl 110(111),1-2.3-4.5-6",b:null,e:"Lc 14,1-6"},
+"2026-10-31":{t:"30ª Semana do Tempo Comum | Sábado",a:"Fl 1,18b-26",s:"Sl 41(42),2.3.5bcd",b:null,e:"Lc 14,1.7-11"},
+"2026-11-01":{t:"Todos os Santos, Solenidade | Domingo",a:"Ap 7,2-4.9-14",s:"Sl 23(24),1-2.3-4ab.5-6",b:"1Jo 3,1-3",e:"Mt 5,1-12a"},
+"2026-11-02":{t:"Comemoração de Todos os Fiéis Defuntos | Segunda-feira",a:"Jó 19,1.23-27a",s:"Sl 23(24),1-2.3-4ab.5-6",b:"1Cor 15,20-24a.25-28",e:"Lc 12,35-40"},
+"2026-11-03":{t:"31ª Semana do Tempo Comum | Terça-feira",a:"Fl 2,5-11",s:"Sl 21(22),26b-27.28-30a.31-32",b:null,e:"Lc 14,15-24"},
+"2026-11-04":{t:"São Carlos Borromeu, bispo - Memória | Quarta-feira",a:"Fl 2,12-18",s:"Sl 26(27),1.4.13-14",b:null,e:"Lc 14,25-33"},
+"2026-11-05":{t:"31ª Semana do Tempo Comum | Quinta-feira",a:"Fl 3,3-8a",s:"Sl 104(105),2-3.4-5.6-7",b:null,e:"Lc 15,1-10"},
+"2026-11-06":{t:"31ª Semana do Tempo Comum | Sexta-feira",a:"Fl 3,17-4,1",s:"Sl 121(122),1-2.3-4a.4b-5",b:null,e:"Lc 16,1-8"},
+"2026-11-07":{t:"31ª Semana do Tempo Comum | Sábado",a:"Fl 4,10-19",s:"Sl 111(112),1-2.5-6.8a e 9",b:null,e:"Lc 16,9-15"},
+"2026-11-08":{t:"32º Domingo do Tempo Comum",a:"Sb 6,12-16",s:"Sl 62(63),2.3-4.5-6.7-8",b:"1Ts 4,13-18",e:"Mt 25,1-13"},
+"2026-11-09":{t:"Dedicação da Basílica do Latrão - Festa | Segunda-feira",a:"Ez 47,1-2.8-9.12",s:"Sl 45(46),2-3.5-6.8-9",b:null,e:"Jo 2,13-22"},
+"2026-11-10":{t:"São Leão Magno, papa e doutor da Igreja - Memória | Terça-feira",a:"Tt 2,1-8.11-14",s:"Sl 36(37),3-4.18-23.27 e 29",b:null,e:"Lc 17,7-10"},
+"2026-11-11":{t:"São Martinho de Tours, bispo - Memória | Quarta-feira",a:"Tt 3,1-7",s:"Sl 22(23),1-3a.3b-4.5.6",b:null,e:"Lc 17,11-19"},
+"2026-11-12":{t:"São Josafá, bispo e mártir - Memória | Quinta-feira",a:"Fm 1,7-20",s:"Sl 145(146),7.8-9a.9bc-10",b:null,e:"Lc 17,20-25"},
+"2026-11-13":{t:"32ª Semana do Tempo Comum | Sexta-feira",a:"2Jo 1,4-9",s:"Sl 118(119),1.2.10.11.17.18",b:null,e:"Lc 17,26-37"},
+"2026-11-14":{t:"32ª Semana do Tempo Comum | Sábado",a:"3Jo 1,5-8",s:"Sl 111(112),1-2.3-4.5-6",b:null,e:"Lc 18,1-8"},
+"2026-11-15":{t:"33º Domingo do Tempo Comum",a:"Pr 31,10-13.19-20.30-31",s:"Sl 127(128),1-2.3.4-5ab",b:"1Ts 5,1-6",e:"Mt 25,14-30"},
+"2026-11-16":{t:"33ª Semana do Tempo Comum | Segunda-feira",a:"Ap 1,1-4.2,1-5a",s:"Sl 1,1-2.3.4 e 6",b:null,e:"Lc 18,35-43"},
+"2026-11-17":{t:"Santa Isabel da Hungria, religiosa - Memória | Terça-feira",a:"Ap 3,1-6.14-22",s:"Sl 14(15),1a e 2-3ab.3cd-4ab.5",b:null,e:"Lc 19,1-10"},
+"2026-11-18":{t:"33ª Semana do Tempo Comum | Quarta-feira",a:"Ap 4,1-11",s:"Sl 150,1-2.3-4.5-6",b:null,e:"Lc 19,11-28"},
+"2026-11-19":{t:"Santos Roque González e companheiros mártires - Memória | Quinta-feira",a:"Ap 5,1-10",s:"Sl 149,1-2.3-4.5-6a e 9b",b:null,e:"Lc 19,41-44"},
+"2026-11-20":{t:"33ª Semana do Tempo Comum | Sexta-feira",a:"Ap 10,8-11",s:"Sl 118(119),14.24.72.103.111.131",b:null,e:"Lc 19,45-48"},
+"2026-11-21":{t:"Apresentação da Bem-aventurada Virgem Maria - Memória | Sábado",a:"Zc 2,14-17",s:"Lc 1,46-47.48-49.50-51.52-53.54-55",b:null,e:"Mt 12,46-50"},
+"2026-11-22":{t:"Nosso Senhor Jesus Cristo, Rei do Universo, Solenidade | Domingo",a:"Ez 34,11-12.15-17",s:"Sl 22(23),1-2a.2b-3.5-6",b:"1Cor 15,20-26.28",e:"Mt 25,31-46"},
+"2026-11-23":{t:"34ª Semana do Tempo Comum | Segunda-feira",a:"Ap 14,1-3.4b-5",s:"Sl 23(24),1-2.3-4ab.5-6",b:null,e:"Lc 21,1-4"},
+"2026-11-24":{t:"Santo André Dung-Lac e companheiros mártires - Memória | Terça-feira",a:"Ap 14,14-19",s:"Sl 95(96),10.11-12.13",b:null,e:"Lc 21,5-11"},
+"2026-11-25":{t:"34ª Semana do Tempo Comum | Quarta-feira",a:"Ap 15,1-4",s:"Sl 97(98),1.2-3ab.7-8.9",b:null,e:"Lc 21,12-19"},
+"2026-11-26":{t:"34ª Semana do Tempo Comum | Quinta-feira",a:"Ap 18,1-2.21-23.19,1-3.9a",s:"Sl 99(100),2.3.4.5",b:null,e:"Lc 21,20-28"},
+"2026-11-27":{t:"34ª Semana do Tempo Comum | Sexta-feira",a:"Ap 20,1-4.11-21,2",s:"Sl 83(84),3.4.5-6a e 8a",b:null,e:"Lc 21,29-33"},
+"2026-11-28":{t:"34ª Semana do Tempo Comum | Sábado",a:"Ap 22,1-7",s:"Sl 94(95),1-2.3-5.6-7",b:null,e:"Lc 21,34-36"},
+"2026-11-29":{t:"1º Domingo do Advento",a:"Is 63,16b-17.19b;64,2b-7",s:"Sl 79(80),2ac.3b.15-16.18-19",b:"1Cor 1,3-9",e:"Mc 13,33-37"},
+"2026-11-30":{t:"Santo André, Apóstolo - Festa | Segunda-feira",a:"Rm 10,9-18",s:"Sl 18(19A),2-3.4-5",b:null,e:"Mt 4,18-22"},
+"2026-12-01":{t:"1ª Semana do Advento | Terça-feira",a:"Is 11,1-10",s:"Sl 71(72),1-2.7-8.12-13.17",b:null,e:"Lc 10,21-24"},
+"2026-12-02":{t:"1ª Semana do Advento | Quarta-feira",a:"Is 25,6-10a",s:"Sl 22(23),1-3a.3b-4.5.6",b:null,e:"Mt 15,29-37"},
+"2026-12-03":{t:"São Francisco Xavier, presbítero - Memória | Quinta-feira",a:"Is 26,1-6",s:"Sl 117(118),1.8-9.19-21.25-27a",b:null,e:"Mt 7,21.24-27"},
+"2026-12-04":{t:"1ª Semana do Advento | Sexta-feira",a:"Is 29,17-24",s:"Sl 26(27),1.4.13-14",b:null,e:"Mt 9,27-31"},
+"2026-12-05":{t:"1ª Semana do Advento | Sábado",a:"Is 30,19-21.23-26",s:"Sl 146(147A),1-2.3-4.5-6",b:null,e:"Mt 9,35-10,1.6-8"},
+"2026-12-06":{t:"2º Domingo do Advento",a:"Is 40,1-5.9-11",s:"Sl 84(85),9ab-10.11-12.13-14",b:null,e:"Mc 1,1-8"},
+"2026-12-07":{t:"Santo Ambrósio, bispo e doutor da Igreja - Memória | Segunda-feira",a:"Is 35,1-10",s:"Sl 84(85),9ab-10.11-12.13-14",b:null,e:"Lc 5,17-26"},
+"2026-12-08":{t:"Imaculada Conceição da Virgem Maria - Solenidade | Terça-feira",a:"Gn 3,9-15.20",s:"Sl 97(98),1.2-3ab.3cd-4",b:null,e:"Lc 1,26-38"},
+"2026-12-09":{t:"2ª Semana do Advento | Quarta-feira",a:"Is 40,25-31",s:"Sl 102(103),1-2.3-4.8.10",b:null,e:"Mt 11,28-30"},
+"2026-12-10":{t:"2ª Semana do Advento | Quinta-feira",a:"Is 41,13-20",s:"Sl 144(145),1.9.10-11.12-13ab",b:null,e:"Mt 11,11-15"},
+"2026-12-11":{t:"2ª Semana do Advento | Sexta-feira",a:"Is 48,17-19",s:"Sl 1,1-2.3.4 e 6",b:null,e:"Mt 11,16-19"},
+"2026-12-12":{t:"Nossa Senhora de Guadalupe, Padroeira da América - Festa | Sábado",a:"Gl 4,4-7",s:"Sl 95(96),1-2a.2b-3.10",b:null,e:"Lc 1,39-47"},
+"2026-12-13":{t:"3º Domingo do Advento",a:"Is 61,1-2a.10-11",s:"Lc 1,46-48.49-50.53-54",b:"1Ts 5,16-24",e:"Jo 1,6-8.19-28"},
+"2026-12-14":{t:"São João da Cruz, presbítero e doutor da Igreja - Memória | Segunda-feira",a:"Nm 24,2-7.15-17a",s:"Sl 24(25),4bc-5ab.6-7bc.8-9",b:null,e:"Mt 21,23-27"},
+"2026-12-15":{t:"3ª Semana do Advento | Terça-feira",a:"Sf 3,1-2.9-13",s:"Sl 33(34),2-3.6-7.17-18.19 e 23",b:null,e:"Mt 21,28-32"},
+"2026-12-16":{t:"3ª Semana do Advento | Quarta-feira",a:"Is 45,6b-8.18.21b-25",s:"Sl 84(85),9ab-10.11-12.13-14",b:null,e:"Lc 7,19-23"},
+"2026-12-17":{t:"3ª Semana do Advento | Quinta-feira",a:"Gn 49,2.8-10",s:"Sl 71(72),1-2.3-4ab.7-8.17",b:null,e:"Mt 1,1-17"},
+"2026-12-18":{t:"3ª Semana do Advento | Sexta-feira",a:"Jr 23,5-8",s:"Sl 71(72),1-2.12-13.18-19",b:null,e:"Mt 1,18-24"},
+"2026-12-19":{t:"3ª Semana do Advento | Sábado",a:"Jz 13,2-7.24-25a",s:"Sl 70(71),3-4a.5-6ab.16-17",b:null,e:"Lc 1,5-25"},
+"2026-12-20":{t:"4º Domingo do Advento",a:"2Sm 7,1-5.8b-12.14a.16",s:"Sl 88(89),2-3.4-5.27.29",b:"Rm 16,25-27",e:"Lc 1,26-38"},
+"2026-12-21":{t:"4ª Semana do Advento | Segunda-feira",a:"Ct 2,8-14",s:"Sl 32(33),2-3.11-12.20-21",b:null,e:"Lc 1,39-45"},
+"2026-12-22":{t:"4ª Semana do Advento | Terça-feira",a:"1Sm 1,24-28",s:"Cântico: 1Sm 2,1.4-5.6-7.8abcd",b:null,e:"Lc 1,46-56"},
+"2026-12-23":{t:"4ª Semana do Advento | Quarta-feira",a:"Ml 3,1-4.23-24",s:"Sl 24(25),4-5ab.8-9.10 e 14",b:null,e:"Lc 1,57-66"},
+"2026-12-24":{t:"4ª Semana do Advento | Quinta-feira",a:"2Sm 7,1-5.8b-12.14a.16",s:"Sl 88(89),2-3.4-5.27 e 29",b:"At 13,16-17.22-25",e:"Lc 1,67-79"},
+"2026-12-25":{t:"Natal de Nosso Senhor Jesus Cristo - Solenidade | Sexta-feira",a:"Is 62,11-12",s:"Sl 97(98),1.2-3ab.3cd-4.5-6",b:"Tt 3,4-7",e:"Lc 2,15-20"},
+"2026-12-26":{t:"Santo Estêvão, protomártir - Festa | Sábado",a:"At 6,8-10.7,54-59",s:"Sl 30(31),3cd-4.6 e 8ab.16bc e 17",b:null,e:"Mt 10,17-22"},
+"2026-12-27":{t:"Sagrada Família de Jesus, Maria e José - Festa | Domingo",a:"Eclo 3,3-7.14-17a",s:"Sl 127(128),1-2.3.4-5",b:"Cl 3,12-21",e:"Lc 2,22-40"},
+"2026-12-28":{t:"Os Santos Inocentes, mártires - Festa | Segunda-feira",a:"1Jo 1,5-2,2",s:"Sl 123(124),2-3.4-5.7b-8",b:null,e:"Mt 2,13-18"},
+"2026-12-29":{t:"5º Dia na Oitava do Natal | Terça-feira",a:"1Jo 2,3-11",s:"Sl 95(96),1-2a.2b-3.5b-6",b:null,e:"Lc 2,22-35"},
+"2026-12-30":{t:"6º Dia na Oitava do Natal | Quarta-feira",a:"1Jo 2,12-17",s:"Sl 95(96),7-8a.8b-9.10",b:null,e:"Lc 2,36-40"},
+"2026-12-31":{t:"7º Dia na Oitava do Natal | Quinta-feira",a:"1Jo 2,18-21",s:"Sl 95(96),1-2.11-12.13",b:null,e:"Jo 1,1-18"}
+};
+const LITURGIA_FIM="2026-12-31";
+const PASSAGENS=[
+{r:"Salmo 4,9",s:"salmos",c:4,t:"Dormir em paz, porque só o Senhor me guarda."},
+{r:"Salmo 22 (23),1-4",s:"salmos",c:22,t:"O Senhor é meu pastor: nada me faltará."},
+{r:"Salmo 90 (91),1-6",s:"salmos",c:90,t:"À sombra do Altíssimo, sem medo do terror noturno."},
+{r:"Salmo 120 (121),1-8",s:"salmos",c:120,t:"Aquele que me guarda não dorme."},
+{r:"Salmo 130 (131),1-3",s:"salmos",c:130,t:"Aquietar a alma como criança no colo da mãe."},
+{r:"Salmo 138 (139),1-12",s:"salmos",c:138,t:"Mesmo na escuridão, Ele me conhece e me cerca."},
+{r:"Mateus 11,28-30",s:"sao-mateus",c:11,t:"Vinde a mim, vós que estais cansados."},
+{r:"Mateus 6,25-34",s:"sao-mateus",c:6,t:"Não vos inquieteis com o dia de amanhã."},
+{r:"João 14,27",s:"sao-joao",c:14,t:"A paz que Ele dá não é a que o mundo dá."},
+{r:"Filipenses 4,6-7",s:"filipenses",c:4,t:"A paz de Deus guardará o teu coração."},
+{r:"Isaías 43,1-3",s:"isaias",c:43,t:"Não temas, eu te chamei pelo teu nome."},
+{r:"Isaías 41,10",s:"isaias",c:41,t:"Eu te fortaleço e te sustento com minha destra."},
+{r:"Lamentações 3,22-26",s:"lamentacoes",c:3,t:"As misericórdias do Senhor se renovam a cada manhã."},
+{r:"Salmo 50 (51),3-14",s:"salmos",c:50,t:"Criai em mim um coração puro."},
+{r:"1 João 1,8-9",s:"i-sao-joao",c:1,t:"Se confessamos, Ele é fiel para nos perdoar."},
+{r:"Lucas 15,11-24",s:"sao-lucas",c:15,t:"O Pai que corre ao encontro do filho que volta."},
+{r:"Salmo 102 (103),8-14",s:"salmos",c:102,t:"Ele se lembra de que somos pó."},
+{r:"Mateus 18,21-22",s:"sao-mateus",c:18,t:"Perdoar setenta vezes sete."},
+{r:"Efésios 4,26",s:"efesios",c:4,t:"Que o sol não se ponha sobre a vossa ira."},
+{r:"Colossenses 3,12-15",s:"colossenses",c:3,t:"Revesti-vos de misericórdia e de perdão."},
+{r:"Salmo 126 (127),1-2",s:"salmos",c:126,t:"Em vão madrugais: Ele dá o sono aos que ama."},
+{r:"Provérbios 3,5-6",s:"proverbios",c:3,t:"Confia no Senhor e não te apoies no teu entendimento."},
+{r:"Provérbios 3,24",s:"proverbios",c:3,t:"Deitar-te-ás e teu sono será tranquilo."},
+{r:"Eclesiastes 3,1-8",s:"eclesiastes",c:3,t:"Há tempo para tudo debaixo do sol."},
+{r:"Salmo 61 (62),2-9",s:"salmos",c:61,t:"Só em Deus repousa a minha alma."},
+{r:"Salmo 26 (27),1-4",s:"salmos",c:26,t:"O Senhor é minha luz: a quem temerei?"},
+{r:"Salmo 15 (16),7-11",s:"salmos",c:15,t:"De noite meu coração me adverte."},
+{r:"Salmo 62 (63),2-9",s:"salmos",c:62,t:"Minha alma tem sede de Vós."},
+{r:"Marcos 4,35-41",s:"sao-marcos",c:4,t:"Ele dorme na barca; a tempestade obedece."},
+{r:"Mateus 14,22-33",s:"sao-mateus",c:14,t:"Caminhar sobre as águas sem tirar os olhos dele."},
+{r:"Lucas 1,26-38",s:"sao-lucas",c:1,t:"Faça-se em mim segundo a vossa palavra."},
+{r:"Lucas 1,46-55",s:"sao-lucas",c:1,t:"A minha alma glorifica o Senhor."},
+{r:"Lucas 2,29-32",s:"sao-lucas",c:2,t:"Agora, Senhor, podeis deixar partir o vosso servo em paz."},
+{r:"João 15,1-8",s:"sao-joao",c:15,t:"Permanecei em mim e eu em vós."},
+{r:"João 15,9-14",s:"sao-joao",c:15,t:"Permanecei no meu amor."},
+{r:"Romanos 8,28",s:"romanos",c:8,t:"Tudo concorre para o bem dos que amam a Deus."},
+{r:"Romanos 8,31-39",s:"romanos",c:8,t:"Nada poderá nos separar do amor de Cristo."},
+{r:"1 Coríntios 13,4-8",s:"i-corintios",c:13,t:"O amor é paciente, o amor é benigno."},
+{r:"2 Coríntios 12,9-10",s:"ii-corintios",c:12,t:"A minha graça te basta."},
+{r:"Hebreus 11,1",s:"hebreus",c:11,t:"A fé é a garantia das coisas que se esperam."},
+{r:"Tiago 1,2-4",s:"sao-tiago",c:1,t:"A provação da fé produz a paciência."},
+{r:"1 Pedro 5,6-7",s:"i-sao-pedro",c:5,t:"Lançai sobre Ele todas as vossas preocupações."},
+{r:"Salmo 33 (34),2-9",s:"salmos",c:33,t:"Provai e vede como o Senhor é bom."},
+{r:"Salmo 33 (34),19-21",s:"salmos",c:33,t:"O Senhor está perto dos que têm o coração atribulado."},
+{r:"Salmo 39 (40),2-4",s:"salmos",c:39,t:"Ele me tirou do lodo e firmou os meus pés."},
+{r:"Salmo 41 (42),2-6",s:"salmos",c:41,t:"Como a corça suspira pelas águas."},
+{r:"Salmo 45 (46),2-12",s:"salmos",c:45,t:"Deus é nosso refúgio e nossa força."},
+{r:"Salmo 55 (56),4-5",s:"salmos",c:55,t:"Quando o medo vier, em Vós confiarei."},
+{r:"Salmo 72 (73),23-27",s:"salmos",c:72,t:"Estou sempre convosco: Vós me tomastes pela mão."},
+{r:"Salmo 85 (86),1-7",s:"salmos",c:85,t:"Inclinai, Senhor, o vosso ouvido."},
+{r:"Salmo 89 (90),12",s:"salmos",c:89,t:"Ensinai-nos a contar os nossos dias."},
+{r:"Salmo 94 (95),1-7",s:"salmos",c:94,t:"Vinde, cantemos ao Senhor."},
+{r:"Salmo 99 (100),1-5",s:"salmos",c:99,t:"Servi ao Senhor com alegria."},
+{r:"Salmo 114 (116),1-9",s:"salmos",c:114,t:"Amo o Senhor porque ouviu a minha voz."},
+{r:"Salmo 118 (119),105",s:"salmos",c:118,t:"Vossa palavra é um facho que ilumina meus passos."},
+{r:"Salmo 129 (130),1-8",s:"salmos",c:129,t:"Das profundezas clamo a Vós."},
+{r:"Salmo 135 (136),1-9",s:"salmos",c:135,t:"Porque eterna é a sua misericórdia."},
+{r:"Salmo 142 (143),8",s:"salmos",c:142,t:"Fazei-me ouvir de manhã a vossa misericórdia."},
+{r:"Salmo 144 (145),8-9",s:"salmos",c:144,t:"O Senhor é clemente e compassivo."},
+{r:"Salmo 146 (147),1-6",s:"salmos",c:146,t:"Ele cura os que têm o coração ferido."},
+{r:"Isaías 26,3",s:"isaias",c:26,t:"Guardais em paz o espírito firme em Vós."},
+{r:"Isaías 30,15",s:"isaias",c:30,t:"Na quietude e na confiança está a vossa força."},
+{r:"Isaías 40,28-31",s:"isaias",c:40,t:"Os que esperam no Senhor renovam as forças."},
+{r:"Isaías 49,15-16",s:"isaias",c:49,t:"Ainda que a mãe esquecesse, eu não te esquecerei."},
+{r:"Isaías 54,10",s:"isaias",c:54,t:"Minha aliança de paz não vacilará."},
+{r:"Jeremias 29,11-13",s:"jeremias",c:29,t:"Tenho projetos de paz para ti."},
+{r:"Jeremias 31,3",s:"jeremias",c:31,t:"Amei-te com amor eterno."},
+{r:"Sofonias 3,17",s:"sofonias",c:3,t:"Ele exulta de alegria por tua causa."},
+{r:"Miqueias 6,8",s:"miqueias",c:6,t:"Praticar a justiça e caminhar humildemente."},
+{r:"Josué 1,9",s:"josue",c:1,t:"Sê forte: o Senhor está contigo onde quer que vás."},
+{r:"Deuteronômio 31,8",s:"deuteronomio",c:31,t:"Ele vai adiante de ti e não te abandonará."},
+{r:"Êxodo 14,14",s:"exodo",c:14,t:"O Senhor combaterá por vós; ficai tranquilos."},
+{r:"Números 6,24-26",s:"numeros",c:6,t:"O Senhor te abençoe e te guarde."},
+{r:"1 Reis 19,9-13",s:"i-reis",c:19,t:"Deus na brisa suave, não no terremoto."},
+{r:"Sabedoria 3,1-9",s:"sabedoria",c:3,t:"As almas dos justos estão nas mãos de Deus."},
+{r:"Eclesiástico 2,1-6",s:"eclesiastico",c:2,t:"Confia em Deus e Ele te sustentará."},
+{r:"Eclesiástico 6,14-17",s:"eclesiastico",c:6,t:"Um amigo fiel é um tesouro."},
+{r:"Tobias 4,6-11",s:"tobias",c:4,t:"Lembra-te do Senhor todos os dias da tua vida."},
+{r:"Tobias 8,4-9",s:"tobias",c:8,t:"A oração dos esposos na primeira noite."},
+{r:"Judite 8,25-27",s:"judite",c:8,t:"Aceitar a correção de Deus sem revolta."},
+{r:"Mateus 5,3-12",s:"sao-mateus",c:5,t:"As bem-aventuranças."},
+{r:"Mateus 6,9-13",s:"sao-mateus",c:6,t:"O Pai-Nosso como Jesus ensinou."},
+{r:"Mateus 7,7-11",s:"sao-mateus",c:7,t:"Pedi e recebereis."},
+{r:"Lucas 10,38-42",s:"sao-lucas",c:10,t:"Maria escolheu a melhor parte."},
+{r:"Lucas 11,9-13",s:"sao-lucas",c:11,t:"O Pai dará o Espírito Santo aos que pedirem."},
+{r:"Lucas 18,9-14",s:"sao-lucas",c:18,t:"Tende piedade de mim, que sou pecador."},
+{r:"Lucas 24,28-32",s:"sao-lucas",c:24,t:"Ficai conosco, pois a noite vem chegando."},
+{r:"João 1,1-5",s:"sao-joao",c:1,t:"A luz brilha nas trevas."},
+{r:"João 11,25-26",s:"sao-joao",c:11,t:"Eu sou a ressurreição e a vida."},
+{r:"Apocalipse 21,3-5",s:"apocalipse",c:21,t:"Ele enxugará toda lágrima dos seus olhos."}
 ];
-
-
-// ===== Quaresma de São Miguel =====
-function escLent(s){return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));}
-let lentDays=null;
-let lentProps=null;
-let lentGoal="";
-function initLent(){if(lentDays===null)lentDays={};if(lentProps===null)lentProps=[];
-  const temAntigo=Object.keys(lentDays).some(k=>/^\d{4}-\d{2}-\d{2}$/.test(k));
-  if(temAntigo){for(const k of Object.keys(lentDays)){if(/^\d{4}-\d{2}-\d{2}$/.test(k)&&lentDays[k]){const dias=daysBetween(QUARESMA_INICIO,k);if(dias>=0&&dias<QUARESMA_DIAS){lentDays["d"+(dias+1)]=true;}delete lentDays[k];}}}
-  
-  if(lentGoal===null)lentGoal="";}
-function lentDayStr(i){return "d"+(i+1);} // marcação por número do quadradinho (1..40), livre
-function lentDoneCount(){let n=0;for(let i=0;i<QUARESMA_DIAS;i++){if(lentDays[lentDayStr(i)])n++;}return n;}
-function renderLent(){
-  initLent();
-  document.getElementById("qDates").textContent="15/08 a 29/09/2026 · 40 dias";
-  document.getElementById("qText").textContent=QUARESMA_TEXTO;
-  const done=lentDoneCount();
-  document.getElementById("qDayNum").textContent=done;
-  let info;
-  if(done>=QUARESMA_DIAS)info="<b>Quaresma concluída! 🎉</b><div>40 de 40 dias cumpridos</div>";
-  else info="<b>Dia "+done+" de 40</b><div>"+done+" dias cumpridos · faltam "+(QUARESMA_DIAS-done)+"</div>";
-  document.getElementById("qDayInfo").innerHTML=info;
-  document.getElementById("qBar").style.width=(done/QUARESMA_DIAS*100)+"%";
-  const g=document.getElementById("qGrid");g.innerHTML="";
-  const proximo=done;
-  for(let i=0;i<QUARESMA_DIAS;i++){
-    const ds=lentDayStr(i);
-    const c=document.createElement("div");
-    c.className="qcell"+(lentDays[ds]?" done":"")+((!lentDays[ds]&&i===proximo)?" today":"");
-    c.textContent=i+1;
-    c.addEventListener("click",()=>{if(lentDays[ds])delete lentDays[ds];else lentDays[ds]=true;saveLent();renderLent();});
-    g.appendChild(c);
-  }
-  const pr=document.getElementById("qPrayers");
-  if(!pr.dataset.built){
-    ORACOES.forEach((o,idx)=>{
-      const card=document.createElement("div");card.className="prayer"+(idx===0?" open":"");
-      card.innerHTML='<div class="prayer-head">'+escLent(o.titulo)+'<span class="arrow">▼</span></div><div class="prayer-body"><p>'+escLent(o.texto)+'</p></div>';
-      card.querySelector(".prayer-head").addEventListener("click",()=>card.classList.toggle("open"));
-      pr.appendChild(card);
-    });
-    pr.dataset.built="1";
-  }
-  // objetivo/intenção
-  const gt=document.getElementById("qGoalText");
-  gt.textContent=lentGoal||"";
-  document.getElementById("qGoalEdit").textContent=lentGoal?"Editar minha intenção":"Escrever minha intenção";
-  const pl=document.getElementById("qPropList");pl.innerHTML="";
-  if(lentProps.length===0){pl.innerHTML='<div class="prop-empty">Nenhum sacrifício ainda. Toque em &quot;Adicionar&quot; para escrever do que você vai abrir mão.</div>';}
-  lentProps.forEach((p,i)=>{
-    const el=document.createElement("div");el.className="prop-item"+(p.done?" done":"");
-    el.innerHTML='<div class="pchk">✓</div><div class="pname">'+escLent(p.t)+'</div><button class="prem">✕</button>';
-    el.querySelector(".pchk").addEventListener("click",()=>{p.done=!p.done;saveLent();renderLent();});
-    el.querySelector(".prem").addEventListener("click",()=>{if(confirm("Remover \""+p.t+"\"?")){lentProps.splice(i,1);saveLent();renderLent();}});
-    pl.appendChild(el);
-  });
+const NOITE_PASSOS=[
+{titulo:"Sinal da Cruz e abertura",texto:"Em nome do Pai, e do Filho, e do Espírito Santo. Amém.\n\nVinde, Espírito Santo, enchei os corações dos vossos fiéis e acendei neles o fogo do vosso amor. Enviai o vosso Espírito e tudo será criado, e renovareis a face da terra.\n\nSenhor, ao fim deste dia, aquieto o meu coração diante de Vós. Dai-me luz para ver este dia como Vós o vedes."},
+{titulo:"Palavra de hoje",bible:true},
+{titulo:"Exame de consciência",texto:"Em silêncio, diante de Deus, percorra o seu dia:\n\n• GRATIDÃO — Pelo que sou grata hoje? Lembre de pelo menos uma coisa boa, por menor que seja.\n\n• LUZ — Peça ao Espírito Santo que lhe mostre o dia como ele realmente foi, sem dureza e sem desculpa.\n\n• EXAME — Onde amei hoje? Onde faltei com o amor, em pensamento, palavra, ação ou omissão?\n\n• PERDÃO — Peça perdão a Deus por aquilo que O feriu, e perdoe a quem lhe feriu.\n\n• AMANHÃ — Entregue o dia que vem e peça uma graça concreta para ele."},
+{titulo:"Ato de Contrição",texto:"Meu Deus, eu me arrependo de todo o coração de todos os meus pecados e os detesto, porque, pecando, perdi o céu e mereci o inferno; mas, principalmente, porque Vos ofendi a Vós, meu Deus, que sois infinitamente bom e digno de ser amado sobre todas as coisas. Proponho firmemente, com o auxílio da vossa graça, confessar-me e emendar-me. Amém."},
+{titulo:"Pai-Nosso, Ave-Maria e Glória",texto:"Pai nosso que estais nos céus, santificado seja o vosso nome, venha a nós o vosso reino, seja feita a vossa vontade assim na terra como no céu. O pão nosso de cada dia nos dai hoje, perdoai-nos as nossas ofensas, assim como nós perdoamos a quem nos tem ofendido, e não nos deixeis cair em tentação, mas livrai-nos do mal. Amém.\n\nAve Maria, cheia de graça, o Senhor é convosco, bendita sois vós entre as mulheres e bendito é o fruto do vosso ventre, Jesus. Santa Maria, Mãe de Deus, rogai por nós, pecadores, agora e na hora de nossa morte. Amém.\n\nGlória ao Pai, ao Filho e ao Espírito Santo. Como era no princípio, agora e sempre. Amém."},
+{titulo:"Oração a São Miguel Arcanjo",texto:"São Miguel Arcanjo, defendei-nos no combate, sede o nosso refúgio contra as maldades e ciladas do demônio. Ordene-lhe, Deus, instantemente o pedimos. E vós, príncipe da milícia celeste, pela virtude divina, precipitai ao inferno satanás e os outros espíritos malignos, que andam pelo mundo para perder as almas. Amém.\n\nSão Miguel Arcanjo, guardai esta casa e os que nela dormem."},
+{titulo:"Oração ao Anjo da Guarda",texto:"Santo Anjo do Senhor, meu zeloso guardador, se a ti me confiou a piedade divina, sempre me rege, me guarda, me governa e me ilumina. Amém.\n\nAnjo da minha guarda, velai sobre o meu sono. Afastai de mim todo mal e todo temor, e guardai-me até o amanhecer."},
+{titulo:"Salve Rainha e entrega da noite",texto:"Salve, Rainha, Mãe de misericórdia, vida, doçura e esperança nossa, salve! A vós bradamos, os degredados filhos de Eva. A vós suspiramos, gemendo e chorando neste vale de lágrimas. Eia, pois, advogada nossa, esses vossos olhos misericordiosos a nós volvei. E depois deste desterro, mostrai-nos Jesus, bendito fruto do vosso ventre. Ó clemente, ó piedosa, ó doce sempre Virgem Maria.\n\nRogai por nós, Santa Mãe de Deus. Para que sejamos dignos das promessas de Cristo. Amém.\n\nNas vossas mãos, Senhor, entrego o meu espírito. Velai por mim enquanto durmo, para que eu descanse em paz e desperte convosco.\n\nEm nome do Pai, e do Filho, e do Espírito Santo. Amém."}
+];
+const NOITE_TOTAL=NOITE_PASSOS.length;
+const CICLO_INICIO="2026-10-19";
+const LITURGIA_URL="https://liturgia.cancaonova.com/pb/";
+let nightSteps=null;   // {"2026-10-19":[true,...]}
+let nightIntents=null; // [{t}]
+let nightNotes=null;   // {"2026-10-19":"anotação"}
+function initNight(){ if(nightSteps===null)nightSteps={}; if(nightIntents===null)nightIntents=[]; if(nightNotes===null)nightNotes={}; }
+// a "noite" vale até as 4h: rezar 00h30 ainda conta para o dia anterior
+function nightDateStr(){ const d=new Date(); if(d.getHours()<4)d.setDate(d.getDate()-1); return dstr(d); }
+function passagemDoDia(ds){
+  const base=parseLocal(CICLO_INICIO), hoje=parseLocal(ds);
+  let n=Math.round((hoje-base)/86400000)%PASSAGENS.length;
+  if(n<0)n+=PASSAGENS.length;
+  return PASSAGENS[n];
 }
-function addLentProp(){const t=prompt("Do que você vai abrir mão / seu propósito:");if(!t||!t.trim())return;lentProps.push({t:t.trim(),done:false});saveLent();renderLent();}
-function editLentGoal(){
-  const t=prompt("Escreva o objetivo/intenção da sua Quaresma:",lentGoal||"");
+function nightArr(ds){ const a=nightSteps[ds]; return Array.isArray(a)?a:[]; }
+function nightCount(ds){ return nightArr(ds).filter(Boolean).length; }
+function nightDone(ds){ return nightCount(ds)>=NOITE_TOTAL; }
+function nightStreak(){
+  let n=0; const d=new Date(); if(d.getHours()<4)d.setDate(d.getDate()-1);
+  for(let i=0;i<400;i++){ const ds=dstr(d);
+    if(nightDone(ds))n++; else if(i>0)break;
+    d.setDate(d.getDate()-1); }
+  return n;
+}
+function nightTotal(){ return Object.keys(nightSteps).filter(ds=>nightDone(ds)).length; }
+function esc(x){ return String(x).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+function toggleNightStep(i){
+  const ds=nightDateStr(); const a=nightArr(ds).slice();
+  while(a.length<NOITE_TOTAL)a.push(false);
+  a[i]=!a[i];
+  if(a.some(Boolean))nightSteps[ds]=a; else delete nightSteps[ds];
+  saveNight(); renderNight();
+  if(a.every(Boolean))showToast("Rotina da noite concluída \u2728 Durma em paz!");
+}
+function resetNight(){
+  const ds=nightDateStr();
+  if(!nightSteps[ds])return;
+  if(confirm("Desmarcar todos os passos desta noite?")){ delete nightSteps[ds]; saveNight(); renderNight(); }
+}
+function editNightNote(){
+  const ds=nightDateStr();
+  const t=prompt("O que esta passagem lhe diz hoje?",nightNotes[ds]||"");
   if(t===null)return;
-  lentGoal=t.trim();saveLent();renderLent();
+  if(t.trim())nightNotes[ds]=t.trim(); else delete nightNotes[ds];
+  saveNight(); renderNight();
 }
-async function saveLent(){saveAll();}
+function leiturasDoDia(ds){
+  const L=LITURGIA[ds];
+  if(L) return {modo:"liturgia", tit:L.t, itens:[["1ª Leitura",L.a],["Salmo",L.s]].concat(L.b?[["2ª Leitura",L.b]]:[]).concat([["Evangelho",L.e]])};
+  const p=passagemDoDia(ds);
+  return {modo:"ciclo", tit:p.t, itens:[["Passagem",p.r]]};
+}
+function bibleCardHTML(ds){
+  const nota=nightNotes[ds]||"", L=leiturasDoDia(ds);
+  return (L.modo==="liturgia"?'<div class="bib-dia">'+esc(L.tit)+'</div>':'')+
+    L.itens.map(function(x){return '<div class="bib-lin"><span class="bl-rot">'+esc(x[0])+'</span><span class="bl-ref">'+esc(x[1])+'</span></div>';}).join("")+
+    (L.modo==="ciclo"?'<div class="bib-tema">'+esc(L.tit)+'</div>':'')+
+    '<div class="bib-abra">Abra na sua Bíblia e leia com calma.</div>'+
+    '<div class="bib-nota'+(nota?"":" vazia")+'" id="nNote">'+(nota?esc(nota):"Toque para anotar o que a Palavra lhe diz hoje.")+'</div>'+
+    '<a class="bib-lit" target="_blank" rel="noopener" href="'+LITURGIA_URL+'">Ver a liturgia completa \u2197</a>';
+}
+function renderNight(){
+  initNight();
+  const ds=nightDateStr(), arr=nightArr(ds), feito=nightCount(ds);
+  const d=parseLocal(ds), DIAS=["domingo","segunda-feira","terça-feira","quarta-feira","quinta-feira","sexta-feira","sábado"];
+  document.getElementById("nDate").textContent=DIAS[d.getDay()]+", "+ds.slice(8)+"/"+ds.slice(5,7);
+  document.getElementById("nDayNum").textContent=feito;
+  document.getElementById("nDayInfo").innerHTML=feito>=NOITE_TOTAL
+    ? "<b>Rotina completa \u2728</b><div>Que Deus lhe dê uma noite de paz.</div>"
+    : "<b>"+feito+" de "+NOITE_TOTAL+" passos</b><div>"+(feito===0?"Comece quando estiver pronta para dormir.":"Faltam "+(NOITE_TOTAL-feito)+" para concluir.")+"</div>";
+  document.getElementById("nBar").style.width=(feito/NOITE_TOTAL*100)+"%";
+  const LD=leiturasDoDia(ds);
+  document.getElementById("nVerseTop").innerHTML=
+    '<div class="vt-lbl">'+(LD.modo==="liturgia"?"Liturgia de hoje":"Palavra desta noite")+'</div>'+
+    '<div class="vt-ref">'+esc(LD.itens[LD.itens.length-1][1])+'</div>'+
+    '<div class="vt-tema">'+esc(LD.tit)+'</div>';
+  document.getElementById("nSteps").innerHTML=NOITE_PASSOS.map((p,i)=>
+    '<div class="prayer'+(arr[i]?" sdone":"")+(p.bible?" bible":"")+'"><div class="prayer-head">'+
+    '<span class="nchk" data-chk="'+i+'">\u2713</span>'+
+    '<span class="ntit">'+(i+1)+' \u00b7 '+esc(p.titulo)+'</span><span class="arrow">\u25bc</span></div>'+
+    '<div class="prayer-body">'+(p.bible?bibleCardHTML(ds):'<p>'+esc(p.texto)+'</p>')+'</div></div>').join("");
+  document.querySelectorAll("#nSteps .nchk").forEach(c=>c.addEventListener("click",e=>{e.stopPropagation();toggleNightStep(+c.dataset.chk);}));
+  document.querySelectorAll("#nSteps .prayer-head").forEach(h=>h.addEventListener("click",()=>h.closest(".prayer").classList.toggle("open")));
+  const nn=document.getElementById("nNote"); if(nn)nn.addEventListener("click",e=>{e.stopPropagation();editNightNote();});
+  document.querySelectorAll("#nSteps .bib-btn").forEach(b=>b.addEventListener("click",e=>e.stopPropagation()));
+  const il=document.getElementById("nIntentList");
+  if(nightIntents.length===0){ il.innerHTML='<div class="prop-empty">Nenhuma intenção ainda. Toque em &quot;Adicionar&quot; para escrever por quem ou pelo que você quer rezar.</div>'; }
+  else { il.innerHTML=nightIntents.map((p,i)=>'<div class="prop-item"><span class="pname" style="flex:1">\ud83d\udd6f\ufe0f '+esc(p.t)+'</span><button class="prem" data-i="'+i+'">\u2715</button></div>').join("");
+    il.querySelectorAll(".prem").forEach(b=>b.addEventListener("click",()=>{ if(confirm("Remover esta intenção?")){ nightIntents.splice(+b.dataset.i,1); saveNight(); renderNight(); } })); }
+  const g=document.getElementById("nGrid"); g.innerHTML="";
+  const hoje=parseLocal(ds);
+  for(let k=29;k>=0;k--){ const dd=new Date(hoje); dd.setDate(dd.getDate()-k); const s=dstr(dd);
+    const c=document.createElement("div");
+    c.className="ncell"+(nightDone(s)?" done":"")+(k===0?" today":"");
+    c.textContent=dd.getDate(); c.title=s; g.appendChild(c); }
+  document.getElementById("nStats").innerHTML="Sequência atual: <b>"+nightStreak()+"</b> noite(s) \u00b7 Total: <b>"+nightTotal()+"</b> noite(s)";
+}
+function addNightIntent(){ const t=prompt("Por quem ou pelo que você quer rezar?"); if(!t||!t.trim())return; nightIntents.push({t:t.trim()}); saveNight(); renderNight(); }
+async function saveNight(){ saveAll(); }
 
 
 const WORKOUTS=[
@@ -797,12 +1035,12 @@ let saveTimer=null;
 function saveAll(){
   // grava local na hora
   localSet("prop",prop);localSet("gym",gym);localSet("ex",exState);localSet("cardio",cardioState);
-  localSet("lentDays",lentDays);localSet("lentProps",lentProps);localSet("lentGoal",lentGoal);
+  localSet("nightSteps",nightSteps);localSet("nightIntents",nightIntents);localSet("nightNotes",nightNotes);
   // grava nuvem com pequeno debounce
   if(saveTimer)clearTimeout(saveTimer);
   saveTimer=setTimeout(()=>{
     cloudSet("prop",prop);cloudSet("gym",gym);cloudSet("ex",exState);cloudSet("cardio",cardioState);
-    cloudSet("lentDays",lentDays);cloudSet("lentProps",{v:lentProps});cloudSet("lentGoal",{v:lentGoal});
+    cloudSet("nightSteps",nightSteps);cloudSet("nightIntents",{v:nightIntents});cloudSet("nightNotes",nightNotes);
   },400);
 }
 async function saveProp(){saveAll();}
@@ -814,9 +1052,9 @@ async function load(){
   // 1) carrega do aparelho primeiro (rápido, funciona offline)
   const lp=localGet("prop"),lg=localGet("gym"),le=localGet("ex"),lc=localGet("cardio");
   if(lp)prop=lp; if(lg)gym=lg; if(le)exState=le; if(lc)cardioState=lc;
-  const lld=localGet("lentDays"),llp=localGet("lentProps"),llg=localGet("lentGoal");
-  if(lld)lentDays=lld; if(llp)lentProps=llp; if(llg!==null)lentGoal=llg;
-  initLent();
+  const lns=localGet("nightSteps"),lni=localGet("nightIntents"),lnn=localGet("nightNotes");
+  if(lns)nightSteps=lns; if(lni)nightIntents=lni; if(lnn)nightNotes=lnn;
+  initNight();
   calMonth=new Date().getMonth();
   const vb=document.getElementById("verBadge");if(vb)vb.textContent=APP_VERSION;
   const ht=document.getElementById("hTitle");if(ht)ht.textContent=greeting();
@@ -825,20 +1063,18 @@ async function load(){
   // 2) busca da nuvem e atualiza se houver
   if(fbReady){
     try{
-      const [cp,cg,ce,cc,cld,clp,clg]=await Promise.all([cloudGet("prop"),cloudGet("gym"),cloudGet("ex"),cloudGet("cardio"),cloudGet("lentDays"),cloudGet("lentProps"),cloudGet("lentGoal")]);
+      const [cp,cg,ce,cc,cns,cni,cnn]=await Promise.all([cloudGet("prop"),cloudGet("gym"),cloudGet("ex"),cloudGet("cardio"),cloudGet("nightSteps"),cloudGet("nightIntents"),cloudGet("nightNotes")]);
       let changed=false;
       if(cp){prop=cp;changed=true;} if(cg){gym=cg;changed=true;}
       if(ce){exState=ce;changed=true;} if(cc){cardioState=cc;changed=true;}
-      if(cld){lentDays=cld;changed=true;}
-      const clpVal=(clp&&clp.v!==undefined)?clp.v:clp;
-      if(Array.isArray(clpVal)&&clpVal.length>0){lentProps=clpVal;changed=true;}
-      else if((!lentProps||lentProps.length===0)&&Array.isArray(clpVal)){lentProps=clpVal;}
-      const clgVal=(clg&&clg.v!==undefined)?clg.v:clg;
-      if(typeof clgVal==="string"&&clgVal.length>0){lentGoal=clgVal;changed=true;}
+      if(cns&&typeof cns==="object"&&Object.keys(cns).length>0){nightSteps=cns;changed=true;}
+      const cniVal=(cni&&cni.v!==undefined)?cni.v:cni;
+      if(Array.isArray(cniVal)&&cniVal.length>0){nightIntents=cniVal;changed=true;}
+      if(cnn&&typeof cnn==="object"&&Object.keys(cnn).length>0){nightNotes=cnn;changed=true;}
       if(changed){
         // salva de volta no aparelho e re-renderiza
         localSet("prop",prop);localSet("gym",gym);localSet("ex",exState);localSet("cardio",cardioState);
-        localSet("lentDays",lentDays);localSet("lentProps",lentProps);localSet("lentGoal",lentGoal);
+        localSet("nightSteps",nightSteps);localSet("nightIntents",nightIntents);localSet("nightNotes",nightNotes);
         renderStart();renderWorkout();renderFreq();
       }
     }catch(e){console.warn("cloud load falhou",e);}
@@ -1251,7 +1487,9 @@ document.getElementById("resetProp").addEventListener("click",()=>{if(confirm("Z
 document.getElementById("navStart").addEventListener("click",()=>switchView("start"));
 document.getElementById("navWorkout").addEventListener("click",()=>switchView("workout"));
 document.getElementById("navFreq").addEventListener("click",()=>switchView("freq"));
- document.getElementById("navLent").addEventListener("click",()=>switchView("lent"));
+ document.getElementById("navNight").addEventListener("click",()=>switchView("night"));
+ document.getElementById("nAddIntent").addEventListener("click",addNightIntent);
+ document.getElementById("nReset").addEventListener("click",resetNight);
  document.getElementById("qAddProp").addEventListener("click",addLentProp);
  document.getElementById("qGoalEdit").addEventListener("click",editLentGoal);
 
@@ -1274,15 +1512,15 @@ function switchView(v){
   document.getElementById("viewStart").classList.toggle("hidden",v!=="start");
   document.getElementById("viewWorkout").classList.toggle("hidden",v!=="workout");
   document.getElementById("viewFreq").classList.toggle("hidden",v!=="freq");
-  document.getElementById("viewLent").classList.toggle("hidden",v!=="lent");
+  document.getElementById("viewNight").classList.toggle("hidden",v!=="night");
   document.getElementById("navStart").classList.toggle("active",v==="start");
   document.getElementById("navWorkout").classList.toggle("active",v==="workout");
   document.getElementById("navFreq").classList.toggle("active",v==="freq");
-  document.getElementById("navLent").classList.toggle("active",v==="lent");
-  document.getElementById("hTitle").textContent=v==="start"?greeting():v==="workout"?"Treinos":v==="freq"?"Frequência":"Quaresma";
+  document.getElementById("navNight").classList.toggle("active",v==="night");
+  document.getElementById("hTitle").textContent=v==="start"?greeting():v==="workout"?"Treinos":v==="freq"?"Frequência":"Oração da Noite";
   const rt=document.getElementById("restTimer");if(rt){rt.classList.toggle("hidden",v!=="workout");restBindOnce();}
   if(v==="workout"){renderWorkout();const st=exToday();if(st.timer.running&&!tickHandle)tickHandle=setInterval(updateClock,1000);}
-  if(v==="lent")renderLent();
+  if(v==="night")renderNight();
   window.scrollTo(0,0);
 }
 
