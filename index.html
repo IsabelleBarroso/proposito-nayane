@@ -286,7 +286,7 @@
 <body>
 
 <header>
-  <div class="kicker">Propósito · 120 dias <span class="ver-inline" id="verBadge">v0.0</span></div>
+  <div class="kicker">Propósito · 120 dias <span class="ver-inline" id="verBadge">v3.1</span></div>
   <h1 id="hTitle">Início</h1>
 </header>
 
@@ -493,7 +493,7 @@ try{ firebase.initializeApp(firebaseConfig); fbDB=firebase.database(); fbReady=t
 </script>
 
 <script>
-const APP_VERSION="v3.0";
+const APP_VERSION="v3.1";
 const USER_NAME="Nayane";
 function greeting(){
   const h=new Date().getHours();
@@ -1490,8 +1490,6 @@ document.getElementById("navFreq").addEventListener("click",()=>switchView("freq
  document.getElementById("navNight").addEventListener("click",()=>switchView("night"));
  document.getElementById("nAddIntent").addEventListener("click",addNightIntent);
  document.getElementById("nReset").addEventListener("click",resetNight);
- document.getElementById("qAddProp").addEventListener("click",addLentProp);
- document.getElementById("qGoalEdit").addEventListener("click",editLentGoal);
 
 // ===== Cronômetro de descanso (flutuante na aba Treinos) =====
 let restBase=0, restStartTime=null, restRunning=false, restHandle=null;
