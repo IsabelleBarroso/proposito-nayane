@@ -129,6 +129,15 @@
   .ex2-how{margin-top:4px;padding:0;border:none;background:none;color:var(--acc);font-size:13px;font-weight:700;cursor:pointer}
   .ex2-thumb{flex-shrink:0;width:96px;height:72px;padding:0;border-radius:10px;border:1px solid var(--line);background:#fff;overflow:hidden;cursor:pointer}
   .ex2-thumb img{width:100%;height:100%;object-fit:contain;display:block}
+  .ex2-carga{display:flex;align-items:center;gap:8px;margin-top:12px;padding-top:12px;border-top:1px solid var(--line);flex-wrap:wrap}
+  .ex2-carga label{font-size:11px;font-weight:800;color:var(--mut);text-transform:uppercase;letter-spacing:.05em}
+  .ex2-peso{width:82px;padding:10px;border-radius:11px;border:1.5px solid var(--line);background:var(--card2);
+    color:var(--txt);font-size:17px;font-weight:800;text-align:center;font-family:inherit}
+  .ex2-peso:focus{outline:none;border-color:var(--acc);background:var(--card)}
+  .ex2-peso::placeholder{color:var(--mut);font-weight:700}
+  .ex2-carga .un{font-size:13px;font-weight:800;color:var(--mut)}
+  .ex2-carga .ult{font-size:11px;font-weight:700;color:var(--mut);margin-left:auto;text-align:right;line-height:1.3}
+  .ex2-carga .ult b{color:var(--acc)}
   .ex2-sets{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
   .sdot{min-width:52px;height:40px;padding:0 8px;border-radius:20px;border:1.5px solid var(--acc);background:transparent;color:var(--acc);font-size:14px;font-weight:700;cursor:pointer}
   .sdot.prep{border-style:dashed;border-color:var(--line);color:var(--mut)}
@@ -339,7 +348,7 @@
 <body>
 
 <header>
-  <div class="kicker">Propósito · 120 dias <span class="ver-inline" id="verBadge">v3.3</span></div>
+  <div class="kicker">Propósito · 120 dias <span class="ver-inline" id="verBadge">v3.4</span></div>
   <h1 id="hTitle">Início</h1>
 </header>
 
@@ -558,7 +567,7 @@ function avisarNuvem(){
   d.textContent="Não consegui ler seus dados na nuvem. Para não apagar nada, o app não vai gravar agora. Feche e abra de novo com internet.";
   document.body.appendChild(d);
 }
-const APP_VERSION="v3.3";
+const APP_VERSION="v3.4";
 const USER_NAME="Nayane";
 function greeting(){
   const h=new Date().getHours();
@@ -1659,9 +1668,34 @@ function renderFicha(st,w,list){
   lg.innerHTML='<span><i class="p"></i>Preparatória · carga leve, 15 reps</span><span><i></i>Trabalho · 8–10 reps</span><span><i class="d"></i>Feita</span>';
   list.appendChild(lg);
 }
+// ===== Carga do exercício: um peso por exercício, guardado por data em exState =====
+function pesoDe(st,e){ if(!st.pesos)st.pesos={}; const v=st.pesos[e.g]; return (v===undefined||v===null||v==="")?"":v; }
+function pesoFmt(n){ return String(n).replace(".",","); }
+function setPeso(st,e,txt){
+  if(!st.pesos)st.pesos={};
+  const t=String(txt).replace(",",".").trim();
+  if(t===""){ delete st.pesos[e.g]; return true; }
+  const n=parseFloat(t);
+  if(!isFinite(n)||n<0||n>999) return false;
+  st.pesos[e.g]=Math.round(n*100)/100; return true;
+}
+// última carga lançada em alguma data ANTERIOR (para mostrar a evolução)
+function pesoAnterior(e){
+  const hoje=wDate();
+  const datas=Object.keys(exState||{}).filter(d=>d<hoje).sort().reverse();
+  for(const d of datas){
+    const dia=exState[d]||{};
+    for(const wid of Object.keys(dia)){
+      const p=dia[wid]&&dia[wid].pesos;
+      if(p&&p[e.g]!==undefined&&p[e.g]!==null&&p[e.g]!=="") return {peso:p[e.g],data:d};
+    }
+  }
+  return null;
+}
 function exRow2(st,e,i){
   const arr=exSets(st,e,i);
   const g=EXG[e.g]||{};const key=WORKOUTS[curWorkout].id+"-"+i;const open=!!howOpen[key];
+  const pv=pesoDe(st,e), ant=pesoAnterior(e), pid="peso-"+key;
   const row=document.createElement("div");row.className="ex2";
   let dots="";
   arr.forEach((on,s)=>{const prep=s<(e.p||0);dots+='<button type="button" class="sdot'+(prep?" prep":"")+(on?" on":"")+'" data-s="'+s+'">'+(on?"✓":(prep?"15":"8–10"))+'</button>';});
@@ -1677,9 +1711,23 @@ function exRow2(st,e,i){
   row.innerHTML='<div class="ex2-top"><div class="ex2-info"><div class="ex2-name">'+e.n+'</div><div class="ex2-meta">'+e.m+'</div>'+
     '<button type="button" class="ex2-how">'+(open?"Fechar":"Como fazer")+'</button></div>'+
     (EXIMG[e.g]?'<button type="button" class="ex2-thumb" aria-label="Como fazer: '+e.n+'"><img src="'+EXIMG[e.g]+'" alt=""></button>':'')+'</div>'+guide+
-    '<div class="ex2-sets">'+dots+'</div>';
+    '<div class="ex2-sets">'+dots+'</div>'+
+    '<div class="ex2-carga"><label for="'+pid+'">Carga</label>'+
+      '<input type="text" inputmode="decimal" id="'+pid+'" class="ex2-peso" value="'+(pv===""?"":pesoFmt(pv))+'" placeholder="—" aria-label="Carga em kg: '+e.n+'">'+
+      '<span class="un">kg</span>'+
+      (ant?'<span class="ult">última: <b>'+pesoFmt(ant.peso)+' kg</b><br>'+ant.data.slice(8)+'/'+ant.data.slice(5,7)+'</span>':'')+
+    '</div>';
   row.querySelector(".ex2-how").addEventListener("click",()=>{howOpen[key]=!open;renderWorkout();});
   const th=row.querySelector(".ex2-thumb");if(th)th.addEventListener("click",()=>{howOpen[key]=!open;renderWorkout();});
+  const inp=row.querySelector(".ex2-peso");
+  if(inp){
+    inp.addEventListener("click",ev=>ev.stopPropagation());
+    inp.addEventListener("input",()=>{ if(setPeso(st,e,inp.value)) saveEx(); });
+    const normalizar=()=>{ const v=pesoDe(st,e); inp.value=(v===""?"":pesoFmt(v)); };
+    inp.addEventListener("change",normalizar);
+    inp.addEventListener("blur",normalizar);
+    inp.addEventListener("keydown",ev=>{ if(ev.key==="Enter"){ ev.preventDefault(); inp.blur(); } });
+  }
   row.querySelectorAll(".sdot").forEach(b=>b.addEventListener("click",()=>{
     const s=Number(b.dataset.s);arr[s]=!arr[s];st.done[i]=arr.every(x=>x);
     if(arr[s])fRestStart();
